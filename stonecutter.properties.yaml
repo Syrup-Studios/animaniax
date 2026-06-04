@@ -1,0 +1,28 @@
+mod:
+  id: "animaniax"
+  name: "Animaniax"
+  group: "net.syrupstudios"
+  version: "1.0.0"
+  description: "An animal overhaul mod"
+  authors: "Syrup Studios"
+  license: "RSL-1.0"
+  homepage: "https://github.com/Syrup-Studios/animaniax"
+  issues: "https://github.com/Syrup-Studios/animaniax/issues"
+  sources: "https://github.com/Syrup-Studios/animaniax"
+
+"1.21.1":
+  java:
+    version: 21
+  mod.mc_releases: ["1.21.1"]
+  mod:
+    fabric_mc_range: "1.21.1"
+    neoforge_mc_range: "[1.21.1]"
+  fabric:
+    deps:
+      fabric_loader: "0.20.1"
+      fabric_api: "0.116.18+1.21.1"
+  neoforge:
+    deps:
+      neoforge: "21.1.265"
+
+loomx.loom_version: "1.17.21"

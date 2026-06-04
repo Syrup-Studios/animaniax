@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "id": "${modId}",
+  "version": "${version}",
+  "name": "${modName}",
+  "description": "${description}",
+  "authors": ["${authors}"],
+  "contact": {
+    "homepage": "${homepage}",
+    "issues": "${issues}",
+    "sources": "${sources}"
+  },
+  "license": "${license}",
+  "environment": "*",
+  "entrypoints": {
+    "main": ["net.syrupstudios.animaniax.loader.FabricEntrypoint"]
+  },
+  "depends": {
+    "fabricloader": ">=${loader}",
+    "fabric-api": ">=${fabricApi}",
+    "minecraft": "${minecraft}",
+    "java": ">=21"
+  }
+}
