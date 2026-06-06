@@ -1,0 +1,17 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "simplecorn:corncob",
+      "required": false
+    },
+    {
+      "id": "biomesoplenty:turnip_seeds",
+      "required": false
+    },
+    {
+      "id": "harvestcraft:cornitem",
+      "required": false
+    }
+  ]
+}

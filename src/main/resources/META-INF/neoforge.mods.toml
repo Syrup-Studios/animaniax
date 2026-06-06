@@ -3,6 +3,9 @@ loaderVersion="[4,)"
 license="${license}"
 issueTrackerURL="${issues}"
 
+[[mixins]]
+config="animaniax.mixins.json"
+
 [[mods]]
 modId="${modId}"
 version="${version}"

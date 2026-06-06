@@ -1,0 +1,26 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:wheat",
+    {
+      "id": "simplecorn:corncob",
+      "required": false
+    },
+    {
+      "id": "harvestcraft:barleyitem",
+      "required": false
+    },
+    {
+      "id": "harvestcraft:oatsitem",
+      "required": false
+    },
+    {
+      "id": "harvestcraft:ryeitem",
+      "required": false
+    },
+    {
+      "id": "harvestcraft:cornitem",
+      "required": false
+    }
+  ]
+}
