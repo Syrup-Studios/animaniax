@@ -1,1 +1,6 @@
-{}
+{
+  "block.animaniax.trough": "Animal Trough",
+  "block.animaniax.straw": "Straw",
+  "block.animaniax.mud": "Mud",
+  "container.animaniax.wagon": "Wagon"
+}

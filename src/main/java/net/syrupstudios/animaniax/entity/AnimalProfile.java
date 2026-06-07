@@ -19,6 +19,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.syrupstudios.animaniax.block.StrawContent;
 
 /** Internal capabilities for the animals that use the shared care and breeding rules. */
 public final class AnimalProfile {
@@ -127,7 +128,7 @@ public final class AnimalProfile {
             return new Profile(capabilities, diet, inheritance, new SleepPolicy(schedule, beds));
         }
         private static List<SleepBed> farmSleepBeds() {
-            return List.of(new SleepBed(Blocks.GRASS_BLOCK, -1, 1));
+            return List.of(new SleepBed(StrawContent.BLOCK, 0, 0), new SleepBed(Blocks.GRASS_BLOCK, -1, 1));
         }
         private static Diet troughDiet(Item... feed) { return troughDiet(100, feed); }
         private static Diet troughDiet(int waterCost, Item... feed) { return new Diet(Set.of(feed), Set.of(), waterCost); }

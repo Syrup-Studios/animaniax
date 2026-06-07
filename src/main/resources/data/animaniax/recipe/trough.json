@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "P P",
+    "PIP",
+    "S S"
+  ],
+  "key": {
+    "P": { "tag": "animaniax:planks" },
+    "I": { "tag": "c:ingots/iron" },
+    "S": { "tag": "animaniax:wooden_sticks" }
+  },
+  "result": {
+    "id": "animaniax:trough",
+    "count": 1
+  }
+}

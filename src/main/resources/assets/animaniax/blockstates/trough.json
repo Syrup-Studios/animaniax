@@ -1,0 +1,21 @@
+{
+  "multipart": [
+    {"when": {"part": "main", "facing": "north"}, "apply": {"model": "animaniax:block/trough_main"}},
+    {"when": {"part": "main", "facing": "east"}, "apply": {"model": "animaniax:block/trough_main", "y": 90}},
+    {"when": {"part": "main", "facing": "south"}, "apply": {"model": "animaniax:block/trough_main", "y": 180}},
+    {"when": {"part": "main", "facing": "west"}, "apply": {"model": "animaniax:block/trough_main", "y": 270}},
+    {"when": {"part": "end", "facing": "north"}, "apply": {"model": "animaniax:block/trough_end"}},
+    {"when": {"part": "end", "facing": "east"}, "apply": {"model": "animaniax:block/trough_end", "y": 90}},
+    {"when": {"part": "end", "facing": "south"}, "apply": {"model": "animaniax:block/trough_end", "y": 180}},
+    {"when": {"part": "end", "facing": "west"}, "apply": {"model": "animaniax:block/trough_end", "y": 270}},
+    {"when": {"content": "1", "level": "1"}, "apply": {"model": "animaniax:block/trough_water_1"}},
+    {"when": {"content": "1", "level": "2"}, "apply": {"model": "animaniax:block/trough_water_2"}},
+    {"when": {"content": "1", "level": "3"}, "apply": {"model": "animaniax:block/trough_water_3"}},
+    {"when": {"content": "2", "level": "1"}, "apply": {"model": "animaniax:block/trough_feed_1"}},
+    {"when": {"content": "2", "level": "2"}, "apply": {"model": "animaniax:block/trough_feed_2"}},
+    {"when": {"content": "2", "level": "3"}, "apply": {"model": "animaniax:block/trough_feed_3"}},
+    {"when": {"content": "3", "level": "1"}, "apply": {"model": "animaniax:block/trough_feed_1"}},
+    {"when": {"content": "3", "level": "2"}, "apply": {"model": "animaniax:block/trough_feed_2"}},
+    {"when": {"content": "3", "level": "3"}, "apply": {"model": "animaniax:block/trough_feed_3"}}
+  ]
+}

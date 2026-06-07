@@ -1,0 +1,41 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "content": "minecraft:block/hay_block_side",
+    "particle": "minecraft:block/hay_block_side"
+  },
+  "elements": [
+    {
+      "from": [
+        3,
+        5,
+        3
+      ],
+      "to": [
+        13,
+        10,
+        13
+      ],
+      "faces": {
+        "north": {
+          "texture": "#content"
+        },
+        "south": {
+          "texture": "#content"
+        },
+        "east": {
+          "texture": "#content"
+        },
+        "west": {
+          "texture": "#content"
+        },
+        "up": {
+          "texture": "#content"
+        },
+        "down": {
+          "texture": "#content"
+        }
+      }
+    }
+  ]
+}

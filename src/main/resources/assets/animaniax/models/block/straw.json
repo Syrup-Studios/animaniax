@@ -1,0 +1,20 @@
+{
+  "textures": {
+    "straw": "minecraft:block/hay_block_side",
+    "particle": "minecraft:block/hay_block_side"
+  },
+  "elements": [
+    {
+      "from": [0, 0, 0],
+      "to": [16, 2, 16],
+      "faces": {
+        "down": { "texture": "#straw" },
+        "up": { "texture": "#straw" },
+        "north": { "texture": "#straw" },
+        "south": { "texture": "#straw" },
+        "west": { "texture": "#straw" },
+        "east": { "texture": "#straw" }
+      }
+    }
+  ]
+}
