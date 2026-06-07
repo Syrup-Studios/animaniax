@@ -3,7 +3,9 @@
   "minVersion": "0.8",
   "package": "net.syrupstudios.animaniax.mixin",
   "compatibilityLevel": "JAVA_21",
-  "mixins": [],
+  "mixins": [
+    "MobCareMixin"
+  ],
   "client": [],
   "injectors": {
     "defaultRequire": 1

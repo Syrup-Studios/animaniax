@@ -1,0 +1,323 @@
+package net.syrupstudios.animaniax.entity.ai;
+
+import java.util.Comparator;
+import java.util.EnumSet;
+import net.minecraft.world.entity.animal.Pig;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.tags.BiomeTags;
+import net.syrupstudios.animaniax.block.MudBlock;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
+import net.syrupstudios.animaniax.entity.AnimalCareState;
+import net.syrupstudios.animaniax.entity.AnimalProfile;
+import net.syrupstudios.animaniax.entity.AnimalProfile.Capability;
+import net.syrupstudios.animaniax.entity.AnimalCareHelper;
+import net.syrupstudios.animaniax.entity.AnimalSleepState;
+import net.syrupstudios.animaniax.block.TroughBlock;
+import net.syrupstudios.animaniax.config.AnimalCareConfig;
+import net.syrupstudios.animaniax.block.TroughContent;
+
+public final class AnimalCareGoal extends Goal {
+    public enum Need { WATER, GRASS, SEEDS, MUD }
+
+    private final Mob mob;
+    private final AnimalCareState care;
+    private final Need need;
+    private BlockPos target;
+    private BlockPos waterSource;
+    private BlockPos foodBlock;
+    private ItemEntity seedItem;
+    private boolean finished;
+    private int scanAtTick;
+
+    public AnimalCareGoal(Mob mob, Need need) {
+        this.mob = mob;
+        this.care = (AnimalCareState) mob;
+        this.need = need;
+        setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
+    }
+
+    @Override
+    public boolean canUse() {
+        if (!AnimalCareHelper.canStartCare(mob, animaniax$needsCare(), ((AnimalSleepState) mob).animaniax$isSleeping())) return false;
+        if (mob.tickCount < scanAtTick) return false;
+        target = switch (need) {
+            case WATER -> animaniax$findWaterApproach();
+            case GRASS -> animaniax$findGrass();
+            case SEEDS -> animaniax$findSeeds();
+            case MUD -> animaniax$findMud();
+        };
+        scanAtTick = AnimalCareHelper.nextScanTick(mob, 40);
+        return target != null;
+    }
+
+    @Override
+    public boolean canContinueToUse() {
+        return !finished && animaniax$needsCare() && target != null
+                && !mob.isVehicle() && !mob.isPassenger() && !mob.isSleeping()
+                && !((AnimalSleepState) mob).animaniax$isSleeping();
+    }
+
+    @Override
+    public void start() {
+        boolean inReach = need == Need.GRASS
+                && mob.distanceToSqr(target.getX() + 0.5, target.getY(), target.getZ() + 0.5) <= 2.25;
+        if (inReach) mob.getNavigation().stop();
+        finished = !inReach && !(need == Need.MUD || need == Need.GRASS
+                ? mob.getNavigation().moveTo(target.getX() + 0.5, target.getY(), target.getZ() + 0.5, 0, 1.0)
+                : mob.getNavigation().moveTo(target.getX() + 0.5, target.getY(), target.getZ() + 0.5, 1.0));
+        if (finished) scanAtTick = mob.tickCount + 100;
+    }
+
+    @Override
+    public void tick() {
+        if (target == null) return;
+        if (mob.distanceToSqr(target.getX() + 0.5, target.getY(), target.getZ() + 0.5) <= 2.25
+                && (need != Need.MUD || mob.onGround() && (mob.blockPosition().equals(target)
+                        || mob.blockPosition().equals(target.below())))) {
+            if (need == Need.WATER) {
+                if (waterSource != null && animaniax$drinkFrom(waterSource)) {
+                    care.animaniax$drink();
+                }
+            } else if (need == Need.GRASS && animaniax$eatGrass()) {
+                if (foodBlock != null && mob.level().getBlockState(foodBlock).is(TroughContent.TROUGH)
+                        && mob.level().getBlockState(foodBlock).getValue(TroughBlock.CONTENT) == 3) care.animaniax$eatSlop();
+                else care.animaniax$graze();
+            } else if (need == Need.SEEDS && animaniax$eatSeed()) {
+                care.animaniax$graze();
+            } else if (need == Need.MUD) {
+                care.animaniax$useMud();
+            }
+            finished = true;
+        } else if (mob.getNavigation().isDone()) {
+            finished = true;
+            scanAtTick = mob.tickCount + 100;
+        }
+    }
+
+    @Override
+    public void stop() {
+        mob.getNavigation().stop();
+        target = null;
+        waterSource = null;
+        foodBlock = null;
+        seedItem = null;
+        finished = false;
+    }
+
+    private boolean animaniax$needsCare() {
+        return switch (need) {
+            case WATER -> care.animaniax$needsWater();
+            case GRASS -> care.animaniax$needsGraze();
+            case SEEDS -> care.animaniax$needsSeeds();
+            case MUD -> mob.level().isDay() && care.animaniax$needsMud();
+        };
+    }
+
+    private boolean animaniax$drinkFrom(BlockPos source) {
+        if (mob.level().getBlockState(source).is(TroughContent.TROUGH))
+            return TroughBlock.consumeWater(mob.level(), source, mob.getType());
+        if (!mob.level().getBlockState(source).is(Blocks.WATER) || animaniax$isOceanOrBeach(source)) return false;
+        if (AnimalCareConfig.waterRemovedAfterDrinking
+                && AnimalProfile.has(mob.getType(), Capability.REMOVE_NATURAL_WATER))
+            mob.level().setBlock(source, Blocks.AIR.defaultBlockState(), 3);
+        return true;
+    }
+
+    private boolean animaniax$isOceanOrBeach(BlockPos pos) {
+        return mob.level().getBiome(pos).is(BiomeTags.IS_OCEAN)
+                || mob.level().getBiome(pos).is(BiomeTags.IS_BEACH);
+    }
+
+    private BlockPos animaniax$findMud() {
+        BlockPos origin = mob.blockPosition();
+        BlockPos nearest = null;
+        double nearestDistance = Double.MAX_VALUE;
+        for (int dy = -2; dy < 2; dy++) {
+            for (int dx = -10; dx < 10; dx++) {
+                for (int dz = -10; dz < 10; dz++) {
+                    BlockPos mud = origin.offset(dx, dy, dz);
+                    BlockPos approach = mud.above();
+                    if (!mob.level().hasChunkAt(approach) || !MudBlock.isMud(mob.level().getBlockState(mud))
+                            || !mob.level().getBlockState(approach).getCollisionShape(mob.level(), approach).isEmpty()
+                            || mob.level().getEntitiesOfClass(Pig.class,
+                                    new AABB(mud.getX() - 2, mud.getY() - 2, mud.getZ() - 2,
+                                            mud.getX() + 2, mud.getY() + 2, mud.getZ() + 2)).size() >= 2) continue;
+                    double distance = mob.distanceToSqr(approach.getX() + 0.5, approach.getY(), approach.getZ() + 0.5);
+                    if (distance < nearestDistance) {
+                        nearest = approach;
+                        nearestDistance = distance;
+                    }
+                }
+            }
+        }
+        return nearest;
+    }
+
+    private BlockPos animaniax$findWaterApproach() {
+            BlockPos origin = mob.blockPosition();
+            int range = 16;
+            BlockPos bestSource = null;
+            BlockPos bestApproach = null;
+            double bestDist = Double.MAX_VALUE;
+            for (int dy = -2; dy <= 2; dy++) {
+                for (int dx = -range; dx <= range; dx++) {
+                    for (int dz = -range; dz <= range; dz++) {
+                        if (dx * dx + dz * dz > range * range) continue;
+                        BlockPos candidatePos = origin.offset(dx, dy, dz);
+                        if (!mob.level().hasChunkAt(candidatePos)) continue;
+                        boolean trough = mob.level().getBlockState(candidatePos).is(TroughContent.TROUGH)
+                                && mob.level().getBlockState(candidatePos).getValue(TroughBlock.CONTENT) == 1
+                                && mob.level().getBlockState(candidatePos).getValue(TroughBlock.LEVEL) > 0;
+                        boolean petBowl = false;
+                        if (!trough && !petBowl && (!mob.level().getBlockState(candidatePos).is(Blocks.WATER)
+                                || animaniax$isOceanOrBeach(candidatePos))) continue;
+                        for (Direction direction : Direction.Plane.HORIZONTAL) {
+                            BlockPos approach = trough || petBowl ? candidatePos.relative(direction) : candidatePos.relative(direction).above();
+                            if (!mob.level().hasChunkAt(approach) || !mob.level().getBlockState(approach).isAir()
+                                    || !mob.level().getBlockState(approach.below()).isFaceSturdy(mob.level(), approach.below(), Direction.UP)) continue;
+                            boolean inReach = mob.distanceToSqr(approach.getX() + 0.5, approach.getY(), approach.getZ() + 0.5) <= 2.25;
+                            if (!inReach) {
+                                var path = mob.getNavigation().createPath(approach, 0);
+                                if (path == null || !path.canReach()) continue;
+                            }
+                            double distance = mob.distanceToSqr(approach.getX() + 0.5, approach.getY(), approach.getZ() + 0.5);
+                            if (distance < bestDist) { bestDist = distance; bestApproach = approach; bestSource = candidatePos; }
+                        }
+                    }
+                }
+            }
+        waterSource = bestSource;
+        return bestApproach;
+    }
+
+    private BlockPos animaniax$findGrass() {
+        BlockPos troughApproach = animaniax$findTroughFood();
+        if (troughApproach != null) return troughApproach;
+        if (!AnimalProfile.has(mob.getType(), Capability.NATURAL_GRAZING_GOAL)) return null;
+        BlockPos origin = mob.blockPosition();
+        BlockPos nearest = null;
+        double nearestDistance = Double.MAX_VALUE;
+        for (int dy = -2; dy <= 2; dy++) {
+            for (int dx = -6; dx <= 6; dx++) {
+                for (int dz = -6; dz <= 6; dz++) {
+                    BlockPos plant = origin.offset(dx, dy, dz);
+                    if (!mob.level().hasChunkAt(plant) || !animaniax$isGrazeableGrass(plant)) continue;
+                    BlockPos approach = mob.level().getBlockState(plant).is(Blocks.GRASS_BLOCK) ? plant.above() : plant;
+                    if (!mob.level().getBlockState(approach).getCollisionShape(mob.level(), approach).isEmpty()
+                            || !mob.level().getBlockState(approach.below()).isFaceSturdy(mob.level(), approach.below(), Direction.UP)) continue;
+                    double distance = mob.distanceToSqr(approach.getX() + 0.5, approach.getY(), approach.getZ() + 0.5);
+                    if (distance < nearestDistance) {
+                        nearest = approach;
+                        nearestDistance = distance;
+                        foodBlock = plant;
+                    }
+                }
+            }
+        }
+        return nearest;
+    }
+
+    private BlockPos animaniax$findTroughFood() {
+            BlockPos origin = mob.blockPosition();
+            int range = 16;
+            BlockPos bestSource = null;
+            BlockPos bestApproach = null;
+            double bestDist = Double.MAX_VALUE;
+            for (int dy = -2; dy <= 2; dy++) {
+                for (int dx = -range; dx <= range; dx++) {
+                    for (int dz = -range; dz <= range; dz++) {
+                        if (dx * dx + dz * dz > range * range) continue;
+                        BlockPos candidatePos = origin.offset(dx, dy, dz);
+                        if (!mob.level().hasChunkAt(candidatePos)) continue;
+                        if (!mob.level().getBlockState(candidatePos).is(TroughContent.TROUGH)
+                                || !(mob.level().getBlockEntity(candidatePos) instanceof net.syrupstudios.animaniax.block.TroughBlockEntity entity)
+                                || !entity.canFeed(mob.getType())) continue;
+                        for (Direction direction : Direction.Plane.HORIZONTAL) {
+                            BlockPos approach = candidatePos.relative(direction);
+                            if (!mob.level().hasChunkAt(approach) || !mob.level().getBlockState(approach).isAir()
+                                    || !mob.level().getBlockState(approach.below()).isFaceSturdy(mob.level(), approach.below(), Direction.UP)) continue;
+                            if (mob.distanceToSqr(approach.getX() + 0.5, approach.getY(), approach.getZ() + 0.5) > 2.25) {
+                                var path = mob.getNavigation().createPath(approach, 0);
+                                if (path == null || !path.canReach()) continue;
+                            }
+                            double distance = mob.distanceToSqr(approach.getX() + 0.5, approach.getY(), approach.getZ() + 0.5);
+                            if (distance < bestDist) { bestDist = distance; bestApproach = approach; bestSource = candidatePos; }
+                        }
+                    }
+                }
+            }
+        foodBlock = bestSource;
+        return bestApproach;
+    }
+
+    private BlockPos animaniax$findSeeds() {
+        BlockPos trough = animaniax$findTroughFood();
+        if (trough != null) return trough;
+        if (mob.level().isClientSide) return null;
+        seedItem = mob.level().getEntitiesOfClass(ItemEntity.class, mob.getBoundingBox().inflate(8), item ->
+                item.isAlive() && mob.level().hasChunkAt(item.blockPosition()) && animaniax$isSeed(item.getItem()))
+                .stream().min(Comparator.comparingDouble(mob::distanceToSqr)).orElse(null);
+        return seedItem == null ? null : seedItem.blockPosition();
+    }
+
+    private boolean animaniax$eatSeed() {
+        if (foodBlock != null && mob.level().getBlockState(foodBlock).is(TroughContent.TROUGH))
+            return TroughBlock.consumeFeed(mob.level(), foodBlock, mob.getType());
+        if (seedItem == null || !seedItem.isAlive() || mob.distanceToSqr(seedItem) > 2.25
+                || !mob.level().hasChunkAt(seedItem.blockPosition()) || !animaniax$isSeed(seedItem.getItem())) return false;
+        ItemStack remainder = seedItem.getItem().copy();
+        remainder.shrink(1);
+        if (remainder.isEmpty()) seedItem.discard();
+        else seedItem.setItem(remainder);
+        return true;
+    }
+
+    private boolean animaniax$isSeed(ItemStack stack) {
+        return stack.is(AnimalProfile.POULTRY_FOODS);
+    }
+
+    private boolean animaniax$eatGrass() {
+        BlockPos plant = foodBlock;
+        if (mob.level().getBlockState(plant).is(TroughContent.TROUGH)) {
+            return TroughBlock.consumeFeed(mob.level(), plant, mob.getType());
+        }
+        if (!animaniax$isGrazeableGrass(plant)) return false;
+        if (AnimalCareConfig.plantsRemovedAfterEating) {
+            if (mob.level().getBlockState(plant).is(Blocks.GRASS_BLOCK)) {
+                mob.level().setBlockAndUpdate(plant, Blocks.DIRT.defaultBlockState());
+            } else if (mob.level().getBlockState(plant).is(Blocks.TALL_GRASS)
+                    && mob.level().getBlockState(plant).getValue(net.minecraft.world.level.block.DoublePlantBlock.HALF) == DoubleBlockHalf.LOWER) {
+                mob.level().destroyBlock(plant.above(), false);
+                mob.level().destroyBlock(plant, false);
+            } else {
+                mob.level().destroyBlock(plant, false);
+            }
+        }
+        return true;
+    }
+
+    private boolean animaniax$isGrass(BlockPos pos) {
+        return mob.level().getBlockState(pos).is(Blocks.GRASS_BLOCK)
+                || mob.level().getBlockState(pos).is(Blocks.SHORT_GRASS)
+                || mob.level().getBlockState(pos).is(Blocks.TALL_GRASS)
+                || mob.level().getBlockState(pos).is(Blocks.FERN)
+                || mob.level().getBlockState(pos).is(Blocks.LARGE_FERN);
+    }
+
+    private boolean animaniax$isGrazeableGrass(BlockPos pos) {
+        if (mob.getType() == EntityType.PIG) {
+            return mob.level().getBlockState(pos).is(Blocks.SHORT_GRASS)
+                    || mob.level().getBlockState(pos).is(Blocks.TALL_GRASS);
+        }
+        return animaniax$isGrass(pos);
+    }
+}
