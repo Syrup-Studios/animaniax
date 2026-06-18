@@ -11,6 +11,12 @@ public final class AnimalCareHelper {
         return !mob.isVehicle() && !mob.isPassenger() && !mob.isSleeping();
     }
 
+    public static boolean isSleepBlocked(Mob mob) {
+        if (mob == null || !AnimalCareConfig.animalsSleep) return true;
+        return mob.isOnFire() || mob.isLeashed() || mob.isVehicle()
+                || mob.isPassenger() || mob.isInWater() || mob.getTarget() != null;
+    }
+
     public static int nextScanTick(Mob mob, int baseDelay) {
         int interval = Math.max(10, Math.min(baseDelay, Math.max(20, AnimalCareConfig.ticksBetweenAIFirings)));
         return mob.tickCount + interval;

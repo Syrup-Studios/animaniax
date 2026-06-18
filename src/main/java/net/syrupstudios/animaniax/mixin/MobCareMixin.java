@@ -23,6 +23,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.syrupstudios.animaniax.entity.ai.AnimalCareGoal;
 import net.syrupstudios.animaniax.block.MudBlock;
+import net.syrupstudios.animaniax.entity.ai.AnimalSleepGoal;
 import net.syrupstudios.animaniax.entity.AnimalCareState;
 import net.syrupstudios.animaniax.entity.AnimalSleepState;
 import net.syrupstudios.animaniax.config.AnimalCareConfig;
@@ -139,6 +140,7 @@ abstract class MobCareMixin implements AnimalCareState, AnimalSleepState, PigBre
     @Inject(method = "<init>", at = @At("TAIL"))
     private void animaniax$addCareGoals(EntityType<? extends Mob> type, Level level, CallbackInfo ci) {
         Mob mob = (Mob) (Object) this;
+        if (animaniax$isSleepingAnimal(mob)) goalSelector.addGoal(0, new AnimalSleepGoal(mob));
         if (!animaniax$isFarmAnimal(mob)) return;
         animaniax$hungerLimit = AnimalCareConfig.feedTimer + mob.getRandom().nextInt(100);
         animaniax$thirstLimit = AnimalCareConfig.waterTimer + mob.getRandom().nextInt(100);

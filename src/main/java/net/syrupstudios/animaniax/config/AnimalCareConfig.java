@@ -18,6 +18,7 @@ public final class AnimalCareConfig {
     public static int aiBlockSearchRange = 16;
     public static boolean animalsStarve = false;
     public static boolean showUnhappyParticles = true;
+    public static boolean animalsSleep = true;
     public static int starvationTimer = 400;
     public static boolean requireAnimalInteractionForAI = true;
     public static boolean ambianceMode = false;
@@ -41,6 +42,8 @@ public final class AnimalCareConfig {
                         + "animalsStarve=false\n"
                         + "# Show smoke when an animal is hungry and thirsty.\n"
                         + "showUnhappyParticles=true\n"
+                        + "# Animals sleep at night when they can reach straw or grass.\n"
+                        + "animalsSleep=true\n"
                         + "# Ticks between starvation damage.\n"
                         + "starvationTimer=400\n"
                         + "requireAnimalInteractionForAI=true\n"
@@ -60,6 +63,7 @@ public final class AnimalCareConfig {
             aiBlockSearchRange = readClampedInt(properties, "aiBlockSearchRange", 16, 1, 64);
             animalsStarve = readBoolean(properties, "animalsStarve", false);
             showUnhappyParticles = readBoolean(properties, "showUnhappyParticles", true);
+            animalsSleep = readBoolean(properties, "animalsSleep", true);
             starvationTimer = readTicks(properties, "starvationTimer", 400);
             requireAnimalInteractionForAI = readBoolean(properties, "requireAnimalInteractionForAI", true);
             ambianceMode = readBoolean(properties, "ambianceMode", false);
@@ -73,6 +77,7 @@ public final class AnimalCareConfig {
             aiBlockSearchRange = 16;
             animalsStarve = false;
             showUnhappyParticles = true;
+            animalsSleep = true;
             starvationTimer = 400;
             requireAnimalInteractionForAI = true;
             ambianceMode = false;
