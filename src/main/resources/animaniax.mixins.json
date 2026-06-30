@@ -7,7 +7,8 @@
     "MobCareMixin",
     "AnimalBreedingMixin",
     "AnimalGrowthMixin",
-    "AnimalReproductionMixin"
+    "AnimalReproductionMixin",
+    "SeedPilePlacementMixin"
   ],
   "client": [],
   "injectors": {

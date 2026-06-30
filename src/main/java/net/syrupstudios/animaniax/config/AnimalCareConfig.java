@@ -31,6 +31,9 @@ public final class AnimalCareConfig {
     public static boolean malesMateMultipleFemales = false;
     public static int entityBreedingLimit = 15;
     public static int animalCapSearchRange = 80;
+    public static boolean allowSeedDispenserPlacement = true;
+    public static boolean shiftSeedPlacement = false;
+    public static int saltLickMaxUses = 200;
     public static boolean cowsMilkableAtSpawn = false;
     public static boolean plantsRemovedAfterEating = true;
     public static boolean waterRemovedAfterDrinking = true;
@@ -71,6 +74,12 @@ public final class AnimalCareConfig {
                         + "malesMateMultipleFemales=false\n"
                         + "entityBreedingLimit=15\n"
                         + "animalCapSearchRange=80\n"
+                        + "# Allow dispensers to place seed piles.\n"
+                        + "allowSeedDispenserPlacement=true\n"
+                        + "# Require sneaking to place seed piles with seeds.\n"
+                        + "shiftSeedPlacement=false\n"
+                        + "# Maximum uses for a new salt lick. Clamped to 1..1000000.\n"
+                        + "saltLickMaxUses=200\n"
                         + "cowsMilkableAtSpawn=false\n"
                         + "plantsRemovedAfterEating=true\n"
                         + "waterRemovedAfterDrinking=true\n",
@@ -99,6 +108,9 @@ public final class AnimalCareConfig {
             malesMateMultipleFemales = readBoolean(properties, "malesMateMultipleFemales", false);
             entityBreedingLimit = readTicks(properties, "entityBreedingLimit", 15);
             animalCapSearchRange = readTicks(properties, "animalCapSearchRange", 80);
+            allowSeedDispenserPlacement = readBoolean(properties, "allowSeedDispenserPlacement", true);
+            shiftSeedPlacement = readBoolean(properties, "shiftSeedPlacement", false);
+            saltLickMaxUses = readClampedInt(properties, "saltLickMaxUses", 200, 1, 1_000_000);
             cowsMilkableAtSpawn = readBoolean(properties, "cowsMilkableAtSpawn", false);
             plantsRemovedAfterEating = readBoolean(properties, "plantsRemovedAfterEating", true);
             waterRemovedAfterDrinking = readBoolean(properties, "waterRemovedAfterDrinking", true);
@@ -123,6 +135,9 @@ public final class AnimalCareConfig {
             malesMateMultipleFemales = false;
             entityBreedingLimit = 15;
             animalCapSearchRange = 80;
+            allowSeedDispenserPlacement = true;
+            shiftSeedPlacement = false;
+            saltLickMaxUses = 200;
             cowsMilkableAtSpawn = false;
             plantsRemovedAfterEating = true;
             waterRemovedAfterDrinking = true;

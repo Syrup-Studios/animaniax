@@ -2,5 +2,10 @@
   "block.animaniax.trough": "Animal Trough",
   "block.animaniax.straw": "Straw",
   "block.animaniax.mud": "Mud",
+  "block.animaniax.wheat_seed_pile": "Wheat Seed Pile",
+  "block.animaniax.pumpkin_seed_pile": "Pumpkin Seed Pile",
+  "block.animaniax.melon_seed_pile": "Melon Seed Pile",
+  "block.animaniax.beetroot_seed_pile": "Beetroot Seed Pile",
+  "block.animaniax.salt_lick": "Salt lick",
   "container.animaniax.wagon": "Wagon"
 }

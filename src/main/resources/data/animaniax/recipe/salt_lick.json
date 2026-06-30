@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {"tag": "c:dusts/salt"}, {"tag": "c:dusts/salt"},
+    {"tag": "c:dusts/salt"}, {"tag": "c:dusts/salt"},
+    {"tag": "c:dusts/salt"}, {"tag": "c:dusts/salt"},
+    {"tag": "c:dusts/salt"}, {"tag": "c:dusts/salt"},
+    {"item": "minecraft:water_bucket"}
+  ],
+  "result": {"id": "animaniax:salt_lick", "count": 1}
+}

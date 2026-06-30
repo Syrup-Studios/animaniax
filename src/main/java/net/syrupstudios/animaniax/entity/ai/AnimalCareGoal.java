@@ -24,6 +24,7 @@ import net.syrupstudios.animaniax.entity.AnimalSleepState;
 import net.syrupstudios.animaniax.block.TroughBlock;
 import net.syrupstudios.animaniax.config.AnimalCareConfig;
 import net.syrupstudios.animaniax.block.TroughContent;
+import net.syrupstudios.animaniax.block.SeedPileContent;
 
 public final class AnimalCareGoal extends Goal {
     public enum Need { WATER, GRASS, SEEDS, MUD }
@@ -164,7 +165,7 @@ public final class AnimalCareGoal extends Goal {
 
     private BlockPos animaniax$findWaterApproach() {
             BlockPos origin = mob.blockPosition();
-            int range = 16;
+            int range = AnimalCareHelper.clampRange(16);
             BlockPos bestSource = null;
             BlockPos bestApproach = null;
             double bestDist = Double.MAX_VALUE;
@@ -228,7 +229,7 @@ public final class AnimalCareGoal extends Goal {
 
     private BlockPos animaniax$findTroughFood() {
             BlockPos origin = mob.blockPosition();
-            int range = 16;
+            int range = AnimalCareHelper.clampRange(16);
             BlockPos bestSource = null;
             BlockPos bestApproach = null;
             double bestDist = Double.MAX_VALUE;
@@ -263,6 +264,16 @@ public final class AnimalCareGoal extends Goal {
         BlockPos trough = animaniax$findTroughFood();
         if (trough != null) return trough;
         if (mob.level().isClientSide) return null;
+        BlockPos origin = mob.blockPosition();
+        BlockPos nearestPile = null;
+        double nearestPileDistance = Double.MAX_VALUE;
+        for (int dy = -2; dy <= 2; dy++) for (int dx = -6; dx <= 6; dx++) for (int dz = -6; dz <= 6; dz++) {
+            BlockPos pile = origin.offset(dx, dy, dz);
+            if (!mob.level().hasChunkAt(pile) || !animaniax$isSeedPile(mob.level().getBlockState(pile))) continue;
+            double distance = mob.distanceToSqr(pile.getX() + 0.5, pile.getY(), pile.getZ() + 0.5);
+            if (distance < nearestPileDistance) { nearestPile = pile; nearestPileDistance = distance; }
+        }
+        if (nearestPile != null) { foodBlock = nearestPile; return nearestPile; }
         seedItem = mob.level().getEntitiesOfClass(ItemEntity.class, mob.getBoundingBox().inflate(8), item ->
                 item.isAlive() && mob.level().hasChunkAt(item.blockPosition()) && animaniax$isSeed(item.getItem()))
                 .stream().min(Comparator.comparingDouble(mob::distanceToSqr)).orElse(null);
@@ -270,6 +281,10 @@ public final class AnimalCareGoal extends Goal {
     }
 
     private boolean animaniax$eatSeed() {
+        if (foodBlock != null && animaniax$isSeedPile(mob.level().getBlockState(foodBlock))) {
+            mob.level().setBlock(foodBlock, Blocks.AIR.defaultBlockState(), net.minecraft.world.level.block.Block.UPDATE_ALL);
+            return true;
+        }
         if (foodBlock != null && mob.level().getBlockState(foodBlock).is(TroughContent.TROUGH))
             return TroughBlock.consumeFeed(mob.level(), foodBlock, mob.getType());
         if (seedItem == null || !seedItem.isAlive() || mob.distanceToSqr(seedItem) > 2.25
@@ -279,6 +294,11 @@ public final class AnimalCareGoal extends Goal {
         if (remainder.isEmpty()) seedItem.discard();
         else seedItem.setItem(remainder);
         return true;
+    }
+
+    private boolean animaniax$isSeedPile(net.minecraft.world.level.block.state.BlockState state) {
+        return state.is(SeedPileContent.WHEAT) || state.is(SeedPileContent.PUMPKIN)
+                || state.is(SeedPileContent.MELON) || state.is(SeedPileContent.BEETROOT);
     }
 
     private boolean animaniax$isSeed(ItemStack stack) {

@@ -19,8 +19,10 @@ import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.syrupstudios.animaniax.block.TroughContent;
+import net.syrupstudios.animaniax.block.SeedPileContent;
 import net.syrupstudios.animaniax.block.StrawContent;
 import net.syrupstudios.animaniax.block.MudContent;
+import net.syrupstudios.animaniax.block.SaltLickContent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,10 +35,21 @@ public final class NeoForgeEntrypoint {
 
     public NeoForgeEntrypoint(IEventBus modBus) {
         modBus.addListener(this::addCreativeItems);
+        BLOCKS.register("salt_lick", () -> SaltLickContent.BLOCK);
+        ITEMS.register("salt_lick", () -> SaltLickContent.ITEM);
+        BLOCK_ENTITIES.register("salt_lick", () -> SaltLickContent.ENTITY);
         BLOCKS.register("trough", () -> TroughContent.TROUGH);
+        BLOCKS.register("wheat_seed_pile", () -> SeedPileContent.WHEAT);
+        BLOCKS.register("pumpkin_seed_pile", () -> SeedPileContent.PUMPKIN);
+        BLOCKS.register("melon_seed_pile", () -> SeedPileContent.MELON);
+        BLOCKS.register("beetroot_seed_pile", () -> SeedPileContent.BEETROOT);
         BLOCKS.register("straw", () -> StrawContent.BLOCK);
         BLOCKS.register("mud", () -> MudContent.BLOCK);
         ITEMS.register("trough", () -> TroughContent.TROUGH_ITEM);
+        ITEMS.register("wheat_seed_pile", () -> SeedPileContent.WHEAT_ITEM);
+        ITEMS.register("pumpkin_seed_pile", () -> SeedPileContent.PUMPKIN_ITEM);
+        ITEMS.register("melon_seed_pile", () -> SeedPileContent.MELON_ITEM);
+        ITEMS.register("beetroot_seed_pile", () -> SeedPileContent.BEETROOT_ITEM);
         ITEMS.register("straw", () -> StrawContent.ITEM);
         ITEMS.register("mud", () -> MudContent.ITEM);
         BLOCK_ENTITIES.register("trough", () -> TroughContent.TROUGH_ENTITY);
@@ -48,6 +61,7 @@ public final class NeoForgeEntrypoint {
         });
         NeoForge.EVENT_BUS.addListener((ServerStartingEvent event) -> {
             TroughContent.registerWaterBucketBehavior();
+            SeedPileContent.registerDispenserBehaviors();
         });
         LOGGER.info("Animaniax initialized on NeoForge");
     }

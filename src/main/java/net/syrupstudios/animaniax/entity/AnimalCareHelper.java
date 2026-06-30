@@ -22,7 +22,11 @@ public final class AnimalCareHelper {
         return mob.tickCount + interval;
     }
 
+    public static int clampRange(int range) {
+        return Math.max(1, Math.min(64, range));
+    }
+
     public static int searchRange() {
-        return Math.max(1, Math.min(64, AnimalCareConfig.aiBlockSearchRange));
+        return clampRange(AnimalCareConfig.aiBlockSearchRange);
     }
 }

@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "minecraft:item/pumpkin_seeds"
+  }
+}
