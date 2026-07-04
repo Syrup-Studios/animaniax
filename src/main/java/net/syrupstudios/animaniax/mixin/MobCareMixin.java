@@ -25,6 +25,7 @@ import net.syrupstudios.animaniax.entity.ai.AnimalCareGoal;
 import net.syrupstudios.animaniax.block.MudBlock;
 import net.syrupstudios.animaniax.entity.ai.AnimalCourtshipGoal;
 import net.syrupstudios.animaniax.entity.ai.AnimalSleepGoal;
+import net.syrupstudios.animaniax.entity.ai.NestingGoal;
 import net.syrupstudios.animaniax.entity.AnimalCareState;
 import net.syrupstudios.animaniax.entity.AnimalSleepState;
 import net.syrupstudios.animaniax.config.AnimalCareConfig;
@@ -148,6 +149,9 @@ abstract class MobCareMixin implements AnimalCareState, AnimalSleepState, PigBre
             goalSelector.addGoal(5, new AnimalCourtshipGoal(animal));
         animaniax$hungerLimit = AnimalCareConfig.feedTimer + mob.getRandom().nextInt(100);
         animaniax$thirstLimit = AnimalCareConfig.waterTimer + mob.getRandom().nextInt(100);
+        if (AnimalProfile.has(mob.getType(), Capability.NESTING_GOAL)) {
+            goalSelector.addGoal(4, new NestingGoal((Chicken) mob));
+        }
         goalSelector.addGoal(6, new AnimalCareGoal(mob, AnimalCareGoal.Need.WATER));
         if (AnimalProfile.has(mob.getType(), Capability.SEED_GOAL)) {
             goalSelector.addGoal(7, new AnimalCareGoal(mob, AnimalCareGoal.Need.SEEDS));
