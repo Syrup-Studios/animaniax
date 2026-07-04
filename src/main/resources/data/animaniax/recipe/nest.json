@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "tag": "minecraft:leaves" },
+    { "tag": "c:wools" },
+    { "tag": "animaniax:wooden_sticks" }
+  ],
+  "result": { "id": "animaniax:nest", "count": 1 }
+}

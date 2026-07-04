@@ -34,6 +34,11 @@ public final class AnimalCareConfig {
     public static boolean allowSeedDispenserPlacement = true;
     public static boolean shiftSeedPlacement = false;
     public static int saltLickMaxUses = 200;
+    public static int laidTimer = 2000;
+    public static int eggHatchChance = 2;
+    public static boolean chickensDropEggs = false;
+    public static boolean birdsDropFeathers = true;
+    public static int featherTimer = 12_000;
     public static boolean cowsMilkableAtSpawn = false;
     public static boolean plantsRemovedAfterEating = true;
     public static boolean waterRemovedAfterDrinking = true;
@@ -80,6 +85,15 @@ public final class AnimalCareConfig {
                         + "shiftSeedPlacement=false\n"
                         + "# Maximum uses for a new salt lick. Clamped to 1..1000000.\n"
                         + "saltLickMaxUses=200\n"
+                        + "# Ticks between eggs laid in nests.\n"
+                        + "laidTimer=2000\n"
+                        + "# Chance of hatching an egg, as 1 in N.\n"
+                        + "eggHatchChance=2\n"
+                        + "# Chickens can drop eggs without using a nest.\n"
+                        + "chickensDropEggs=false\n"
+                        + "# Birds shed feathers over time.\n"
+                        + "birdsDropFeathers=true\n"
+                        + "featherTimer=12000\n"
                         + "cowsMilkableAtSpawn=false\n"
                         + "plantsRemovedAfterEating=true\n"
                         + "waterRemovedAfterDrinking=true\n",
@@ -111,6 +125,11 @@ public final class AnimalCareConfig {
             allowSeedDispenserPlacement = readBoolean(properties, "allowSeedDispenserPlacement", true);
             shiftSeedPlacement = readBoolean(properties, "shiftSeedPlacement", false);
             saltLickMaxUses = readClampedInt(properties, "saltLickMaxUses", 200, 1, 1_000_000);
+            laidTimer = readTicks(properties, "laidTimer", 2000);
+            eggHatchChance = readTicks(properties, "eggHatchChance", 2);
+            chickensDropEggs = readBoolean(properties, "chickensDropEggs", false);
+            birdsDropFeathers = readBoolean(properties, "birdsDropFeathers", true);
+            featherTimer = readFeatherTimer(properties, "featherTimer", 12_000);
             cowsMilkableAtSpawn = readBoolean(properties, "cowsMilkableAtSpawn", false);
             plantsRemovedAfterEating = readBoolean(properties, "plantsRemovedAfterEating", true);
             waterRemovedAfterDrinking = readBoolean(properties, "waterRemovedAfterDrinking", true);
@@ -138,6 +157,11 @@ public final class AnimalCareConfig {
             allowSeedDispenserPlacement = true;
             shiftSeedPlacement = false;
             saltLickMaxUses = 200;
+            laidTimer = 2000;
+            eggHatchChance = 2;
+            chickensDropEggs = false;
+            birdsDropFeathers = true;
+            featherTimer = 12_000;
             cowsMilkableAtSpawn = false;
             plantsRemovedAfterEating = true;
             waterRemovedAfterDrinking = true;

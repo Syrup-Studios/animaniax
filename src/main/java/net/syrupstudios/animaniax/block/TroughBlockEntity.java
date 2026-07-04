@@ -88,7 +88,7 @@ public final class TroughBlockEntity extends BlockEntity {
                 || stack.is(Items.POTATO) || stack.is(Items.POISONOUS_POTATO) || stack.is(AnimalProfile.POULTRY_FOODS)
                 || stack.is(AnimalProfile.PIG_FOODS)
                 || stack.is(AnimalProfile.HORSE_FOODS)
-                || stack.is(Items.EGG)
+                || stack.is(Items.EGG) || stack.is(net.syrupstudios.animaniax.item.BrownEggContent.BROWN_EGG)
                 || stack.is(Items.BEEF) || stack.is(Items.COD) || stack.is(Items.SALMON)
                 || stack.is(Items.TROPICAL_FISH) || stack.is(Items.PUFFERFISH)
                 || stack.is(AnimalProfile.COW_FOODS) || stack.is(AnimalProfile.GOAT_FOODS)

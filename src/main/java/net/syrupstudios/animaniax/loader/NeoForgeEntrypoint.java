@@ -18,11 +18,13 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.syrupstudios.animaniax.block.NestContent;
 import net.syrupstudios.animaniax.block.TroughContent;
 import net.syrupstudios.animaniax.block.SeedPileContent;
 import net.syrupstudios.animaniax.block.StrawContent;
 import net.syrupstudios.animaniax.block.MudContent;
 import net.syrupstudios.animaniax.block.SaltLickContent;
+import net.syrupstudios.animaniax.item.BrownEggContent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,6 +55,10 @@ public final class NeoForgeEntrypoint {
         ITEMS.register("straw", () -> StrawContent.ITEM);
         ITEMS.register("mud", () -> MudContent.ITEM);
         BLOCK_ENTITIES.register("trough", () -> TroughContent.TROUGH_ENTITY);
+        BLOCK_ENTITIES.register("nest", () -> NestContent.NEST_ENTITY);
+        BLOCKS.register("nest", () -> NestContent.NEST);
+        ITEMS.register("nest", () -> NestContent.NEST_ITEM);
+        ITEMS.register("brown_egg", () -> BrownEggContent.BROWN_EGG);
         BLOCKS.register(modBus);
         ITEMS.register(modBus);
         BLOCK_ENTITIES.register(modBus);
