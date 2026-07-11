@@ -4,9 +4,7 @@
   "version": "${version}",
   "name": "${modName}",
   "description": "${description}",
-  "authors": [
-    "${authors}"
-  ],
+  "authors": ["${authors}"],
   "contact": {
     "homepage": "${homepage}",
     "issues": "${issues}",
@@ -14,18 +12,15 @@
   },
   "license": "${license}",
   "environment": "*",
+  "mixins": ["animaniax.mixins.json"],
   "entrypoints": {
-    "main": [
-      "net.syrupstudios.animaniax.loader.FabricEntrypoint"
-    ]
+    "main": ["net.syrupstudios.animaniax.loader.FabricEntrypoint"],
+    "client": ["net.syrupstudios.animaniax.loader.FabricClientEntrypoint"]
   },
   "depends": {
     "fabricloader": ">=${loader}",
     "fabric-api": ">=${fabricApi}",
     "minecraft": "${minecraft}",
     "java": ">=21"
-  },
-  "mixins": [
-    "animaniax.mixins.json"
-  ]
+  }
 }

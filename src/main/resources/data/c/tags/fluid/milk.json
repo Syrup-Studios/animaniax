@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    { "id": "animaniax:milk_generic", "required": false },
+    { "id": "porting_lib:milk", "required": false },
+    { "id": "milk:still_milk", "required": false },
+    { "id": "minecraft:milk", "required": false }
+  ]
+}

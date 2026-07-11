@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "tag": "animaniax:milk_buckets" },
+    { "item": "minecraft:glass_bottle" },
+    { "item": "minecraft:glass_bottle" },
+    { "item": "minecraft:glass_bottle" },
+    { "item": "minecraft:glass_bottle" }
+  ],
+  "result": {
+    "id": "animaniax:milk_bottle",
+    "count": 4
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:milk_bucket",
+    "animaniax:sheep_milk_bucket",
+    "animaniax:goat_milk_bucket",
+    "animaniax:friesian_milk_bucket",
+    "animaniax:holstein_milk_bucket",
+    "animaniax:jersey_milk_bucket"
+  ]
+}
