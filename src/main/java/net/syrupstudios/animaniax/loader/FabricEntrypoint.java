@@ -22,6 +22,7 @@ import net.syrupstudios.animaniax.block.MudContent;
 import net.syrupstudios.animaniax.block.SaltLickContent;
 import net.syrupstudios.animaniax.block.CheeseMoldContent;
 import net.syrupstudios.animaniax.item.AnimalMilkContent;
+import net.syrupstudios.animaniax.item.CheeseWedgeContent;
 import net.syrupstudios.animaniax.item.BrownEggContent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,7 +52,9 @@ public final class FabricEntrypoint implements ModInitializer {
                                 FluidVariant.of(net.syrupstudios.animaniax.item.MilkContainerTransfer.genericMilkFluid()),
                                 FluidConstants.BUCKET)
                         : null);
+        net.syrupstudios.animaniax.item.OmeletteContent.registerFabric();
         AnimalMilkContent.registerFabric();
+        CheeseWedgeContent.registerFabric();
         BrownEggContent.registerFabric();
         ServerLifecycleEvents.SERVER_STARTING.register(server -> {
             AnimalCareConfig.load(server.getWorldPath(LevelResource.ROOT).resolve("serverconfig/animaniax.properties"));

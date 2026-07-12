@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "animaniax:plain_omelette" },
+    { "tag": "animaniax:cooked_bacon" }
+  ],
+  "result": { "id": "animaniax:bacon_omelette" }
+}

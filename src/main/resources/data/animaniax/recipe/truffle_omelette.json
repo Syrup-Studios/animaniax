@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "animaniax:plain_omelette" },
+    { "item": "animaniax:truffle" }
+  ],
+  "result": { "id": "animaniax:truffle_omelette" }
+}
