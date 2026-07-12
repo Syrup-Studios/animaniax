@@ -1,0 +1,1 @@
+{"type":"minecraft:block","pools":[{"rolls":1,"entries":[{"type":"minecraft:item","name":"animaniax:friesian_cheese"}],"conditions":[{"condition":"minecraft:block_state_property","block":"animaniax:friesian_cheese","properties":{"bites":"0"}},{"condition":"minecraft:survives_explosion"}]}]}

@@ -20,6 +20,7 @@ import net.syrupstudios.animaniax.block.SeedPileContent;
 import net.syrupstudios.animaniax.block.StrawContent;
 import net.syrupstudios.animaniax.block.MudContent;
 import net.syrupstudios.animaniax.block.SaltLickContent;
+import net.syrupstudios.animaniax.block.CheeseMoldContent;
 import net.syrupstudios.animaniax.item.AnimalMilkContent;
 import net.syrupstudios.animaniax.item.BrownEggContent;
 import org.slf4j.Logger;
@@ -41,6 +42,7 @@ public final class FabricEntrypoint implements ModInitializer {
         StrawContent.registerFabric();
         MudContent.registerFabric();
         SaltLickContent.registerFabric();
+        CheeseMoldContent.registerFabric();
         NestContent.registerFabric();
         net.syrupstudios.animaniax.block.AnimalMilkFluids.registerFabric();
         FluidStorage.GENERAL_COMBINED_PROVIDER.register(context ->

@@ -36,10 +36,13 @@ public final class AnimalCareConfig {
     public static int saltLickMaxUses = 200;
     public static int laidTimer = 2000;
     public static int eggHatchChance = 2;
+    public static int cheeseMaturityTime = 24_000;
     public static boolean chickensDropEggs = false;
     public static boolean birdsDropFeathers = true;
     public static int featherTimer = 12_000;
+    public static boolean foodsGiveBonusEffects = true;
     public static boolean cowsMilkableAtSpawn = false;
+    public static boolean disableSaltCreation = false;
     public static boolean plantsRemovedAfterEating = true;
     public static boolean waterRemovedAfterDrinking = true;
 
@@ -89,12 +92,18 @@ public final class AnimalCareConfig {
                         + "laidTimer=2000\n"
                         + "# Chance of hatching an egg, as 1 in N.\n"
                         + "eggHatchChance=2\n"
+                        + "# Ticks that cheese takes to mature.\n"
+                        + "cheeseMaturityTime=24000\n"
                         + "# Chickens can drop eggs without using a nest.\n"
                         + "chickensDropEggs=false\n"
                         + "# Birds shed feathers over time.\n"
                         + "birdsDropFeathers=true\n"
                         + "featherTimer=12000\n"
+                        + "# Apply Animania bonus effects when food is consumed.\n"
+                        + "foodsGiveBonusEffects=true\n"
                         + "cowsMilkableAtSpawn=false\n"
+                        + "# Prevent players from making salt in cheese molds with water.\n"
+                        + "disableSaltCreation=false\n"
                         + "plantsRemovedAfterEating=true\n"
                         + "waterRemovedAfterDrinking=true\n",
                         StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE);
@@ -127,10 +136,13 @@ public final class AnimalCareConfig {
             saltLickMaxUses = readClampedInt(properties, "saltLickMaxUses", 200, 1, 1_000_000);
             laidTimer = readTicks(properties, "laidTimer", 2000);
             eggHatchChance = readTicks(properties, "eggHatchChance", 2);
+            cheeseMaturityTime = readTicks(properties, "cheeseMaturityTime", 24_000);
             chickensDropEggs = readBoolean(properties, "chickensDropEggs", false);
             birdsDropFeathers = readBoolean(properties, "birdsDropFeathers", true);
             featherTimer = readFeatherTimer(properties, "featherTimer", 12_000);
+            foodsGiveBonusEffects = readBoolean(properties, "foodsGiveBonusEffects", true);
             cowsMilkableAtSpawn = readBoolean(properties, "cowsMilkableAtSpawn", false);
+            disableSaltCreation = readBoolean(properties, "disableSaltCreation", false);
             plantsRemovedAfterEating = readBoolean(properties, "plantsRemovedAfterEating", true);
             waterRemovedAfterDrinking = readBoolean(properties, "waterRemovedAfterDrinking", true);
         } catch (IOException | IllegalArgumentException e) {
@@ -159,10 +171,13 @@ public final class AnimalCareConfig {
             saltLickMaxUses = 200;
             laidTimer = 2000;
             eggHatchChance = 2;
+            cheeseMaturityTime = 24_000;
             chickensDropEggs = false;
             birdsDropFeathers = true;
             featherTimer = 12_000;
+            foodsGiveBonusEffects = true;
             cowsMilkableAtSpawn = false;
+            disableSaltCreation = false;
             plantsRemovedAfterEating = true;
             waterRemovedAfterDrinking = true;
         }
