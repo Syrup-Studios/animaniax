@@ -25,9 +25,10 @@ import net.syrupstudios.animaniax.block.TroughBlock;
 import net.syrupstudios.animaniax.config.AnimalCareConfig;
 import net.syrupstudios.animaniax.block.TroughContent;
 import net.syrupstudios.animaniax.block.SeedPileContent;
+import net.syrupstudios.animaniax.item.TruffleContent;
 
 public final class AnimalCareGoal extends Goal {
-    public enum Need { WATER, GRASS, SEEDS, MUD }
+    public enum Need { WATER, GRASS, SEEDS, MUD, TRUFFLE }
 
     private final Mob mob;
     private final AnimalCareState care;
@@ -36,6 +37,7 @@ public final class AnimalCareGoal extends Goal {
     private BlockPos waterSource;
     private BlockPos foodBlock;
     private ItemEntity seedItem;
+    private ItemEntity truffleItem;
     private boolean finished;
     private int scanAtTick;
 
@@ -55,6 +57,7 @@ public final class AnimalCareGoal extends Goal {
             case GRASS -> animaniax$findGrass();
             case SEEDS -> animaniax$findSeeds();
             case MUD -> animaniax$findMud();
+            case TRUFFLE -> animaniax$findTruffle();
         };
         scanAtTick = AnimalCareHelper.nextScanTick(mob, 40);
         return target != null;
@@ -94,6 +97,8 @@ public final class AnimalCareGoal extends Goal {
                 else care.animaniax$graze();
             } else if (need == Need.SEEDS && animaniax$eatSeed()) {
                 care.animaniax$graze();
+            } else if (need == Need.TRUFFLE && animaniax$eatTruffle()) {
+                care.animaniax$graze();
             } else if (need == Need.MUD) {
                 care.animaniax$useMud();
             }
@@ -111,6 +116,7 @@ public final class AnimalCareGoal extends Goal {
         waterSource = null;
         foodBlock = null;
         seedItem = null;
+        truffleItem = null;
         finished = false;
     }
 
@@ -120,6 +126,7 @@ public final class AnimalCareGoal extends Goal {
             case GRASS -> care.animaniax$needsGraze();
             case SEEDS -> care.animaniax$needsSeeds();
             case MUD -> mob.level().isDay() && care.animaniax$needsMud();
+            case TRUFFLE -> care.animaniax$needsGraze() && AnimalProfile.has(mob.getType(), Capability.PIG_ENRICHMENT_GOALS);
         };
     }
 
@@ -278,6 +285,25 @@ public final class AnimalCareGoal extends Goal {
                 item.isAlive() && mob.level().hasChunkAt(item.blockPosition()) && animaniax$isSeed(item.getItem()))
                 .stream().min(Comparator.comparingDouble(mob::distanceToSqr)).orElse(null);
         return seedItem == null ? null : seedItem.blockPosition();
+    }
+
+    private BlockPos animaniax$findTruffle() {
+        if (mob.level().isClientSide) return null;
+        truffleItem = mob.level().getEntitiesOfClass(ItemEntity.class, mob.getBoundingBox().inflate(6), item ->
+                item.isAlive() && !item.hasPickUpDelay() && item.getItem().is(TruffleContent.TRUFFLE))
+                .stream().min(Comparator.comparingDouble(mob::distanceToSqr)).orElse(null);
+        return truffleItem == null ? null : truffleItem.blockPosition();
+    }
+
+    private boolean animaniax$eatTruffle() {
+        if (truffleItem == null || !truffleItem.isAlive() || truffleItem.hasPickUpDelay()
+                || mob.distanceToSqr(truffleItem) > 2.25 || !mob.level().hasChunkAt(truffleItem.blockPosition())
+                || !truffleItem.getItem().is(TruffleContent.TRUFFLE)) return false;
+        ItemStack remainder = truffleItem.getItem().copy();
+        remainder.shrink(1);
+        if (remainder.isEmpty()) truffleItem.discard();
+        else truffleItem.setItem(remainder);
+        return true;
     }
 
     private boolean animaniax$eatSeed() {

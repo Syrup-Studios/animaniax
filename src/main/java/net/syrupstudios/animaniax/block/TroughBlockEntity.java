@@ -15,6 +15,7 @@ public final class TroughBlockEntity extends BlockEntity {
     private ItemStack feed = ItemStack.EMPTY;
     private boolean creativeDestruction;
     private int waterAmount = -1;
+    private int slopAmount;
 
     public TroughBlockEntity(BlockPos pos, BlockState state) { super(TroughContent.TROUGH_ENTITY, pos, state); }
 
@@ -26,11 +27,26 @@ public final class TroughBlockEntity extends BlockEntity {
     }
 
     public int getWaterAmount() { TroughBlockEntity main = controller(); if (main != this) return main.getWaterAmount(); syncWaterFromState(); return Math.max(0, waterAmount); }
+    public int getSlopAmount() { return controller() == this ? slopAmount : controller().getSlopAmount(); }
+    public boolean addSlop() {
+        if (controller() != this) return controller().addSlop();
+        if (getBlockState().getValue(TroughBlock.CONTENT) != 0 || getBlockState().getValue(TroughBlock.LEVEL) != 0) return false;
+        slopAmount = WATER_CAPACITY;
+        syncSlopToState();
+        return true;
+    }
+    public boolean consumeSlop() {
+        if (controller() != this) return controller().consumeSlop();
+        if (getBlockState().getValue(TroughBlock.CONTENT) != 3 || slopAmount < 100) return false;
+        slopAmount -= 100;
+        syncSlopToState();
+        return true;
+    }
 
     public boolean addWater(int amount) {
         if (controller() != this) return controller().addWater(amount);
         int oldAmount = getWaterAmount();
-        if (getBlockState().getValue(TroughBlock.CONTENT) == 2) return false;
+        if (getBlockState().getValue(TroughBlock.CONTENT) == 2 || getBlockState().getValue(TroughBlock.CONTENT) == 3) return false;
         int added = Math.min(amount, WATER_CAPACITY - oldAmount);
         if (added <= 0) return false;
         waterAmount = oldAmount + added;
@@ -98,11 +114,15 @@ public final class TroughBlockEntity extends BlockEntity {
     public boolean canFeed(EntityType<?> animal) {
         if (controller() != this) return controller().canFeed(animal);
         syncStackFromState();
+        if (AnimalProfile.has(animal, AnimalProfile.Capability.TROUGH_SLOP)
+                && getBlockState().getValue(TroughBlock.CONTENT) == 3) return slopAmount >= 100;
         return !feed.isEmpty() && AnimalProfile.acceptsTroughFeed(animal, feed);
     }
 
     public boolean consumeFeed(EntityType<?> animal) {
         if (controller() != this) return controller().consumeFeed(animal);
+        if (AnimalProfile.has(animal, AnimalProfile.Capability.TROUGH_SLOP)
+                && getBlockState().getValue(TroughBlock.CONTENT) == 3) return consumeSlop();
         syncStackFromState();
         if (feed.isEmpty()) return false;
         if (animal != null && !canFeed(animal)) return false;
@@ -116,6 +136,7 @@ public final class TroughBlockEntity extends BlockEntity {
         super.loadAdditional(tag, registries);
         feed = tag.contains("Feed", 10) ? ItemStack.parse(registries, tag.getCompound("Feed")).orElse(ItemStack.EMPTY) : ItemStack.EMPTY;
         waterAmount = tag.contains("WaterAmount") ? Math.max(0, Math.min(WATER_CAPACITY, tag.getInt("WaterAmount"))) : -1;
+        slopAmount = Math.max(0, Math.min(WATER_CAPACITY, tag.getInt("SlopAmount")));
         syncWaterFromState();
     }
 
@@ -123,6 +144,7 @@ public final class TroughBlockEntity extends BlockEntity {
         super.saveAdditional(tag, registries);
         if (!feed.isEmpty()) tag.put("Feed", feed.save(registries));
         tag.putInt("WaterAmount", getWaterAmount());
+        tag.putInt("SlopAmount", slopAmount);
     }
 
     @Override public void setChanged() {
@@ -132,8 +154,9 @@ public final class TroughBlockEntity extends BlockEntity {
             BlockState state = getBlockState();
             if (state.is(TroughContent.TROUGH)) {
                 int count = feed.isEmpty() ? 0 : feed.getCount();
-                int content = count > 0 ? 2 : waterAmount > 0 ? 1 : 0;
-                int projection = count > 0 ? count : waterAmount > 0 ? (waterAmount * 3 + WATER_CAPACITY - 1) / WATER_CAPACITY : 0;
+                int content = count > 0 ? 2 : waterAmount > 0 ? 1 : slopAmount > 0 ? 3 : 0;
+                int projection = count > 0 ? count : waterAmount > 0 ? (waterAmount * 3 + WATER_CAPACITY - 1) / WATER_CAPACITY
+                        : slopAmount > 0 ? (slopAmount * 3 + WATER_CAPACITY - 1) / WATER_CAPACITY : 0;
                 BlockState projected = state.setValue(TroughBlock.CONTENT, content).setValue(TroughBlock.LEVEL, projection);
                 if (!state.equals(projected)) level.setBlock(worldPosition, projected, 3);
                 BlockPos endPos = TroughBlock.endPos(worldPosition, state.getValue(TroughBlock.FACING));
@@ -169,6 +192,13 @@ public final class TroughBlockEntity extends BlockEntity {
                 ? switch (state.getValue(TroughBlock.LEVEL)) { case 1 -> 333; case 2 -> 667; case 3 -> WATER_CAPACITY; default -> 0; } : 0;
     }
 
+    private void syncSlopToState() {
+        if (level == null || level.isClientSide || !getBlockState().is(TroughContent.TROUGH)) return;
+        BlockState state = getBlockState();
+        int projection = (slopAmount * 3 + WATER_CAPACITY - 1) / WATER_CAPACITY;
+        level.setBlock(worldPosition, state.setValue(TroughBlock.CONTENT, slopAmount > 0 ? 3 : 0).setValue(TroughBlock.LEVEL, projection), 3);
+        setChanged();
+    }
     private void syncWaterToState() {
         if (level == null || level.isClientSide || !getBlockState().is(TroughContent.TROUGH)) return;
         BlockState state = getBlockState();

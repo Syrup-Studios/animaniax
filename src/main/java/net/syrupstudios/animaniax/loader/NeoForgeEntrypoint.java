@@ -28,8 +28,11 @@ import net.syrupstudios.animaniax.block.StrawContent;
 import net.syrupstudios.animaniax.block.MudContent;
 import net.syrupstudios.animaniax.block.SaltLickContent;
 import net.syrupstudios.animaniax.block.CheeseMoldContent;
+import net.syrupstudios.animaniax.item.TruffleContent;
 import net.syrupstudios.animaniax.item.OmeletteContent;
 import net.syrupstudios.animaniax.item.AnimalMilkContent;
+import net.syrupstudios.animaniax.item.SlopContent;
+import net.syrupstudios.animaniax.item.SlopRecipe;
 import net.syrupstudios.animaniax.item.CheeseWedgeContent;
 import net.syrupstudios.animaniax.item.BrownEggContent;
 import net.syrupstudios.animaniax.item.CheeseCuttingRecipe;
@@ -98,6 +101,7 @@ public final class NeoForgeEntrypoint {
         ITEMS.register("goat_cheese", () -> CheeseMoldContent.GOAT_CHEESE);
         ITEMS.register("sheep_cheese", () -> CheeseMoldContent.SHEEP_CHEESE);
         ITEMS.register("salt", () -> CheeseMoldContent.SALT);
+        ITEMS.register("slop_bucket", () -> SlopContent.SLOP_BUCKET);
         ITEMS.register("sheep_milk_bucket", () -> AnimalMilkContent.SHEEP_MILK_BUCKET);
         ITEMS.register("goat_milk_bucket", () -> AnimalMilkContent.GOAT_MILK_BUCKET);
         ITEMS.register("friesian_milk_bucket", () -> AnimalMilkContent.FRIESIAN_MILK_BUCKET);
@@ -123,6 +127,9 @@ public final class NeoForgeEntrypoint {
         BLOCK_ENTITIES.register("nest", () -> NestContent.NEST_ENTITY);
         BLOCKS.register("nest", () -> NestContent.NEST);
         ITEMS.register("nest", () -> NestContent.NEST_ITEM);
+        ITEMS.register("truffle", () -> TruffleContent.TRUFFLE);
+        ITEMS.register("truffle_soup", () -> TruffleContent.TRUFFLE_SOUP);
+        ITEMS.register("chocolate_truffle", () -> TruffleContent.CHOCOLATE_TRUFFLE);
         ITEMS.register("plain_omelette", () -> OmeletteContent.PLAIN);
         ITEMS.register("cheese_omelette", () -> OmeletteContent.CHEESE);
         ITEMS.register("bacon_omelette", () -> OmeletteContent.BACON);
@@ -133,6 +140,7 @@ public final class NeoForgeEntrypoint {
         RECIPE_SERIALIZERS.register("jersey_cheese_cutting", () -> CheeseCuttingRecipe.JERSEY_SERIALIZER);
         RECIPE_SERIALIZERS.register("goat_cheese_cutting", () -> CheeseCuttingRecipe.GOAT_SERIALIZER);
         RECIPE_SERIALIZERS.register("sheep_cheese_cutting", () -> CheeseCuttingRecipe.SHEEP_SERIALIZER);
+        RECIPE_SERIALIZERS.register("slop", () -> SlopRecipe.SERIALIZER);
         RECIPE_SERIALIZERS.register("milk_conversion", () -> net.syrupstudios.animaniax.item.MilkConversionRecipe.SERIALIZER);
         ITEMS.register("carving_knife", () -> CheeseWedgeContent.KNIFE);
         ITEMS.register("friesian_cheese_wedge", () -> CheeseWedgeContent.FRIESIAN_WEDGE);

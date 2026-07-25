@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "animaniax:truffle" },
+    { "item": "minecraft:cocoa_beans" },
+    { "tag": "c:sugars" }
+  ],
+  "result": {
+    "id": "animaniax:chocolate_truffle",
+    "count": 1
+  }
+}

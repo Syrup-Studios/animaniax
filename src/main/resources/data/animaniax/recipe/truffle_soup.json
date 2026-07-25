@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "animaniax:truffle" },
+    { "item": "animaniax:truffle" },
+    { "item": "minecraft:bowl" }
+  ],
+  "result": {
+    "id": "animaniax:truffle_soup",
+    "count": 1
+  }
+}

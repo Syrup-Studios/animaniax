@@ -152,6 +152,7 @@ public final class TroughBlock extends Block implements EntityBlock {
         if (level.getBlockEntity(pos) instanceof TroughBlockEntity trough) {
             int fluid = switch (state.getValue(CONTENT)) {
                 case 1 -> trough.getWaterAmount();
+                case 3 -> trough.getSlopAmount();
                 default -> 0;
             };
             return fluid / 66;
@@ -218,7 +219,7 @@ public final class TroughBlock extends Block implements EntityBlock {
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         if (interact(state, level, pos, player, stack, hand)) return ItemInteractionResult.SUCCESS;
-        return stack.is(Items.WATER_BUCKET) || stack.is(Items.BUCKET) || TroughBlockEntity.isFeed(stack)
+        return stack.is(Items.WATER_BUCKET) || stack.is(Items.BUCKET) || stack.is(net.syrupstudios.animaniax.item.SlopContent.SLOP_BUCKET) || TroughBlockEntity.isFeed(stack)
                 ? ItemInteractionResult.FAIL : ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
@@ -258,6 +259,17 @@ public final class TroughBlock extends Block implements EntityBlock {
                     if (stack.isEmpty()) player.setItemInHand(hand, bucket);
                     else if (!player.getInventory().add(bucket)) player.drop(bucket, false);
                 }
+            }
+            return true;
+        }
+        if (stack.is(net.syrupstudios.animaniax.item.SlopContent.SLOP_BUCKET) && content == 0 && amount == 0) {
+            if (level.isClientSide) return true;
+            if (!(level.getBlockEntity(pos) instanceof TroughBlockEntity trough) || !trough.addSlop()) return false;
+            if (!player.getAbilities().instabuild) {
+                stack.shrink(1);
+                ItemStack bucket = new ItemStack(Items.BUCKET);
+                if (stack.isEmpty()) player.setItemInHand(hand, bucket);
+                else if (!player.getInventory().add(bucket)) player.drop(bucket, false);
             }
             return true;
         }
