@@ -37,6 +37,7 @@ public final class AnimalCareConfig {
     public static int laidTimer = 2000;
     public static int eggHatchChance = 2;
     public static int cheeseMaturityTime = 24_000;
+    public static int woolRegrowthTimer = 8_000;
     public static boolean chickensDropEggs = false;
     public static boolean birdsDropFeathers = true;
     public static int featherTimer = 12_000;
@@ -94,6 +95,8 @@ public final class AnimalCareConfig {
                         + "eggHatchChance=2\n"
                         + "# Ticks that cheese takes to mature.\n"
                         + "cheeseMaturityTime=24000\n"
+                        + "# Ticks before sheep wool regrows after shearing.\n"
+                        + "woolRegrowthTimer=8000\n"
                         + "# Chickens can drop eggs without using a nest.\n"
                         + "chickensDropEggs=false\n"
                         + "# Birds shed feathers over time.\n"
@@ -137,6 +140,7 @@ public final class AnimalCareConfig {
             laidTimer = readTicks(properties, "laidTimer", 2000);
             eggHatchChance = readTicks(properties, "eggHatchChance", 2);
             cheeseMaturityTime = readTicks(properties, "cheeseMaturityTime", 24_000);
+            woolRegrowthTimer = readTicks(properties, "woolRegrowthTimer", 8_000);
             chickensDropEggs = readBoolean(properties, "chickensDropEggs", false);
             birdsDropFeathers = readBoolean(properties, "birdsDropFeathers", true);
             featherTimer = readFeatherTimer(properties, "featherTimer", 12_000);
@@ -172,6 +176,7 @@ public final class AnimalCareConfig {
             laidTimer = 2000;
             eggHatchChance = 2;
             cheeseMaturityTime = 24_000;
+            woolRegrowthTimer = 8_000;
             chickensDropEggs = false;
             birdsDropFeathers = true;
             featherTimer = 12_000;

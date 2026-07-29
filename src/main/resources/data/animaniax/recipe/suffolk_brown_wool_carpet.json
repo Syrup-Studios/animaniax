@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "animaniax:suffolk_brown_wool"
+    },
+    {
+      "item": "animaniax:suffolk_brown_wool"
+    }
+  ],
+  "result": {
+    "id": "minecraft:brown_carpet",
+    "count": 3
+  }
+}

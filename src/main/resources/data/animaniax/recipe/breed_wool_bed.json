@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "   ",
+    "www",
+    "ppp"
+  ],
+  "key": {
+    "w": {
+      "tag": "c:wools"
+    },
+    "p": {
+      "tag": "minecraft:planks"
+    }
+  },
+  "result": {
+    "id": "minecraft:white_bed",
+    "count": 1
+  }
+}

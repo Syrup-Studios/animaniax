@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "animaniax:merino_white_wool"
+    },
+    {
+      "item": "animaniax:merino_white_wool"
+    }
+  ],
+  "result": {
+    "id": "minecraft:white_carpet",
+    "count": 3
+  }
+}

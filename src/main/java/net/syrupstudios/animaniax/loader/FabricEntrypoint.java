@@ -26,6 +26,7 @@ import net.syrupstudios.animaniax.item.AnimalMilkContent;
 import net.syrupstudios.animaniax.item.SlopContent;
 import net.syrupstudios.animaniax.item.CheeseWedgeContent;
 import net.syrupstudios.animaniax.item.BrownEggContent;
+import net.syrupstudios.animaniax.block.SheepWoolContent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,6 +58,7 @@ public final class FabricEntrypoint implements ModInitializer {
         TruffleContent.registerFabric();
         net.syrupstudios.animaniax.item.OmeletteContent.registerFabric();
         AnimalMilkContent.registerFabric();
+        SheepWoolContent.registerFabric();
         SlopContent.registerFabric();
         CheeseWedgeContent.registerFabric();
         BrownEggContent.registerFabric();

@@ -1,0 +1,16 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "#minecraft:wool",
+      "required": false
+    },
+    "animaniax:dorset_brown_wool",
+    "animaniax:friesian_black_wool",
+    "animaniax:friesian_brown_wool",
+    "animaniax:jacob_wool",
+    "animaniax:merino_brown_wool",
+    "animaniax:merino_white_wool",
+    "animaniax:suffolk_brown_wool"
+  ]
+}

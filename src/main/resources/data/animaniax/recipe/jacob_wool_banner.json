@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "www",
+    "www",
+    " s "
+  ],
+  "key": {
+    "w": {
+      "item": "animaniax:jacob_wool"
+    },
+    "s": {
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "id": "minecraft:light_gray_banner",
+    "count": 1
+  }
+}

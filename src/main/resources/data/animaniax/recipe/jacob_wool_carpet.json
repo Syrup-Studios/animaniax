@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "animaniax:jacob_wool"
+    },
+    {
+      "item": "animaniax:jacob_wool"
+    }
+  ],
+  "result": {
+    "id": "minecraft:light_gray_carpet",
+    "count": 3
+  }
+}
