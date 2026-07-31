@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "item": "animaniax:raw_prime_bacon"
+  },
+  "result": {
+    "id": "animaniax:cooked_prime_bacon"
+  },
+  "experience": 0.3,
+  "cookingtime": 200
+}

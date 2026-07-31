@@ -26,6 +26,11 @@ import net.syrupstudios.animaniax.item.AnimalMilkContent;
 import net.syrupstudios.animaniax.item.SlopContent;
 import net.syrupstudios.animaniax.item.CheeseWedgeContent;
 import net.syrupstudios.animaniax.item.BrownEggContent;
+import net.syrupstudios.animaniax.item.PrimeChickenContent;
+import net.syrupstudios.animaniax.item.PrimeMuttonContent;
+import net.syrupstudios.animaniax.item.GoatMeatContent;
+import net.syrupstudios.animaniax.item.PrimeRabbitContent;
+import net.syrupstudios.animaniax.item.PrimeMeatContent;
 import net.syrupstudios.animaniax.block.SheepWoolContent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,6 +67,11 @@ public final class FabricEntrypoint implements ModInitializer {
         SlopContent.registerFabric();
         CheeseWedgeContent.registerFabric();
         BrownEggContent.registerFabric();
+        PrimeChickenContent.registerFabric();
+        PrimeMuttonContent.registerFabric();
+        GoatMeatContent.registerFabric();
+        PrimeRabbitContent.registerFabric();
+        PrimeMeatContent.registerFabric();
         ServerLifecycleEvents.SERVER_STARTING.register(server -> {
             AnimalCareConfig.load(server.getWorldPath(LevelResource.ROOT).resolve("serverconfig/animaniax.properties"));
             TroughContent.registerWaterBucketBehavior();

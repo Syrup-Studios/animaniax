@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": { "item": "animaniax:raw_prime_chevon" },
+  "result": { "id": "animaniax:cooked_prime_chevon" },
+  "experience": 0.3,
+  "cookingtime": 200
+}

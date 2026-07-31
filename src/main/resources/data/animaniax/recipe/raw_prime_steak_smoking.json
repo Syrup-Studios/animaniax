@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:smoking",
+  "ingredient": {
+    "item": "animaniax:raw_prime_steak"
+  },
+  "result": {
+    "id": "animaniax:cooked_prime_steak"
+  },
+  "experience": 0.3,
+  "cookingtime": 100
+}

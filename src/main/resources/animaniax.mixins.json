@@ -17,6 +17,7 @@
     "SheepProductionMixin",
     "GoatProductionMixin",
     "ChickenProductionMixin",
+    "PrimeChickenLootMixin",
     "SeedPilePlacementMixin"
   ],
   "client": [],
