@@ -3,7 +3,14 @@ package net.syrupstudios.animaniax.loader;
 //? if fabric {
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
+import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.SpawnEggItem;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
@@ -72,6 +79,12 @@ public final class FabricEntrypoint implements ModInitializer {
         GoatMeatContent.registerFabric();
         PrimeRabbitContent.registerFabric();
         PrimeMeatContent.registerFabric();
+        BiomeModifications.addSpawn(BiomeSelectors.tag(TagKey.create(Registries.BIOME,
+                ResourceLocation.fromNamespaceAndPath("animaniax", "cow_spawns"))),
+                MobCategory.CREATURE, EntityType.COW, 8, 4, 4);
+        BiomeModifications.addSpawn(BiomeSelectors.tag(TagKey.create(Registries.BIOME,
+                ResourceLocation.fromNamespaceAndPath("animaniax", "goat_spawns"))),
+                MobCategory.CREATURE, EntityType.GOAT, 8, 2, 4);
         ServerLifecycleEvents.SERVER_STARTING.register(server -> {
             AnimalCareConfig.load(server.getWorldPath(LevelResource.ROOT).resolve("serverconfig/animaniax.properties"));
             TroughContent.registerWaterBucketBehavior();

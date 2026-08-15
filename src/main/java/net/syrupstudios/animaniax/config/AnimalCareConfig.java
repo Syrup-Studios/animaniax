@@ -23,6 +23,8 @@ public final class AnimalCareConfig {
     public static boolean animalsStarve = false;
     public static boolean showUnhappyParticles = true;
     public static boolean animalsSleep = true;
+    public static boolean replaceVanillaWolves = true;
+    public static boolean replaceVanillaOcelots = true;
     public static int starvationTimer = 400;
     public static int matingTimer = 100;
     public static boolean requireAnimalInteractionForAI = true;
@@ -31,6 +33,19 @@ public final class AnimalCareConfig {
     public static boolean malesMateMultipleFemales = false;
     public static int entityBreedingLimit = 15;
     public static int animalCapSearchRange = 80;
+    public static int naturalSpawnLimitCows = 40;
+    public static int naturalSpawnLimitPigs = 40;
+    public static int naturalSpawnLimitChickens = 40;
+    public static int naturalSpawnLimitSheep = 40;
+    public static int naturalSpawnLimitGoats = 40;
+    public static int naturalSpawnLimitHorses = 40;
+    public static int naturalSpawnLimitRabbits = 40;
+    public static int naturalSpawnLimitAmphibians = 40;
+    public static int naturalSpawnLimitHamsters = 40;
+    public static int naturalSpawnLimitFerrets = 40;
+    public static int naturalSpawnLimitHedgehogs = 40;
+    public static int naturalSpawnLimitCats = 20;
+    public static int naturalSpawnLimitDogs = 20;
     public static boolean allowSeedDispenserPlacement = true;
     public static boolean shiftSeedPlacement = false;
     public static int saltLickMaxUses = 200;
@@ -73,6 +88,10 @@ public final class AnimalCareConfig {
                         + "showUnhappyParticles=true\n"
                         + "# Animals sleep at night when they can reach straw or grass.\n"
                         + "animalsSleep=true\n"
+                        + "# Prevent natural vanilla wolf spawns.\n"
+                        + "replaceVanillaWolves=true\n"
+                        + "# Prevent natural vanilla ocelot spawns.\n"
+                        + "replaceVanillaOcelots=true\n"
                         + "# Ticks between starvation damage.\n"
                         + "starvationTimer=400\n"
                         + "matingTimer=100\n"
@@ -83,6 +102,20 @@ public final class AnimalCareConfig {
                         + "malesMateMultipleFemales=false\n"
                         + "entityBreedingLimit=15\n"
                         + "animalCapSearchRange=80\n"
+                        + "# Threshold used to limit nearby natural spawns for each population group.\n"
+                        + "naturalSpawnLimitCows=40\n"
+                        + "naturalSpawnLimitPigs=40\n"
+                        + "naturalSpawnLimitChickens=40\n"
+                        + "naturalSpawnLimitSheep=40\n"
+                        + "naturalSpawnLimitGoats=40\n"
+                        + "naturalSpawnLimitHorses=40\n"
+                        + "naturalSpawnLimitRabbits=40\n"
+                        + "naturalSpawnLimitAmphibians=40\n"
+                        + "naturalSpawnLimitHamsters=40\n"
+                        + "naturalSpawnLimitFerrets=40\n"
+                        + "naturalSpawnLimitHedgehogs=40\n"
+                        + "naturalSpawnLimitCats=20\n"
+                        + "naturalSpawnLimitDogs=20\n"
                         + "# Allow dispensers to place seed piles.\n"
                         + "allowSeedDispenserPlacement=true\n"
                         + "# Require sneaking to place seed piles with seeds.\n"
@@ -126,6 +159,8 @@ public final class AnimalCareConfig {
             animalsStarve = readBoolean(properties, "animalsStarve", false);
             showUnhappyParticles = readBoolean(properties, "showUnhappyParticles", true);
             animalsSleep = readBoolean(properties, "animalsSleep", true);
+            replaceVanillaWolves = readBoolean(properties, "replaceVanillaWolves", true);
+            replaceVanillaOcelots = readBoolean(properties, "replaceVanillaOcelots", true);
             starvationTimer = readTicks(properties, "starvationTimer", 400);
             matingTimer = readTicks(properties, "matingTimer", 100);
             requireAnimalInteractionForAI = readBoolean(properties, "requireAnimalInteractionForAI", true);
@@ -134,6 +169,19 @@ public final class AnimalCareConfig {
             malesMateMultipleFemales = readBoolean(properties, "malesMateMultipleFemales", false);
             entityBreedingLimit = readTicks(properties, "entityBreedingLimit", 15);
             animalCapSearchRange = readTicks(properties, "animalCapSearchRange", 80);
+            naturalSpawnLimitCows = readTicks(properties, "naturalSpawnLimitCows", 40);
+            naturalSpawnLimitPigs = readTicks(properties, "naturalSpawnLimitPigs", 40);
+            naturalSpawnLimitChickens = readTicks(properties, "naturalSpawnLimitChickens", 40);
+            naturalSpawnLimitSheep = readTicks(properties, "naturalSpawnLimitSheep", 40);
+            naturalSpawnLimitGoats = readTicks(properties, "naturalSpawnLimitGoats", 40);
+            naturalSpawnLimitHorses = readTicks(properties, "naturalSpawnLimitHorses", 40);
+            naturalSpawnLimitRabbits = readTicks(properties, "naturalSpawnLimitRabbits", 40);
+            naturalSpawnLimitAmphibians = readTicks(properties, "naturalSpawnLimitAmphibians", 40);
+            naturalSpawnLimitHamsters = readTicks(properties, "naturalSpawnLimitHamsters", 40);
+            naturalSpawnLimitFerrets = readTicks(properties, "naturalSpawnLimitFerrets", 40);
+            naturalSpawnLimitHedgehogs = readTicks(properties, "naturalSpawnLimitHedgehogs", 40);
+            naturalSpawnLimitCats = readTicks(properties, "naturalSpawnLimitCats", 20);
+            naturalSpawnLimitDogs = readTicks(properties, "naturalSpawnLimitDogs", 20);
             allowSeedDispenserPlacement = readBoolean(properties, "allowSeedDispenserPlacement", true);
             shiftSeedPlacement = readBoolean(properties, "shiftSeedPlacement", false);
             saltLickMaxUses = readClampedInt(properties, "saltLickMaxUses", 200, 1, 1_000_000);
@@ -162,6 +210,8 @@ public final class AnimalCareConfig {
             animalsStarve = false;
             showUnhappyParticles = true;
             animalsSleep = true;
+            replaceVanillaWolves = true;
+            replaceVanillaOcelots = true;
             starvationTimer = 400;
             matingTimer = 100;
             requireAnimalInteractionForAI = true;
@@ -170,6 +220,19 @@ public final class AnimalCareConfig {
             malesMateMultipleFemales = false;
             entityBreedingLimit = 15;
             animalCapSearchRange = 80;
+            naturalSpawnLimitCows = 40;
+            naturalSpawnLimitPigs = 40;
+            naturalSpawnLimitChickens = 40;
+            naturalSpawnLimitSheep = 40;
+            naturalSpawnLimitGoats = 40;
+            naturalSpawnLimitHorses = 40;
+            naturalSpawnLimitRabbits = 40;
+            naturalSpawnLimitAmphibians = 40;
+            naturalSpawnLimitHamsters = 40;
+            naturalSpawnLimitFerrets = 40;
+            naturalSpawnLimitHedgehogs = 40;
+            naturalSpawnLimitCats = 20;
+            naturalSpawnLimitDogs = 20;
             allowSeedDispenserPlacement = true;
             shiftSeedPlacement = false;
             saltLickMaxUses = 200;
