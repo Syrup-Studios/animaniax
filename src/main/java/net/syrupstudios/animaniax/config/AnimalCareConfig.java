@@ -49,6 +49,7 @@ public final class AnimalCareConfig {
     public static int naturalSpawnLimitDogs = 20;
     public static boolean allowSeedDispenserPlacement = true;
     public static boolean shiftSeedPlacement = false;
+    public static boolean allowTroughAutomation = true;
     public static int saltLickMaxUses = 200;
     public static int laidTimer = 2000;
     public static int eggHatchChance = 2;
@@ -123,6 +124,8 @@ public final class AnimalCareConfig {
                         + "allowSeedDispenserPlacement=true\n"
                         + "# Require sneaking to place seed piles with seeds.\n"
                         + "shiftSeedPlacement=false\n"
+                        + "# Allow hoppers and pipes to insert or remove trough feed.\n"
+                        + "allowTroughAutomation=true\n"
                         + "# Maximum uses for a new salt lick. Clamped to 1..1000000.\n"
                         + "saltLickMaxUses=200\n"
                         + "# Ticks between eggs laid in nests.\n"
@@ -188,6 +191,7 @@ public final class AnimalCareConfig {
             naturalSpawnLimitDogs = readTicks(properties, "naturalSpawnLimitDogs", 20);
             allowSeedDispenserPlacement = readBoolean(properties, "allowSeedDispenserPlacement", true);
             shiftSeedPlacement = readBoolean(properties, "shiftSeedPlacement", false);
+            allowTroughAutomation = readBoolean(properties, "allowTroughAutomation", true);
             saltLickMaxUses = readClampedInt(properties, "saltLickMaxUses", 200, 1, 1_000_000);
             laidTimer = readTicks(properties, "laidTimer", 2000);
             eggHatchChance = readTicks(properties, "eggHatchChance", 2);
@@ -240,6 +244,7 @@ public final class AnimalCareConfig {
             naturalSpawnLimitDogs = 20;
             allowSeedDispenserPlacement = true;
             shiftSeedPlacement = false;
+            allowTroughAutomation = true;
             saltLickMaxUses = 200;
             laidTimer = 2000;
             eggHatchChance = 2;

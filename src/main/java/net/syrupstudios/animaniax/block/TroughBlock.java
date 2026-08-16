@@ -200,7 +200,9 @@ public final class TroughBlock extends Block implements EntityBlock {
             BlockEntity entity = level.getBlockEntity(pos);
             if (state.getValue(PART) == Part.MAIN && entity instanceof TroughBlockEntity trough) {
                 if (!trough.isCreativeDestruction()) {
-                    ItemStack feed = trough.getFeed();
+                    ItemStack bucket = trough.getItem(1);
+                    if (!bucket.isEmpty()) popResource(level, pos, bucket);
+                    ItemStack feed = trough.getItem(0);
                     if (!feed.isEmpty()) popResource(level, pos, feed);
                 }
             } else if (state.getValue(CONTENT) == 2 && state.getValue(LEVEL) > 0) {
@@ -276,7 +278,7 @@ public final class TroughBlock extends Block implements EntityBlock {
         if (TroughBlockEntity.isFeed(stack) && (content == 0 || content == 2) && amount < 3) {
             if (level.isClientSide) return true;
             if (level.getBlockEntity(pos) instanceof TroughBlockEntity trough
-                    && trough.addFeed(stack.copyWithCount(1)) > 0) {
+                    && trough.canPlaceItem(0, stack) && trough.addFeed(stack.copyWithCount(1)) > 0) {
                 if (!player.getAbilities().instabuild) stack.shrink(1);
                 return true;
             }
