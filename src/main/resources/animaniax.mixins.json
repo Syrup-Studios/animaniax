@@ -5,14 +5,20 @@
   "compatibilityLevel": "JAVA_21",
   "mixins": [
     "MobCareMixin",
+    "SheepSparringMixin",
+    "GoatSparringMixin",
     "AnimalBreedingMixin",
     "AnimalGrowthMixin",
     "AnimalReproductionMixin",
     "RabbitBreedMixin",
     "RabbitNaturalBreedMixin",
+    "MobGoalSelectorAccessor",
+    "KillerRabbitMixin",
     "CowBreedMixin",
     "CowNaturalBreedMixin",
     "GoatBreedMixin",
+    "GoatFaintingCollisionMixin",
+    "GoatFaintingDataMixin",
     "GoatNaturalBreedMixin",
     "PigNaturalBreedMixin",
     "SheepBreedMixin",
@@ -28,7 +34,9 @@
     "NaturalSpawnCapMixin",
     "SeedPilePlacementMixin"
   ],
-  "client": [],
+  "client": [
+    "FaintingGoatPoseMixin"
+  ],
   "injectors": {
     "defaultRequire": 1
   }

@@ -23,6 +23,7 @@ public final class AnimalCareConfig {
     public static boolean animalsStarve = false;
     public static boolean showUnhappyParticles = true;
     public static boolean animalsSleep = true;
+    public static boolean animalsCanAttackOthers = true;
     public static boolean replaceVanillaWolves = true;
     public static boolean replaceVanillaOcelots = true;
     public static int starvationTimer = 400;
@@ -88,6 +89,8 @@ public final class AnimalCareConfig {
                         + "showUnhappyParticles=true\n"
                         + "# Animals sleep at night when they can reach straw or grass.\n"
                         + "animalsSleep=true\n"
+                        + "# Allows bull retaliation, sparring, and proactive animal hunting.\n"
+                        + "animalsCanAttackOthers=true\n"
                         + "# Prevent natural vanilla wolf spawns.\n"
                         + "replaceVanillaWolves=true\n"
                         + "# Prevent natural vanilla ocelot spawns.\n"
@@ -159,6 +162,7 @@ public final class AnimalCareConfig {
             animalsStarve = readBoolean(properties, "animalsStarve", false);
             showUnhappyParticles = readBoolean(properties, "showUnhappyParticles", true);
             animalsSleep = readBoolean(properties, "animalsSleep", true);
+            animalsCanAttackOthers = readBoolean(properties, "animalsCanAttackOthers", true);
             replaceVanillaWolves = readBoolean(properties, "replaceVanillaWolves", true);
             replaceVanillaOcelots = readBoolean(properties, "replaceVanillaOcelots", true);
             starvationTimer = readTicks(properties, "starvationTimer", 400);
@@ -210,6 +214,7 @@ public final class AnimalCareConfig {
             animalsStarve = false;
             showUnhappyParticles = true;
             animalsSleep = true;
+            animalsCanAttackOthers = true;
             replaceVanillaWolves = true;
             replaceVanillaOcelots = true;
             starvationTimer = 400;

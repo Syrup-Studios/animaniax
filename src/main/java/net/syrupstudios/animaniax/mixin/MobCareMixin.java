@@ -25,6 +25,9 @@ import net.syrupstudios.animaniax.entity.ai.AnimalCareGoal;
 import net.syrupstudios.animaniax.block.MudBlock;
 import net.syrupstudios.animaniax.entity.ai.AnimalCourtshipGoal;
 import net.syrupstudios.animaniax.entity.ai.AnimalSleepGoal;
+import net.syrupstudios.animaniax.entity.ai.BullRetaliationGoal;
+import net.syrupstudios.animaniax.entity.ai.SheepSparringGoal;
+import net.syrupstudios.animaniax.entity.ai.GoatSparringGoal;
 import net.syrupstudios.animaniax.entity.ai.NestingGoal;
 import net.syrupstudios.animaniax.entity.ai.PigSnuffleGoal;
 import net.syrupstudios.animaniax.entity.AnimalCareState;
@@ -150,6 +153,11 @@ abstract class MobCareMixin implements AnimalCareState, AnimalSleepState, PigBre
             goalSelector.addGoal(5, new AnimalCourtshipGoal(animal));
         animaniax$hungerLimit = AnimalCareConfig.feedTimer + mob.getRandom().nextInt(100);
         animaniax$thirstLimit = AnimalCareConfig.waterTimer + mob.getRandom().nextInt(100);
+        if (mob.getType() == EntityType.COW) goalSelector.addGoal(0, new BullRetaliationGoal(mob));
+        if (mob.getType() == EntityType.SHEEP)
+            goalSelector.addGoal(8, new SheepSparringGoal((net.minecraft.world.entity.animal.Sheep) mob));
+        if (mob.getType() == EntityType.GOAT)
+            goalSelector.addGoal(8, new GoatSparringGoal((net.minecraft.world.entity.animal.goat.Goat) mob));
         if (AnimalProfile.has(mob.getType(), Capability.NESTING_GOAL)) {
             goalSelector.addGoal(4, new NestingGoal((Chicken) mob));
         }
