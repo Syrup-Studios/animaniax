@@ -6,15 +6,16 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.syrupstudios.animaniax.config.AnimalCareConfig;
 
 public final class SaltLickBlockEntity extends BlockEntity {
     public static final int MAX_USES = 200;
-    private int uses = MAX_USES;
+    private int uses = AnimalCareConfig.saltLickMaxUses;
 
     public SaltLickBlockEntity(BlockPos pos, BlockState state) { super(SaltLickContent.ENTITY, pos, state); }
 
     public void setUses(int value) {
-        uses = Math.max(1, Math.min(MAX_USES, value));
+        uses = Math.max(1, Math.min(AnimalCareConfig.saltLickMaxUses, value));
         setChanged();
     }
 
@@ -30,7 +31,7 @@ public final class SaltLickBlockEntity extends BlockEntity {
 
     @Override protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
-        uses = tag.contains("Uses") ? Math.max(0, Math.min(MAX_USES, tag.getInt("Uses"))) : MAX_USES;
+        uses = tag.contains("Uses") ? Math.max(0, Math.min(AnimalCareConfig.saltLickMaxUses, tag.getInt("Uses"))) : AnimalCareConfig.saltLickMaxUses;
     }
 
     @Override protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {

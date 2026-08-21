@@ -47,6 +47,7 @@ public final class NestBlock extends Block implements EntityBlock {
 
     @Override protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos,
             Player player, BlockHitResult hit) {
+        if (player.isShiftKeyDown()) return InteractionResult.PASS;
         int eggs = state.getValue(EGGS);
         if (eggs == 0) return InteractionResult.PASS;
         if (!level.isClientSide) {

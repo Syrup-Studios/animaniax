@@ -68,7 +68,8 @@ public final class CheeseMoldBlockEntity extends BlockEntity {
     }
 
     public net.minecraft.world.item.ItemStack getOutput() {
-        return new net.minecraft.world.item.ItemStack(getCheeseItem(), cheeseType.equals("salt") ? 16 : 1);
+        return new net.minecraft.world.item.ItemStack(getCheeseItem(), cheeseType.equals("salt")
+                ? AnimalCareConfig.saltCreationAmount : 1);
     }
 
     private static long maturationTicks() {

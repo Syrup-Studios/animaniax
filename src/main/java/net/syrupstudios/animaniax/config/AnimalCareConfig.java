@@ -50,10 +50,12 @@ public final class AnimalCareConfig {
     public static boolean allowSeedDispenserPlacement = true;
     public static boolean shiftSeedPlacement = false;
     public static boolean allowTroughAutomation = true;
+    public static int saltLickTick = 8000;
     public static int saltLickMaxUses = 200;
     public static int laidTimer = 2000;
     public static int eggHatchChance = 2;
     public static int cheeseMaturityTime = 24_000;
+    public static int saltCreationAmount = 16;
     public static int woolRegrowthTimer = 8_000;
     public static boolean chickensDropEggs = false;
     public static boolean birdsDropFeathers = true;
@@ -126,6 +128,7 @@ public final class AnimalCareConfig {
                         + "shiftSeedPlacement=false\n"
                         + "# Allow hoppers and pipes to insert or remove trough feed.\n"
                         + "allowTroughAutomation=true\n"
+                        + "saltLickTick=8000\n"
                         + "# Maximum uses for a new salt lick. Clamped to 1..1000000.\n"
                         + "saltLickMaxUses=200\n"
                         + "# Ticks between eggs laid in nests.\n"
@@ -134,6 +137,8 @@ public final class AnimalCareConfig {
                         + "eggHatchChance=2\n"
                         + "# Ticks that cheese takes to mature.\n"
                         + "cheeseMaturityTime=24000\n"
+                        + "# Salt items made by curing water in a cheese mold.\n"
+                        + "saltCreationAmount=16\n"
                         + "# Ticks before sheep wool regrows after shearing.\n"
                         + "woolRegrowthTimer=8000\n"
                         + "# Chickens can drop eggs without using a nest.\n"
@@ -192,10 +197,12 @@ public final class AnimalCareConfig {
             allowSeedDispenserPlacement = readBoolean(properties, "allowSeedDispenserPlacement", true);
             shiftSeedPlacement = readBoolean(properties, "shiftSeedPlacement", false);
             allowTroughAutomation = readBoolean(properties, "allowTroughAutomation", true);
+            saltLickTick = readTicks(properties, "saltLickTick", 8000);
             saltLickMaxUses = readClampedInt(properties, "saltLickMaxUses", 200, 1, 1_000_000);
             laidTimer = readTicks(properties, "laidTimer", 2000);
             eggHatchChance = readTicks(properties, "eggHatchChance", 2);
             cheeseMaturityTime = readTicks(properties, "cheeseMaturityTime", 24_000);
+            saltCreationAmount = readBoundedInt(properties, "saltCreationAmount", 16, 1, 64);
             woolRegrowthTimer = readTicks(properties, "woolRegrowthTimer", 8_000);
             chickensDropEggs = readBoolean(properties, "chickensDropEggs", false);
             birdsDropFeathers = readBoolean(properties, "birdsDropFeathers", true);
@@ -245,10 +252,12 @@ public final class AnimalCareConfig {
             allowSeedDispenserPlacement = true;
             shiftSeedPlacement = false;
             allowTroughAutomation = true;
+            saltLickTick = 8000;
             saltLickMaxUses = 200;
             laidTimer = 2000;
             eggHatchChance = 2;
             cheeseMaturityTime = 24_000;
+            saltCreationAmount = 16;
             woolRegrowthTimer = 8_000;
             chickensDropEggs = false;
             birdsDropFeathers = true;

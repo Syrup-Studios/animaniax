@@ -30,6 +30,7 @@ import net.syrupstudios.animaniax.entity.ai.SheepSparringGoal;
 import net.syrupstudios.animaniax.entity.ai.GoatSparringGoal;
 import net.syrupstudios.animaniax.entity.ai.NestingGoal;
 import net.syrupstudios.animaniax.entity.ai.PigSnuffleGoal;
+import net.syrupstudios.animaniax.entity.ai.SaltLickGoal;
 import net.syrupstudios.animaniax.entity.AnimalCareState;
 import net.syrupstudios.animaniax.entity.AnimalSleepState;
 import net.syrupstudios.animaniax.config.AnimalCareConfig;
@@ -153,6 +154,7 @@ abstract class MobCareMixin implements AnimalCareState, AnimalSleepState, PigBre
             goalSelector.addGoal(5, new AnimalCourtshipGoal(animal));
         animaniax$hungerLimit = AnimalCareConfig.feedTimer + mob.getRandom().nextInt(100);
         animaniax$thirstLimit = AnimalCareConfig.waterTimer + mob.getRandom().nextInt(100);
+        goalSelector.addGoal(6, new SaltLickGoal(mob));
         if (mob.getType() == EntityType.COW) goalSelector.addGoal(0, new BullRetaliationGoal(mob));
         if (mob.getType() == EntityType.SHEEP)
             goalSelector.addGoal(8, new SheepSparringGoal((net.minecraft.world.entity.animal.Sheep) mob));
@@ -392,8 +394,7 @@ abstract class MobCareMixin implements AnimalCareState, AnimalSleepState, PigBre
     @Unique
     public boolean animaniax$needsMud() {
         Mob mob = (Mob) (Object) this;
-        return AnimalProfile.has(mob.getType(), Capability.PIG_ENRICHMENT_GOALS) && animaniax$mudEnrichment < 50
-                && !animaniax$needsWater() && !animaniax$needsGraze();
+        return AnimalProfile.has(mob.getType(), Capability.PIG_ENRICHMENT_GOALS) && animaniax$mudEnrichment < 50;
     }
 
     @Override

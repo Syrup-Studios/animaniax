@@ -10,8 +10,10 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.tags.BiomeTags;
 import net.syrupstudios.animaniax.block.MudBlock;
@@ -40,6 +42,9 @@ public final class AnimalCareGoal extends Goal {
     private ItemEntity truffleItem;
     private boolean finished;
     private int scanAtTick;
+    private int careChecksUntilSearch = AnimalCareConfig.ticksBetweenAIFirings;
+    private int mudChecksUntilSearch = AnimalCareConfig.ticksBetweenAIFirings;
+    private int mudContactTicks;
 
     public AnimalCareGoal(Mob mob, Need need) {
         this.mob = mob;
@@ -50,6 +55,49 @@ public final class AnimalCareGoal extends Goal {
 
     @Override
     public boolean canUse() {
+        if (need == Need.MUD) {
+            if (!animaniax$needsCare() || mob.isVehicle() || mob.isPassenger() || mob.isSleeping()
+                    || ((AnimalSleepState) mob).animaniax$isSleeping()) {
+                mudChecksUntilSearch = AnimalCareConfig.ticksBetweenAIFirings;
+                return false;
+            }
+            if (mob.tickCount < scanAtTick) return false;
+            if (mudChecksUntilSearch-- > 0) return false;
+            mudChecksUntilSearch = AnimalCareConfig.ticksBetweenAIFirings;
+            if (mob.getRandom().nextInt(100) == 0) {
+                if (mob instanceof PathfinderMob pathfinderMob) {
+                    var wander = LandRandomPos.getPos(pathfinderMob, 20, 4);
+                    if (wander != null) mob.getNavigation().moveTo(wander.x, wander.y, wander.z, 1.0);
+                }
+                return false;
+            }
+            target = animaniax$findMud();
+            return target != null && mob.getRandom().nextInt(200) != 0;
+        }
+        if (need == Need.WATER || need == Need.GRASS || need == Need.SEEDS) {
+            boolean blocked = !animaniax$needsCare() || mob.isVehicle() || mob.isPassenger()
+                    || mob.isSleeping() || ((AnimalSleepState) mob).animaniax$isSleeping()
+                    || AnimalCareConfig.requireAnimalInteractionForAI && !care.animaniax$wasInteractedWith();
+            if (blocked) {
+                careChecksUntilSearch = AnimalCareConfig.ticksBetweenAIFirings;
+                return false;
+            }
+            if (mob.tickCount < scanAtTick) return false;
+            if (careChecksUntilSearch > 0) {
+                careChecksUntilSearch--;
+                return false;
+            }
+            if (mob.getRandom().nextInt(3) != 0) return false;
+            careChecksUntilSearch = AnimalCareConfig.ticksBetweenAIFirings;
+            target = switch (need) {
+                case WATER -> animaniax$findWaterApproach();
+                case GRASS -> animaniax$findGrass();
+                case SEEDS -> animaniax$findSeeds();
+                    default -> throw new IllegalStateException();
+            };
+            if (need != Need.WATER) scanAtTick = AnimalCareHelper.nextScanTick(mob, 40);
+            return target != null;
+        }
         if (!AnimalCareHelper.canStartCare(mob, animaniax$needsCare(), ((AnimalSleepState) mob).animaniax$isSleeping())) return false;
         if (mob.tickCount < scanAtTick) return false;
         target = switch (need) {
@@ -72,6 +120,7 @@ public final class AnimalCareGoal extends Goal {
 
     @Override
     public void start() {
+        mudContactTicks = 0;
         boolean inReach = need == Need.GRASS
                 && mob.distanceToSqr(target.getX() + 0.5, target.getY(), target.getZ() + 0.5) <= 2.25;
         if (inReach) mob.getNavigation().stop();
@@ -91,12 +140,15 @@ public final class AnimalCareGoal extends Goal {
                 if (waterSource != null && animaniax$drinkFrom(waterSource)) {
                     care.animaniax$drink();
                 }
+                careChecksUntilSearch = AnimalCareConfig.ticksBetweenAIFirings;
             } else if (need == Need.GRASS && animaniax$eatGrass()) {
                 if (foodBlock != null && mob.level().getBlockState(foodBlock).is(TroughContent.TROUGH)
                         && mob.level().getBlockState(foodBlock).getValue(TroughBlock.CONTENT) == 3) care.animaniax$eatSlop();
                 else care.animaniax$graze();
+                careChecksUntilSearch = AnimalCareConfig.ticksBetweenAIFirings;
             } else if (need == Need.SEEDS && animaniax$eatSeed()) {
                 care.animaniax$graze();
+                careChecksUntilSearch = AnimalCareConfig.ticksBetweenAIFirings;
             } else if (need == Need.TRUFFLE && animaniax$eatTruffle()) {
                 care.animaniax$graze();
             } else if (need == Need.MUD) {
@@ -104,6 +156,13 @@ public final class AnimalCareGoal extends Goal {
             }
             finished = true;
         } else if (mob.getNavigation().isDone()) {
+            if (need == Need.MUD && mob.blockPosition().getY() == target.getY()
+                    && mob.distanceToSqr(target.getX() + 0.5, target.getY(), target.getZ() + 0.5) <= 2.25
+                    && mudContactTicks < 40) {
+                mudContactTicks++;
+                mob.getMoveControl().setWantedPosition(target.getX() + 0.5, target.getY(), target.getZ() + 0.5, 1.0);
+                return;
+            }
             finished = true;
             scanAtTick = mob.tickCount + 100;
         }
@@ -117,6 +176,7 @@ public final class AnimalCareGoal extends Goal {
         foodBlock = null;
         seedItem = null;
         truffleItem = null;
+        mudContactTicks = 0;
         finished = false;
     }
 
@@ -172,7 +232,7 @@ public final class AnimalCareGoal extends Goal {
 
     private BlockPos animaniax$findWaterApproach() {
             BlockPos origin = mob.blockPosition();
-            int range = AnimalCareHelper.clampRange(16);
+            int range = AnimalCareHelper.clampRange(AnimalCareConfig.aiBlockSearchRange);
             BlockPos bestSource = null;
             BlockPos bestApproach = null;
             double bestDist = Double.MAX_VALUE;
@@ -236,7 +296,7 @@ public final class AnimalCareGoal extends Goal {
 
     private BlockPos animaniax$findTroughFood() {
             BlockPos origin = mob.blockPosition();
-            int range = AnimalCareHelper.clampRange(16);
+            int range = AnimalCareHelper.clampRange(AnimalCareConfig.aiBlockSearchRange);
             BlockPos bestSource = null;
             BlockPos bestApproach = null;
             double bestDist = Double.MAX_VALUE;
@@ -282,7 +342,7 @@ public final class AnimalCareGoal extends Goal {
         }
         if (nearestPile != null) { foodBlock = nearestPile; return nearestPile; }
         seedItem = mob.level().getEntitiesOfClass(ItemEntity.class, mob.getBoundingBox().inflate(8), item ->
-                item.isAlive() && mob.level().hasChunkAt(item.blockPosition()) && animaniax$isSeed(item.getItem()))
+                item.isAlive() && !item.hasPickUpDelay() && mob.level().hasChunkAt(item.blockPosition()) && animaniax$isSeed(item.getItem()))
                 .stream().min(Comparator.comparingDouble(mob::distanceToSqr)).orElse(null);
         return seedItem == null ? null : seedItem.blockPosition();
     }
@@ -313,7 +373,7 @@ public final class AnimalCareGoal extends Goal {
         }
         if (foodBlock != null && mob.level().getBlockState(foodBlock).is(TroughContent.TROUGH))
             return TroughBlock.consumeFeed(mob.level(), foodBlock, mob.getType());
-        if (seedItem == null || !seedItem.isAlive() || mob.distanceToSqr(seedItem) > 2.25
+        if (seedItem == null || !seedItem.isAlive() || seedItem.hasPickUpDelay() || mob.distanceToSqr(seedItem) > 2.25
                 || !mob.level().hasChunkAt(seedItem.blockPosition()) || !animaniax$isSeed(seedItem.getItem())) return false;
         ItemStack remainder = seedItem.getItem().copy();
         remainder.shrink(1);
@@ -340,9 +400,17 @@ public final class AnimalCareGoal extends Goal {
         if (AnimalCareConfig.plantsRemovedAfterEating) {
             if (mob.level().getBlockState(plant).is(Blocks.GRASS_BLOCK)) {
                 mob.level().setBlockAndUpdate(plant, Blocks.DIRT.defaultBlockState());
-            } else if (mob.level().getBlockState(plant).is(Blocks.TALL_GRASS)
-                    && mob.level().getBlockState(plant).getValue(net.minecraft.world.level.block.DoublePlantBlock.HALF) == DoubleBlockHalf.LOWER) {
-                mob.level().destroyBlock(plant.above(), false);
+            } else if (mob.level().getBlockState(plant).hasProperty(net.minecraft.world.level.block.DoublePlantBlock.HALF)) {
+                var state = mob.level().getBlockState(plant);
+                DoubleBlockHalf half = state.getValue(net.minecraft.world.level.block.DoublePlantBlock.HALF);
+                BlockPos otherHalf = half == DoubleBlockHalf.LOWER
+                        ? plant.above() : plant.below();
+                if (mob.level().hasChunkAt(otherHalf)
+                        && mob.level().getBlockState(otherHalf).is(state.getBlock())
+                        && mob.level().getBlockState(otherHalf).hasProperty(net.minecraft.world.level.block.DoublePlantBlock.HALF)
+                        && mob.level().getBlockState(otherHalf).getValue(net.minecraft.world.level.block.DoublePlantBlock.HALF) != half) {
+                    mob.level().destroyBlock(otherHalf, false);
+                }
                 mob.level().destroyBlock(plant, false);
             } else {
                 mob.level().destroyBlock(plant, false);
