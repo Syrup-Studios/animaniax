@@ -10,7 +10,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.pathfinder.Path;
 import net.syrupstudios.animaniax.config.AnimalCareConfig;
 import net.syrupstudios.animaniax.entity.AnimalProfile;
-import net.syrupstudios.animaniax.entity.AnimalCareHelper;
 import net.syrupstudios.animaniax.entity.AnimalSleepState;
 import net.syrupstudios.animaniax.entity.AnimalReproductionState;
 
@@ -52,7 +51,8 @@ public final class AnimalSleepGoal extends Goal {
         }
         if (++delay <= 100 + mob.getRandom().nextInt(100)) return false;
         delay = 0;
-        if (!isSleepTime() || AnimalCareHelper.isSleepBlocked(mob)
+        if (!isSleepTime() || mob.isLeashed() || mob.isVehicle()
+                || mob.isPassenger() || mob.getTarget() != null || mob.isOnFire() || mob.isInWater()
                 || mob.level().isRainingAt(mob.blockPosition()) || mob.getRandom().nextInt(3) != 0) return false;
         target = findBed();
         return target != null;

@@ -23,7 +23,7 @@ public final class BullRetaliationGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        if (!animaniax$isBull()) return false;
+        if (!animaniax$canRetaliate()) return false;
         LivingEntity recentAttacker = bull.getLastHurtByMob();
         if (recentAttacker == null || !recentAttacker.isAlive() || animaniax$isIgnoredPlayer(recentAttacker)
                 || bull.getLastHurtByMobTimestamp() == lastHurtTimestamp) return false;
@@ -34,7 +34,7 @@ public final class BullRetaliationGoal extends Goal {
 
     @Override
     public boolean canContinueToUse() {
-        return animaniax$isBull() && attacker != null && attacker.isAlive()
+        return animaniax$canRetaliate() && attacker != null && attacker.isAlive()
                 && !animaniax$isIgnoredPlayer(attacker) && retaliationTicks > 0
                 && bull.distanceToSqr(attacker) < 256;
     }
@@ -64,8 +64,9 @@ public final class BullRetaliationGoal extends Goal {
             bull.getNavigation().stop();
             if (attackCooldown > 0) attackCooldown--;
             if (attackCooldown == 0 && bull.hasLineOfSight(attacker)) {
-                if (attacker.hurt(bull.damageSources().mobAttack(bull), 5.0F)
-                        && attacker instanceof Player player) {
+                boolean female = animaniax$isFemale();
+                if (attacker.hurt(bull.damageSources().mobAttack(bull), female ? 2.0F : 5.0F)
+                        && !female && attacker instanceof Player player) {
                     player.knockback(1.0, bull.getX() - player.getX(), bull.getZ() - player.getZ());
                 }
                 attackCooldown = 20;
@@ -73,10 +74,15 @@ public final class BullRetaliationGoal extends Goal {
         }
     }
 
-    private boolean animaniax$isBull() {
-        return AnimalCareConfig.animalsCanAttackOthers && !bull.isBaby()
-                && bull instanceof AnimalReproductionState sex && !sex.animaniax$isFemale()
-                && bull instanceof AnimalSterilizationState sterilization && !sterilization.animaniax$isSterilized();
+    private boolean animaniax$canRetaliate() {
+        if (bull.isBaby() || !(bull instanceof AnimalReproductionState sex)) return false;
+        return sex.animaniax$isFemale() || (AnimalCareConfig.animalsCanAttackOthers
+                && bull instanceof AnimalSterilizationState sterilization
+                && !sterilization.animaniax$isSterilized());
+    }
+
+    private boolean animaniax$isFemale() {
+        return bull instanceof AnimalReproductionState sex && sex.animaniax$isFemale();
     }
 
     private static boolean animaniax$isIgnoredPlayer(LivingEntity entity) {

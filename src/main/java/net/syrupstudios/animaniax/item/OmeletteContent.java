@@ -23,7 +23,7 @@ public final class OmeletteContent {
     private static Item food(int nutrition, float saturation, MobEffectInstance... effects) {
         FoodProperties food = new FoodProperties.Builder().nutrition(nutrition).saturationModifier(saturation).build();
         Item.Properties properties = new Item.Properties().food(food);
-        return effects.length == 0 ? new Item(properties) : new BonusEffectFoodItem(properties, effects);
+        return new BonusEffectFoodItem(properties, effects);
     }
 
     public static void registerFabric() {

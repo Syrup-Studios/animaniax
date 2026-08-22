@@ -17,36 +17,46 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(AgeableMob.class)
 abstract class AnimalGrowthMixin {
-    @Unique private static final long ANIMANIAX$GROWTH_STEPS = 85L;
     @Unique private static final long ANIMANIAX$VANILLA_BABY_AGE = 24_000L;
-    @Unique private long animaniax$growthRemainder;
+    @Unique private int animaniax$growthPhase;
+    @Unique private int animaniax$ageRemainder;
 
     @Inject(method = "addAdditionalSaveData", at = @At("TAIL"))
-    private void animaniax$saveGrowthRemainder(CompoundTag tag, CallbackInfo ci) {
+    private void animaniax$saveGrowthState(CompoundTag tag, CallbackInfo ci) {
         AgeableMob animal = (AgeableMob) (Object) this;
-        if (animal instanceof Animal && AnimalProfile.has(animal.getType(), Capability.GROWTH))
-            tag.putLong("AnimaniaxGrowthRemainder", animaniax$growthRemainder);
+        if (animal instanceof Animal && AnimalProfile.has(animal.getType(), Capability.GROWTH)) {
+            tag.putInt("AnimaniaxGrowthPhase", animaniax$growthPhase);
+            tag.putInt("AnimaniaxAgeRemainder", animaniax$ageRemainder);
+        }
     }
 
     @Inject(method = "readAdditionalSaveData", at = @At("TAIL"))
-    private void animaniax$loadGrowthRemainder(CompoundTag tag, CallbackInfo ci) {
+    private void animaniax$loadGrowthState(CompoundTag tag, CallbackInfo ci) {
         AgeableMob animal = (AgeableMob) (Object) this;
         if (!(animal instanceof Animal) || !AnimalProfile.has(animal.getType(), Capability.GROWTH)) return;
-        long denominator = ANIMANIAX$GROWTH_STEPS * AnimalCareConfig.childGrowthTick;
-        animaniax$growthRemainder = tag.contains("AnimaniaxGrowthRemainder")
-                ? Math.floorMod(tag.getLong("AnimaniaxGrowthRemainder"), denominator) : 0L;
+        animaniax$growthPhase = tag.contains("AnimaniaxGrowthPhase")
+                ? Math.max(0, Math.min(AnimalCareConfig.childGrowthTick, tag.getInt("AnimaniaxGrowthPhase"))) : 0;
+        animaniax$ageRemainder = tag.contains("AnimaniaxAgeRemainder")
+                ? Math.floorMod(tag.getInt("AnimaniaxAgeRemainder"), 85) : 0;
     }
 
     @Redirect(method = "aiStep", at = @At(value = "INVOKE",
             target = "Lnet/minecraft/world/entity/AgeableMob;setAge(I)V"))
     private void animaniax$updateBabyGrowth(AgeableMob animal, int age) {
         if (animal instanceof Animal && AnimalProfile.has(animal.getType(), Capability.GROWTH) && animal.getAge() < 0) {
-            if (((AnimalSleepState) animal).animaniax$isSleeping() || !((AnimalCareState) animal).animaniax$hasGrowthCare()) return;
-            long denominator = ANIMANIAX$GROWTH_STEPS * AnimalCareConfig.childGrowthTick;
-            long accumulated = animaniax$growthRemainder + ANIMANIAX$VANILLA_BABY_AGE;
-            long ageSteps = accumulated / denominator;
-            animaniax$growthRemainder = accumulated % denominator;
-            age = (int) Math.min(0L, (long) animal.getAge() + ageSteps);
+            if (animaniax$growthPhase < AnimalCareConfig.childGrowthTick) animaniax$growthPhase++;
+            if (animaniax$growthPhase >= AnimalCareConfig.childGrowthTick
+                    && !((AnimalSleepState) animal).animaniax$isSleeping()
+                    && ((AnimalCareState) animal).animaniax$hasGrowthCare()) {
+                long stepNumerator = ANIMANIAX$VANILLA_BABY_AGE + animaniax$ageRemainder;
+                long ageSteps = stepNumerator / 85L;
+                animaniax$ageRemainder = (int) (stepNumerator % 85L);
+                animaniax$growthPhase = 0;
+                age = (int) Math.min(0L, (long) animal.getAge() + ageSteps);
+                animal.setAge(age);
+                return;
+            }
+            return;
         }
         animal.setAge(age);
     }

@@ -8,6 +8,7 @@ import net.minecraft.world.item.ItemUtils;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
 //? if fabric {
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
@@ -24,7 +25,6 @@ import net.neoforged.neoforge.fluids.FluidUtil;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler.FluidAction;
 import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
-import net.neoforged.neoforge.items.ItemHandlerHelper;
 *///?}
 
 public final class MilkContainerTransfer {
@@ -33,7 +33,7 @@ public final class MilkContainerTransfer {
     public static boolean canFill(Player player, InteractionHand hand, String kind) {
         ItemStack held = player.getItemInHand(hand);
         if (held.is(Items.BUCKET)) return false;
-        if (held.is(Items.GLASS_BOTTLE)) return true;
+        if (held.is(Items.GLASS_BOTTLE)) return !kind.equals("lava");
         //? if fabric {
         Storage<FluidVariant> storage = ContainerItemContext.forPlayerInteraction(player, hand).find(FluidStorage.ITEM);
         if (storage == null) return false;
@@ -58,7 +58,7 @@ public final class MilkContainerTransfer {
     public static boolean fill(Player player, InteractionHand hand, String kind) {
         if (!canFill(player, hand, kind)) return false;
         ItemStack held = player.getItemInHand(hand);
-        if (held.is(Items.GLASS_BOTTLE)) {
+        if (held.is(Items.GLASS_BOTTLE) && !kind.equals("lava")) {
             ContainerUtils.fillGlassBottle(player, hand, held,
                     new ItemStack(AnimalMilkContent.MILK_BOTTLE));
             return true;
@@ -82,15 +82,7 @@ public final class MilkContainerTransfer {
         source.fill(milk, FluidAction.EXECUTE);
         FluidStack moved = FluidUtil.tryFluidTransfer(handler, source, milk, true);
         if (moved.getAmount() != FluidType.BUCKET_VOLUME || !FluidStack.isSameFluidSameComponents(moved, milk)) return false;
-        if (!player.getAbilities().instabuild) {
-            ItemStack filled = handler.getContainer();
-            if (held.getCount() == 1) {
-                player.setItemInHand(hand, filled);
-            } else {
-                held.shrink(1);
-                ItemHandlerHelper.giveItemToPlayer(player, filled);
-            }
-        }
+        player.setItemInHand(hand, ItemUtils.createFilledResult(held, player, handler.getContainer()));
         return true;
         *///?}
     }
@@ -100,6 +92,7 @@ public final class MilkContainerTransfer {
     }
 
     private static Fluid fluid(String kind) {
+        if (kind.equals("lava")) return Fluids.LAVA;
         if (!kind.equals("generic")) return net.syrupstudios.animaniax.block.AnimalMilkFluids.source(kind);
         //? if fabric {
         for (String id : new String[] {"porting_lib:milk", "milk:still_milk"}) {

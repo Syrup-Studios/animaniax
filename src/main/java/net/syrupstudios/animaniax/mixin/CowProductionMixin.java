@@ -27,6 +27,29 @@ abstract class CowProductionMixin {
         Cow cow = (Cow) (Object) this;
         ItemStack held = player.getItemInHand(hand);
         AnimalReproductionState reproduction = (AnimalReproductionState) cow;
+        boolean purp = cow.getType() == EntityType.COW && !cow.isBaby() && cow.hasCustomName()
+                && cow.getCustomName().getString().trim().equalsIgnoreCase("purp");
+        AnimalCareState care = (AnimalCareState) cow;
+        boolean canProduce = care.animaniax$isContent() && reproduction.animaniax$isFemale()
+                && reproduction.animaniax$isLactating();
+        if (purp && canProduce && held.is(Items.BUCKET)) {
+            if (!cow.level().isClientSide) {
+                cow.playSound(net.minecraft.sounds.SoundEvents.COW_MILK, 1.0F, 1.0F);
+                care.animaniax$milk();
+                player.setItemInHand(hand, ItemUtils.createFilledResult(held, player, new ItemStack(Items.LAVA_BUCKET)));
+            }
+            cir.setReturnValue(InteractionResult.sidedSuccess(cow.level().isClientSide));
+            return;
+        }
+        if (purp && canProduce && !held.is(Items.BUCKET) && !held.is(Items.GLASS_BOTTLE)
+                && MilkContainerTransfer.canFill(player, hand, "lava")) {
+            if (!cow.level().isClientSide && MilkContainerTransfer.fill(player, hand, "lava")) {
+                cow.playSound(net.minecraft.sounds.SoundEvents.COW_MILK, 1.0F, 1.0F);
+                care.animaniax$milk();
+            }
+            cir.setReturnValue(InteractionResult.sidedSuccess(cow.level().isClientSide));
+            return;
+        }
         if (!held.is(Items.BUCKET) && !cow.isBaby() && cow.getType() == EntityType.COW) {
             String kind = switch (((CowBreedState) cow).animaniax$getBreed()) {
                 case "Friesian" -> "friesian";
@@ -35,7 +58,6 @@ abstract class CowProductionMixin {
                 default -> "generic";
             };
             if (kind != null && MilkContainerTransfer.canFill(player, hand, kind)) {
-                AnimalCareState care = (AnimalCareState) cow;
                 if (!care.animaniax$isContent() || !reproduction.animaniax$isFemale()
                         || !reproduction.animaniax$isLactating()) {
                     if (!cow.level().isClientSide) {

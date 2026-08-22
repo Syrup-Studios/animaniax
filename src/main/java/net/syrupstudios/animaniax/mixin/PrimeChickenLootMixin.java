@@ -49,12 +49,7 @@ abstract class PrimeChickenLootMixin {
             int count = 1 + (goat.getRandom().nextBoolean() ? 1 : 0);
             if (care.animaniax$isFed() && goat.getRandom().nextBoolean()) count++;
             if (care.animaniax$isWatered() && goat.getRandom().nextBoolean()) count++;
-            int looting = 0;
-            if (params.getParamOrNull(LootContextParams.ATTACKING_ENTITY) instanceof LivingEntity killer) {
-                looting = EnchantmentHelper.getEnchantmentLevel(
-                        killer.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.LOOTING),
-                        killer);
-            }
+            int looting = animaniax$lootingLevel(params);
             count += Math.round(looting * goat.getRandom().nextFloat());
             ItemStack meat = new ItemStack(primeBreed
                     ? goat.isOnFire() ? GoatMeatContent.COOKED_PRIME_CHEVON : GoatMeatContent.RAW_PRIME_CHEVON
@@ -69,17 +64,24 @@ abstract class PrimeChickenLootMixin {
             };
             int careBonus = cow.isBaby() ? 0 : animaniax$careMeatBonus(cow);
             int[] bonusRemaining = {careBonus};
+            int looting = animaniax$lootingLevel(params);
             boolean[] meatDropped = {false};
             table.getRandomItems(params, seed, stack -> {
                 if (stack.is(Items.BEEF) || stack.is(Items.COOKED_BEEF)) {
                     if (cow.isBaby()) return;
                     meatDropped[0] = true;
-                    stack.grow(bonusRemaining[0]);
+                    stack.setCount(1 + cow.getRandom().nextInt(2)
+                            + Math.round(looting * cow.getRandom().nextFloat()) + bonusRemaining[0]);
                     bonusRemaining[0] = 0;
                     drop.accept(primeBreed ? new ItemStack(stack.is(Items.COOKED_BEEF) || cow.isOnFire()
                             ? PrimeMeatContent.COOKED_PRIME_BEEF : PrimeMeatContent.RAW_PRIME_BEEF, stack.getCount()) : stack);
-                } else drop.accept(stack);
+                } else if (!(stack.is(Items.LEATHER) && !cow.isBaby())) drop.accept(stack);
             });
+            if (!cow.isBaby()) {
+                int leather = cow.getRandom().nextBoolean() ? 1 : 0;
+                if (looting > 0) leather += Math.round(looting * cow.getRandom().nextFloat());
+                if (leather > 0) drop.accept(new ItemStack(Items.LEATHER, leather));
+            }
             if (!cow.isBaby() && !meatDropped[0] && careBonus > 0) {
                 drop.accept(new ItemStack(primeBreed
                         ? cow.isOnFire() ? PrimeMeatContent.COOKED_PRIME_BEEF : PrimeMeatContent.RAW_PRIME_BEEF
@@ -92,12 +94,14 @@ abstract class PrimeChickenLootMixin {
             boolean primeBreed = breed.equals("Duroc") || breed.equals("Hampshire") || breed.equals("Large Black") || breed.equals("Old Spot");
             int careBonus = pig.isBaby() ? 0 : animaniax$careMeatBonus(pig);
             int[] bonusRemaining = {careBonus};
+            int looting = animaniax$lootingLevel(params);
             boolean[] meatDropped = {false};
             table.getRandomItems(params, seed, stack -> {
                 if (stack.is(Items.PORKCHOP) || stack.is(Items.COOKED_PORKCHOP)) {
                     if (pig.isBaby()) return;
                     meatDropped[0] = true;
-                    stack.grow(bonusRemaining[0]);
+                    stack.setCount(1 + pig.getRandom().nextInt(2)
+                            + Math.round(looting * pig.getRandom().nextFloat()) + bonusRemaining[0]);
                     bonusRemaining[0] = 0;
                     drop.accept(primeBreed ? new ItemStack(stack.is(Items.COOKED_PORKCHOP) || pig.isOnFire()
                             ? PrimeMeatContent.COOKED_PRIME_PORK : PrimeMeatContent.RAW_PRIME_PORK, stack.getCount()) : stack);
@@ -190,26 +194,40 @@ abstract class PrimeChickenLootMixin {
         boolean primeBreed = !"Leghorn".equals(((ChickenBreedState) chicken).animaniax$getChickenBreed());
         boolean[] meatDropped = {false};
         table.getRandomItems(params, seed, stack -> {
-            if (primeBreed && (stack.is(Items.CHICKEN) || stack.is(Items.COOKED_CHICKEN))) {
+            if (stack.is(Items.FEATHER)) return;
+            if (stack.is(Items.CHICKEN) || stack.is(Items.COOKED_CHICKEN)) {
+                if (meatDropped[0] || chicken.isBaby()) return;
                 meatDropped[0] = true;
-                ItemStack prime = new ItemStack(stack.is(Items.COOKED_CHICKEN)
-                        || stack.is(Items.CHICKEN) && chicken.isOnFire()
-                        ? PrimeChickenContent.COOKED_PRIME_CHICKEN : PrimeChickenContent.RAW_PRIME_CHICKEN,
-                        stack.getCount());
-                drop.accept(prime);
+                boolean cooked = stack.is(Items.COOKED_CHICKEN) || chicken.isOnFire();
+                drop.accept(new ItemStack(primeBreed
+                        ? cooked ? PrimeChickenContent.COOKED_PRIME_CHICKEN : PrimeChickenContent.RAW_PRIME_CHICKEN
+                        : cooked ? Items.COOKED_CHICKEN : Items.CHICKEN, 1));
             } else {
                 drop.accept(stack);
             }
         });
         if (primeBreed && !chicken.isBaby() && !meatDropped[0]) {
-            chicken.spawnAtLocation(chicken.isOnFire() ? PrimeChickenContent.COOKED_PRIME_CHICKEN
-                    : PrimeChickenContent.RAW_PRIME_CHICKEN);
+            drop.accept(new ItemStack(chicken.isOnFire() ? PrimeChickenContent.COOKED_PRIME_CHICKEN
+                    : PrimeChickenContent.RAW_PRIME_CHICKEN));
         }
         if (!chicken.isBaby()) {
             AnimalCareState care = (AnimalCareState) chicken;
-            if (care.animaniax$isFed() && chicken.getRandom().nextBoolean()) chicken.spawnAtLocation(Items.FEATHER);
-            if (care.animaniax$isWatered() && chicken.getRandom().nextBoolean()) chicken.spawnAtLocation(Items.FEATHER);
+            int feathers = chicken.getRandom().nextBoolean() ? 1 : 0;
+            int looting = animaniax$lootingLevel(params);
+            feathers += Math.round(looting * chicken.getRandom().nextFloat());
+            if (care.animaniax$isFed() && chicken.getRandom().nextBoolean()) feathers++;
+            if (care.animaniax$isWatered() && chicken.getRandom().nextBoolean()) feathers++;
+            if (feathers > 0) drop.accept(new ItemStack(Items.FEATHER, feathers));
         }
+    }
+
+    private static int animaniax$lootingLevel(LootParams params) {
+        if (params.getParamOrNull(LootContextParams.ATTACKING_ENTITY) instanceof LivingEntity killer) {
+            return EnchantmentHelper.getEnchantmentLevel(
+                    killer.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.LOOTING),
+                    killer);
+        }
+        return 0;
     }
 
     private static int animaniax$careMeatBonus(LivingEntity animal) {

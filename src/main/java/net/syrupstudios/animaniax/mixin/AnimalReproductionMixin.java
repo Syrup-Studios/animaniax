@@ -2,7 +2,10 @@ package net.syrupstudios.animaniax.mixin;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -27,6 +30,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Animal.class)
 abstract class AnimalReproductionMixin implements AnimalReproductionState, AnimalSterilizationState {
+    @Unique private static final TagKey<EntityType<?>> animaniax$birthBreedInheritance = TagKey.create(
+            Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath("animaniax", "birth_breed_inheritance"));
     @Unique private boolean animaniax$sexSet;
     @Unique private boolean animaniax$female;
     @Unique private boolean animaniax$hasGivenBirth;
@@ -88,10 +93,22 @@ abstract class AnimalReproductionMixin implements AnimalReproductionState, Anima
             }
             return;
         }
-        Entity baby = EntityType.loadEntityRecursive(babyData, level, entity -> entity);
+        CompoundTag entityData = babyData.copy();
+        entityData.remove("AnimaniaxBreedResolved");
+        Entity baby = EntityType.loadEntityRecursive(entityData, level, entity -> entity);
         if (baby == null) {
             animaniax$gestation = 1;
             return;
+        }
+        if (animaniax$hasPregnancyBreed(animal) && !babyData.getBoolean("AnimaniaxBreedResolved")) {
+            Animal sire = animaniax$resolveSire(animal, level);
+            AnimalProfile.inheritPregnancyBreed(baby, animal, sire == null ? animal : sire);
+            babyData = baby.saveWithoutId(new CompoundTag());
+            babyData.putString("id", EntityType.getKey(baby.getType()).toString());
+            babyData.putUUID("UUID", baby.getUUID());
+            babyData.putUUID("AnimaniaxMotherUUID", animal.getUUID());
+            babyData.putBoolean("AnimaniaxBreedResolved", true);
+            animaniax$babies.set(0, babyData);
         }
         baby.setPos(animal.getX(), animal.getY(), animal.getZ());
         baby.setDeltaMovement(0, 0, 0);
@@ -354,6 +371,26 @@ abstract class AnimalReproductionMixin implements AnimalReproductionState, Anima
     @Unique private static boolean animaniax$isSleepingForBreeding(Animal animal) {
         return animal instanceof AnimalSleepState sleepState && sleepState.animaniax$isSleeping()
                 || animal.isSleeping();
+    }
+
+    @Unique private static boolean animaniax$hasPregnancyBreed(Animal animal) {
+        return animal.getType().is(animaniax$birthBreedInheritance);
+    }
+
+    @Unique private Animal animaniax$resolveSire(Animal mother, ServerLevel level) {
+        UUID mateId;
+        try {
+            mateId = UUID.fromString(animaniax$mateId);
+        } catch (IllegalArgumentException exception) {
+            return null;
+        }
+        AABB bounds = mother.getBoundingBox().inflate(30.0);
+        for (Animal candidate : level.getEntitiesOfClass(Animal.class, bounds,
+                animal -> animal.isAlive() && animal.getType() == mother.getType()
+                        && animal.getUUID().equals(mateId))) {
+            return candidate;
+        }
+        return null;
     }
 
     @Unique private void animaniax$startFertilityCooldown(Animal animal) {

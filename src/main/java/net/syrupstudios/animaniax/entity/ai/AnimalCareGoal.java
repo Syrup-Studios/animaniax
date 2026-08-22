@@ -21,7 +21,6 @@ import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.syrupstudios.animaniax.entity.AnimalCareState;
 import net.syrupstudios.animaniax.entity.AnimalProfile;
 import net.syrupstudios.animaniax.entity.AnimalProfile.Capability;
-import net.syrupstudios.animaniax.entity.AnimalCareHelper;
 import net.syrupstudios.animaniax.entity.AnimalSleepState;
 import net.syrupstudios.animaniax.block.TroughBlock;
 import net.syrupstudios.animaniax.config.AnimalCareConfig;
@@ -95,10 +94,10 @@ public final class AnimalCareGoal extends Goal {
                 case SEEDS -> animaniax$findSeeds();
                     default -> throw new IllegalStateException();
             };
-            if (need != Need.WATER) scanAtTick = AnimalCareHelper.nextScanTick(mob, 40);
+            if (need != Need.WATER) scanAtTick = mob.tickCount + 40;
             return target != null;
         }
-        if (!AnimalCareHelper.canStartCare(mob, animaniax$needsCare(), ((AnimalSleepState) mob).animaniax$isSleeping())) return false;
+        if (!animaniax$needsCare() || mob.isVehicle() || mob.isPassenger() || mob.isSleeping() || ((AnimalSleepState) mob).animaniax$isSleeping()) return false;
         if (mob.tickCount < scanAtTick) return false;
         target = switch (need) {
             case WATER -> animaniax$findWaterApproach();
@@ -107,7 +106,7 @@ public final class AnimalCareGoal extends Goal {
             case MUD -> animaniax$findMud();
             case TRUFFLE -> animaniax$findTruffle();
         };
-        scanAtTick = AnimalCareHelper.nextScanTick(mob, 40);
+        scanAtTick = mob.tickCount + 40;
         return target != null;
     }
 
@@ -232,7 +231,7 @@ public final class AnimalCareGoal extends Goal {
 
     private BlockPos animaniax$findWaterApproach() {
             BlockPos origin = mob.blockPosition();
-            int range = AnimalCareHelper.clampRange(AnimalCareConfig.aiBlockSearchRange);
+            int range = AnimalCareConfig.aiBlockSearchRange;
             BlockPos bestSource = null;
             BlockPos bestApproach = null;
             double bestDist = Double.MAX_VALUE;
@@ -296,7 +295,7 @@ public final class AnimalCareGoal extends Goal {
 
     private BlockPos animaniax$findTroughFood() {
             BlockPos origin = mob.blockPosition();
-            int range = AnimalCareHelper.clampRange(AnimalCareConfig.aiBlockSearchRange);
+            int range = AnimalCareConfig.aiBlockSearchRange;
             BlockPos bestSource = null;
             BlockPos bestApproach = null;
             double bestDist = Double.MAX_VALUE;
