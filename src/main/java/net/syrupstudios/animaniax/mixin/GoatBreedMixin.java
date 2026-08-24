@@ -4,6 +4,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.syrupstudios.animaniax.config.AnimalCareConfig;
+import net.syrupstudios.animaniax.entity.GoatBreedSyncedState;
 import net.syrupstudios.animaniax.entity.GoatBreedState;
 import net.syrupstudios.animaniax.entity.GoatFaintingControl;
 import net.syrupstudios.animaniax.entity.GoatFaintingState;
@@ -40,6 +41,7 @@ abstract class GoatBreedMixin implements GoatBreedState, GoatFaintingControl {
         if (((Mob) (Object) this).getType() == EntityType.GOAT) {
             if (tag.contains("AnimaniaxGoatBreed")) animaniax$setGoatBreed(tag.getString("AnimaniaxGoatBreed"));
             animaniax$sheared = tag.getBoolean("AnimaniaxGoatSheared");
+            animaniax$syncSheared(animaniax$sheared);
             animaniax$woolRegrowthTimer = tag.contains("AnimaniaxGoatWoolRegrowthTimer")
                     ? Math.max(0, tag.getInt("AnimaniaxGoatWoolRegrowthTimer"))
                     : animaniax$sheared && "Angora".equals(animaniax$goatBreed)
@@ -76,13 +78,34 @@ abstract class GoatBreedMixin implements GoatBreedState, GoatFaintingControl {
         mob.setNoAi(true);
     }
 
-    @Override @Unique public String animaniax$getGoatBreed() { return animaniax$goatBreed; }
-    @Override @Unique public boolean animaniax$isSheared() { return animaniax$sheared; }
+    @Override @Unique public String animaniax$getGoatBreed() {
+        Mob mob = (Mob) (Object) this;
+        return mob.level().isClientSide && mob instanceof GoatBreedSyncedState state
+                ? state.animaniax$getSyncedGoatBreed() : animaniax$goatBreed;
+    }
+    @Override @Unique public boolean animaniax$isSheared() {
+        Mob mob = (Mob) (Object) this;
+        return mob.level().isClientSide && mob instanceof GoatBreedSyncedState state
+                ? state.animaniax$getSyncedGoatSheared() : animaniax$sheared;
+    }
     @Override @Unique public void animaniax$setSheared(boolean sheared) {
         animaniax$sheared = sheared;
+        animaniax$syncSheared(sheared);
         if (!sheared) animaniax$woolRegrowthTimer = 0;
         else if ("Angora".equals(animaniax$goatBreed))
             animaniax$woolRegrowthTimer = animaniax$newWoolRegrowthTimer((Mob) (Object) this);
+    }
+
+    @Unique private void animaniax$syncBreed(String breed) {
+        Mob mob = (Mob) (Object) this;
+        if (mob.getType() == EntityType.GOAT && mob instanceof GoatBreedSyncedState state)
+            state.animaniax$setSyncedGoatBreed(breed);
+    }
+
+    @Unique private void animaniax$syncSheared(boolean sheared) {
+        Mob mob = (Mob) (Object) this;
+        if (mob.getType() == EntityType.GOAT && mob instanceof GoatBreedSyncedState state)
+            state.animaniax$setSyncedGoatSheared(sheared);
     }
 
     @Unique private static int animaniax$newWoolRegrowthTimer(Mob mob) {
@@ -98,9 +121,11 @@ abstract class GoatBreedMixin implements GoatBreedState, GoatFaintingControl {
         for (String validBreed : ANIMANIAX$GOAT_BREEDS) {
             if (validBreed.equals(breed)) {
                 animaniax$goatBreed = validBreed;
+                animaniax$syncBreed(validBreed);
                 return;
             }
         }
         animaniax$goatBreed = "Alpine";
+        animaniax$syncBreed("Alpine");
     }
 }

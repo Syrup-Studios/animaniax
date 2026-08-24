@@ -17,6 +17,7 @@
     "CowBreedMixin",
     "CowNaturalBreedMixin",
     "GoatBreedMixin",
+    "GoatBreedDataMixin",
     "GoatFaintingCollisionMixin",
     "GoatFaintingDataMixin",
     "GoatNaturalBreedMixin",
@@ -35,7 +36,8 @@
     "SeedPilePlacementMixin"
   ],
   "client": [
-    "FaintingGoatPoseMixin"
+    "FaintingGoatPoseMixin",
+    "GoatRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1
