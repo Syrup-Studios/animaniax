@@ -11,6 +11,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.entity.SpawnPlacementTypes;
+import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.SpawnEggItem;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
@@ -19,6 +22,7 @@ import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.fluid.base.FullItemFluidStorage;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.storage.LevelResource;
 import net.syrupstudios.animaniax.config.AnimalCareConfig;
 import net.syrupstudios.animaniax.block.NestContent;
@@ -39,6 +43,7 @@ import net.syrupstudios.animaniax.item.GoatMeatContent;
 import net.syrupstudios.animaniax.item.PrimeRabbitContent;
 import net.syrupstudios.animaniax.item.PrimeMeatContent;
 import net.syrupstudios.animaniax.block.SheepWoolContent;
+import net.syrupstudios.animaniax.entity.DraftHorseContent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -79,12 +84,18 @@ public final class FabricEntrypoint implements ModInitializer {
         GoatMeatContent.registerFabric();
         PrimeRabbitContent.registerFabric();
         PrimeMeatContent.registerFabric();
+        DraftHorseContent.registerFabric();
+        SpawnPlacements.register(DraftHorseContent.DRAFT_HORSE, SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules);
         BiomeModifications.addSpawn(BiomeSelectors.tag(TagKey.create(Registries.BIOME,
                 ResourceLocation.fromNamespaceAndPath("animaniax", "cow_spawns"))),
                 MobCategory.CREATURE, EntityType.COW, 8, 4, 4);
         BiomeModifications.addSpawn(BiomeSelectors.tag(TagKey.create(Registries.BIOME,
                 ResourceLocation.fromNamespaceAndPath("animaniax", "goat_spawns"))),
                 MobCategory.CREATURE, EntityType.GOAT, 8, 2, 4);
+        BiomeModifications.addSpawn(BiomeSelectors.tag(TagKey.create(Registries.BIOME,
+                DraftHorseContent.id("draft_horse_spawns"))), MobCategory.CREATURE,
+                DraftHorseContent.DRAFT_HORSE, 8, 1, 2);
         ServerLifecycleEvents.SERVER_STARTING.register(server -> {
             AnimalCareConfig.load(server.getWorldPath(LevelResource.ROOT).resolve("serverconfig/animaniax.properties"));
             TroughContent.registerWaterBucketBehavior();

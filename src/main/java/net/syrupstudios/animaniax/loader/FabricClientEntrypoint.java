@@ -4,6 +4,9 @@ package net.syrupstudios.animaniax.loader;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;
 import net.fabricmc.fabric.api.client.render.fluid.v1.SimpleFluidRenderHandler;
+import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
+import net.minecraft.client.renderer.entity.HorseRenderer;
+import net.syrupstudios.animaniax.entity.DraftHorseContent;
 
 public final class FabricClientEntrypoint implements ClientModInitializer {
     @Override
@@ -20,6 +23,7 @@ public final class FabricClientEntrypoint implements ClientModInitializer {
                 net.syrupstudios.animaniax.block.AnimalMilkFluids.SHEEP_FLOWING);
         registerMilk("generic", net.syrupstudios.animaniax.block.AnimalMilkFluids.GENERIC_SOURCE,
                 net.syrupstudios.animaniax.block.AnimalMilkFluids.GENERIC_FLOWING);
+        EntityRendererRegistry.register(DraftHorseContent.DRAFT_HORSE, HorseRenderer::new);
     }
 
     private static void registerMilk(String kind, net.minecraft.world.level.material.Fluid source,

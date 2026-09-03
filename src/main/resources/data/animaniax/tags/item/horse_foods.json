@@ -1,0 +1,20 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:wheat",
+    "minecraft:apple",
+    "minecraft:carrot",
+    {
+      "id": "harvestcraft:barleyitem",
+      "required": false
+    },
+    {
+      "id": "harvestcraft:oatsitem",
+      "required": false
+    },
+    {
+      "id": "harvestcraft:ryeitem",
+      "required": false
+    }
+  ]
+}

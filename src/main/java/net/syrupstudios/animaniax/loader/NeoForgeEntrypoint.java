@@ -10,9 +10,13 @@ import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
+import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.storage.LevelResource;
 import net.syrupstudios.animaniax.config.AnimalCareConfig;
+import net.syrupstudios.animaniax.entity.DraftHorseContent;
+import net.syrupstudios.animaniax.entity.DraftHorseEntity;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.block.Block;
@@ -81,6 +85,7 @@ public final class NeoForgeEntrypoint {
     private static final net.neoforged.neoforge.registries.DeferredHolder<FluidType, FluidType> GOAT_MILK_TYPE = registerMilkType("goat");
     private static final net.neoforged.neoforge.registries.DeferredHolder<FluidType, FluidType> SHEEP_MILK_TYPE = registerMilkType("sheep");
     private static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(Registries.RECIPE_SERIALIZER, "animaniax");
+    private static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(Registries.ENTITY_TYPE, "animaniax");
 
     public NeoForgeEntrypoint(IEventBus modBus) {
         net.neoforged.neoforge.common.NeoForgeMod.enableMilkFluid();
@@ -91,6 +96,9 @@ public final class NeoForgeEntrypoint {
         registerMilkFluid("goat");
         registerMilkFluid("sheep");
         FLUIDS.register(modBus);
+        ENTITY_TYPES.register("draft_horse", () -> DraftHorseContent.DRAFT_HORSE);
+        ITEMS.register("draft_horse_spawn_egg", () -> DraftHorseContent.DRAFT_HORSE_SPAWN_EGG);
+        modBus.addListener(this::registerEntityAttributes);
         modBus.addListener(this::addCreativeItems);
         BLOCKS.register("salt_lick", () -> SaltLickContent.BLOCK);
         BLOCKS.register("dorset_brown_wool", () -> SheepWoolContent.DORSET_BROWN_BLOCK);
@@ -197,6 +205,7 @@ public final class NeoForgeEntrypoint {
         ITEMS.register(modBus);
         BLOCK_ENTITIES.register(modBus);
         RECIPE_SERIALIZERS.register(modBus);
+        ENTITY_TYPES.register(modBus);
         NeoForge.EVENT_BUS.addListener((ServerAboutToStartEvent event) -> {
             AnimalCareConfig.load(event.getServer().getWorldPath(LevelResource.ROOT).resolve("serverconfig/animaniax.properties"));
         });
@@ -211,6 +220,10 @@ public final class NeoForgeEntrypoint {
         FLUIDS.register("milk_" + kind, () -> net.syrupstudios.animaniax.block.AnimalMilkFluids.source(kind));
         FLUIDS.register("flowing_milk_" + kind, () -> net.syrupstudios.animaniax.block.AnimalMilkFluids.flowing(kind));
         BLOCKS.register("milk_" + kind, () -> net.syrupstudios.animaniax.block.AnimalMilkFluids.block(kind));
+    }
+
+    private void registerEntityAttributes(EntityAttributeCreationEvent event) {
+        event.put(DraftHorseContent.DRAFT_HORSE, DraftHorseEntity.createAttributes().build());
     }
 
     private void addCreativeItems(BuildCreativeModeTabContentsEvent event) {

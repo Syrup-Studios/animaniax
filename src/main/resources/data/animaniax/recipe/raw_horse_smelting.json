@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "item": "animaniax:raw_horse"
+  },
+  "result": {
+    "id": "animaniax:cooked_horse"
+  },
+  "experience": 0.3,
+  "cookingtime": 200
+}

@@ -1,0 +1,12 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": "#animaniax:draft_horse_spawns",
+  "spawners": [
+    {
+      "type": "animaniax:draft_horse",
+      "weight": 8,
+      "minCount": 1,
+      "maxCount": 2
+    }
+  ]
+}
