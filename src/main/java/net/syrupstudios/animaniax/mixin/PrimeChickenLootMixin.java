@@ -12,6 +12,7 @@ import net.minecraft.world.entity.animal.goat.Goat;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.syrupstudios.animaniax.entity.DraftHorseEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -55,6 +56,18 @@ abstract class PrimeChickenLootMixin {
                     ? goat.isOnFire() ? GoatMeatContent.COOKED_PRIME_CHEVON : GoatMeatContent.RAW_PRIME_CHEVON
                     : goat.isOnFire() ? GoatMeatContent.COOKED_CHEVON : GoatMeatContent.RAW_CHEVON, count);
             drop.accept(meat);
+            return;
+        }
+        if (entity instanceof DraftHorseEntity horse) {
+            if (horse.isBaby()) return;
+            AnimalCareState care = (AnimalCareState) (Object) horse;
+            table.getRandomItems(params, seed, stack -> {
+                if (stack.is(PrimeMeatContent.RAW_HORSE) || stack.is(PrimeMeatContent.COOKED_HORSE)) {
+                    if (care.animaniax$isFed() && horse.getRandom().nextBoolean()) stack.grow(1);
+                    if (care.animaniax$isWatered() && horse.getRandom().nextBoolean()) stack.grow(1);
+                }
+                drop.accept(stack);
+            });
             return;
         }
         if (entity.getType() == EntityType.COW && entity instanceof Cow cow) {

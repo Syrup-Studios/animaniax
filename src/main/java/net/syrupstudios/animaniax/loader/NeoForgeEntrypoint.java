@@ -175,6 +175,7 @@ public final class NeoForgeEntrypoint {
         RECIPE_SERIALIZERS.register("slop", () -> SlopRecipe.SERIALIZER);
         RECIPE_SERIALIZERS.register("milk_conversion", () -> net.syrupstudios.animaniax.item.MilkConversionRecipe.SERIALIZER);
         ITEMS.register("carving_knife", () -> CheeseWedgeContent.KNIFE);
+        ITEMS.register("riding_crop", () -> net.syrupstudios.animaniax.item.RidingCropContent.RIDING_CROP);
         ITEMS.register("friesian_cheese_wedge", () -> CheeseWedgeContent.FRIESIAN_WEDGE);
         ITEMS.register("holstein_cheese_wedge", () -> CheeseWedgeContent.HOLSTEIN_WEDGE);
         ITEMS.register("jersey_cheese_wedge", () -> CheeseWedgeContent.JERSEY_WEDGE);

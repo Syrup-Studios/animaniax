@@ -17,6 +17,7 @@ import net.syrupstudios.animaniax.entity.AnimalProfile;
 import net.syrupstudios.animaniax.entity.AnimalProfile.Capability;
 import net.syrupstudios.animaniax.entity.AnimalSleepState;
 import net.syrupstudios.animaniax.config.AnimalCareConfig;
+import net.syrupstudios.animaniax.entity.DraftHorseContent;
 import net.syrupstudios.animaniax.entity.AnimalReproductionState;
 import net.syrupstudios.animaniax.entity.AnimalSterilizationState;
 import net.syrupstudios.animaniax.entity.ChickenSexState;
@@ -183,6 +184,8 @@ abstract class AnimalReproductionMixin implements AnimalReproductionState, Anima
             return;
         }
         if (!AnimalProfile.has(animal.getType(), Capability.GESTATION)) {
+            if (animal.getType() == DraftHorseContent.DRAFT_HORSE
+                    || other.getType() == DraftHorseContent.DRAFT_HORSE) cir.setReturnValue(false);
             return;
         }
         if (!(other instanceof AnimalReproductionState state)
