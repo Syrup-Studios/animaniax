@@ -11,6 +11,7 @@ import net.syrupstudios.animaniax.entity.AnimalCareState;
 import net.syrupstudios.animaniax.entity.AnimalSleepState;
 import net.syrupstudios.animaniax.entity.ChickenBreedState;
 import net.syrupstudios.animaniax.entity.ChickenSexState;
+import net.syrupstudios.animaniax.entity.PeafowlMorphState;
 
 public final class NestingGoal extends Goal {
     private final Chicken chicken;
@@ -136,6 +137,8 @@ public final class NestingGoal extends Goal {
     }
 
     private String animaniax$eggBreed() {
-        return ((ChickenBreedState) chicken).animaniax$getChickenBreed();
+        return chicken instanceof PeafowlMorphState peafowl
+                ? "peafowl:" + peafowl.animaniax$getMorph()
+                : ((ChickenBreedState) chicken).animaniax$getChickenBreed();
     }
 }

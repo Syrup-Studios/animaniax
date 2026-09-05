@@ -17,6 +17,9 @@ import net.syrupstudios.animaniax.config.AnimalCareConfig;
 import net.syrupstudios.animaniax.entity.ChickenSexState;
 import net.syrupstudios.animaniax.entity.AnimalSterilizationState;
 import net.syrupstudios.animaniax.entity.ChickenBreedState;
+import net.syrupstudios.animaniax.entity.PeafowlEntity;
+import net.syrupstudios.animaniax.entity.PeafowlMorphState;
+import net.syrupstudios.animaniax.item.PeafowlContent;
 import net.syrupstudios.animaniax.item.BrownEggContent;
 import java.util.ArrayList;
 import java.util.List;
@@ -77,7 +80,7 @@ public final class NestBlockEntity extends BlockEntity {
 
     private static ItemStack eggStackForBreed(String breed) {
         if (BrownEggContent.isBrownBreed(breed)) return new ItemStack(BrownEggContent.BROWN_EGG);
-        return new ItemStack(net.minecraft.world.item.Items.EGG);
+        return PeafowlContent.eggForBreed(breed);
     }
 
     public void tryHatch(ServerLevel server, BlockPos pos, BlockState state, RandomSource random) {
@@ -86,10 +89,11 @@ public final class NestBlockEntity extends BlockEntity {
         syncEggMetadata(eggCount);
 
         String mother = eggMothers.get(0);
+        boolean peafowlEgg = mother.startsWith("peafowl:");
         AABB maleRange = new AABB(pos.getX() - 3, pos.getY() - 3, pos.getZ() - 3,
                 pos.getX() + 3, pos.getY() + 3, pos.getZ() + 3);
         List<Chicken> males = server.getEntitiesOfClass(Chicken.class, maleRange, chicken ->
-                chicken.getType() == EntityType.CHICKEN && !chicken.isBaby()
+                (chicken.getType() == PeafowlEntity.TYPE) == peafowlEgg && !chicken.isBaby()
                         && !((ChickenSexState) chicken).animaniax$isHen()
                         && !((AnimalSterilizationState) chicken).animaniax$isSterilized());
         if (males.isEmpty()) return;
@@ -97,16 +101,21 @@ public final class NestBlockEntity extends BlockEntity {
         AABB populationRange = new AABB(pos.getX() - 15, pos.getY() - 15, pos.getZ() - 15,
                 pos.getX() + 15, pos.getY() + 15, pos.getZ() + 15);
         long population = server.getEntitiesOfClass(Chicken.class, populationRange,
-                chicken -> chicken.getType() == EntityType.CHICKEN).size();
+                chicken -> (chicken.getType() == PeafowlEntity.TYPE) == peafowlEgg).size();
         if (population >= AnimalCareConfig.entityBreedingLimit) return;
 
         for (Chicken rooster : males) {
             if (random.nextInt(AnimalCareConfig.eggHatchChance) != 0) continue;
-            String sire = ((ChickenBreedState) rooster).animaniax$getChickenBreed();
-            Chicken chick = EntityType.CHICKEN.create(server);
+            String sire = peafowlEgg ? "peafowl:" + ((PeafowlMorphState) rooster).animaniax$getMorph()
+                    : ((ChickenBreedState) rooster).animaniax$getChickenBreed();
+            Chicken chick = peafowlEgg ? PeafowlEntity.TYPE.create(server) : EntityType.CHICKEN.create(server);
             if (chick == null) return;
 
-            if (UNKNOWN_BREED.equals(mother)) {
+            if (peafowlEgg) {
+                String motherMorph = mother.substring("peafowl:".length());
+                String fatherMorph = sire.substring("peafowl:".length());
+                ((PeafowlMorphState) chick).animaniax$setMorph(random.nextBoolean() ? motherMorph : fatherMorph);
+            } else if (UNKNOWN_BREED.equals(mother)) {
                 ((ChickenBreedState) chick).animaniax$setChickenBreed(sire);
             } else {
                 ((ChickenBreedState) chick).animaniax$setChickenBreed(random.nextBoolean() ? mother : sire);

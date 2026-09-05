@@ -15,6 +15,8 @@ import net.syrupstudios.animaniax.entity.ChickenBreedState;
 import net.syrupstudios.animaniax.entity.ChickenFlockSpawner;
 import net.syrupstudios.animaniax.entity.ChickenFlockState;
 import net.syrupstudios.animaniax.config.AnimalCareConfig;
+import net.syrupstudios.animaniax.entity.PeafowlMorphState;
+import net.syrupstudios.animaniax.item.PeafowlContent;
 import net.syrupstudios.animaniax.item.BrownEggContent;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -104,6 +106,16 @@ abstract class ChickenProductionMixin implements ChickenSexState, ChickenBreedSt
         if (animaniax$nestLayCooldown < 0) animaniax$nestLayCooldown = AnimalCareConfig.laidTimer / 2 + chicken.getRandom().nextInt(100);
         if (animaniax$nestLayCooldown > 0) animaniax$nestLayCooldown--;
 
+        if (chicken instanceof PeafowlMorphState peafowl) {
+            if (AnimalCareConfig.birdsDropFeathers && !animaniax$isHen()) {
+                if (animaniax$featherTicks < 0) animaniax$featherTicks = AnimalCareConfig.featherTimer;
+                if (--animaniax$featherTicks <= 0) {
+                    chicken.spawnAtLocation(PeafowlContent.feather(peafowl.animaniax$getMorph()));
+                    animaniax$featherTicks = AnimalCareConfig.featherTimer;
+                }
+            }
+            return;
+        }
         long dayTime = Math.floorMod(chicken.level().getDayTime(), 24_000L);
         if (!animaniax$isHen()) {
             if (animaniax$crowTicks < 0) animaniax$crowTicks = 200 + chicken.getRandom().nextInt(200);
@@ -143,6 +155,7 @@ abstract class ChickenProductionMixin implements ChickenSexState, ChickenBreedSt
     private ItemEntity animaniax$layEgg(Chicken chicken, ItemLike item) {
         if (item != Items.EGG) return chicken.spawnAtLocation(item);
         if (!animaniax$isHen()) return null;
+        if (chicken instanceof PeafowlMorphState) return null;
         if (!AnimalCareConfig.chickensDropEggs) return null;
         return chicken.spawnAtLocation(BrownEggContent.isBrownBreed(((ChickenBreedState) chicken).animaniax$getChickenBreed())
                 ? BrownEggContent.BROWN_EGG : item);

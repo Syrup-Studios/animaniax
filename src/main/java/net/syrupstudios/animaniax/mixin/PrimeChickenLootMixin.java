@@ -26,6 +26,9 @@ import net.syrupstudios.animaniax.item.PrimeChickenContent;
 import net.syrupstudios.animaniax.entity.SheepBreedState;
 import net.syrupstudios.animaniax.entity.GoatBreedState;
 import net.syrupstudios.animaniax.entity.RabbitBreedState;
+import net.syrupstudios.animaniax.entity.PeafowlMorphState;
+import net.syrupstudios.animaniax.entity.ChickenSexState;
+import net.syrupstudios.animaniax.item.PeafowlContent;
 import net.syrupstudios.animaniax.item.PrimeMuttonContent;
 import net.syrupstudios.animaniax.item.PrimeRabbitContent;
 import net.syrupstudios.animaniax.item.PrimeMeatContent;
@@ -68,6 +71,37 @@ abstract class PrimeChickenLootMixin {
                 }
                 drop.accept(stack);
             });
+            return;
+        }
+        if (entity instanceof PeafowlMorphState peafowl && entity instanceof Chicken chicken) {
+            if (chicken.isBaby()) return;
+            boolean prime = switch (peafowl.animaniax$getMorph()) {
+                case "Blue", "White", "Peach", "Purple" -> true;
+                default -> false;
+            };
+            boolean male = !((ChickenSexState) chicken).animaniax$isHen();
+            int[] feathers = {0};
+            table.getRandomItems(params, seed, stack -> {
+                if (stack.is(Items.CHICKEN) || stack.is(Items.COOKED_CHICKEN)) {
+                    drop.accept(new ItemStack(prime
+                            ? stack.is(Items.COOKED_CHICKEN) || chicken.isOnFire()
+                                ? PeafowlContent.COOKED_PRIME_PEACOCK : PeafowlContent.RAW_PRIME_PEACOCK
+                            : stack.is(Items.COOKED_CHICKEN) || chicken.isOnFire()
+                                ? PeafowlContent.COOKED_PEACOCK : PeafowlContent.RAW_PEACOCK,
+                            stack.getCount()));
+                } else if (stack.is(Items.FEATHER)) {
+                    if (male) feathers[0] += stack.getCount();
+                } else {
+                    drop.accept(stack);
+                }
+            });
+            if (male) {
+                AnimalCareState care = (AnimalCareState) chicken;
+                if (care.animaniax$isFed() && chicken.getRandom().nextBoolean()) feathers[0]++;
+                if (care.animaniax$isWatered() && chicken.getRandom().nextBoolean()) feathers[0]++;
+                if (feathers[0] > 0)
+                    drop.accept(new ItemStack(PeafowlContent.feather(peafowl.animaniax$getMorph()), feathers[0]));
+            }
             return;
         }
         if (entity.getType() == EntityType.COW && entity instanceof Cow cow) {
