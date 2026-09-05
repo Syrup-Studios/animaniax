@@ -17,6 +17,7 @@ import net.minecraft.world.level.storage.LevelResource;
 import net.syrupstudios.animaniax.config.AnimalCareConfig;
 import net.syrupstudios.animaniax.entity.DraftHorseContent;
 import net.syrupstudios.animaniax.entity.DraftHorseEntity;
+import net.syrupstudios.animaniax.entity.PeafowlEntity;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.block.Block;
@@ -38,6 +39,7 @@ import net.syrupstudios.animaniax.item.AnimalMilkContent;
 import net.syrupstudios.animaniax.item.SlopContent;
 import net.syrupstudios.animaniax.item.SlopRecipe;
 import net.syrupstudios.animaniax.item.CheeseWedgeContent;
+import net.syrupstudios.animaniax.item.PeafowlContent;
 import net.syrupstudios.animaniax.item.BrownEggContent;
 import net.syrupstudios.animaniax.item.PrimeChickenContent;
 import net.syrupstudios.animaniax.item.PrimeMuttonContent;
@@ -98,6 +100,8 @@ public final class NeoForgeEntrypoint {
         FLUIDS.register(modBus);
         ENTITY_TYPES.register("draft_horse", () -> DraftHorseContent.DRAFT_HORSE);
         ITEMS.register("draft_horse_spawn_egg", () -> DraftHorseContent.DRAFT_HORSE_SPAWN_EGG);
+        ENTITY_TYPES.register("peafowl", () -> PeafowlEntity.TYPE);
+        ITEMS.register("peafowl_spawn_egg", () -> PeafowlEntity.SPAWN_EGG);
         modBus.addListener(this::registerEntityAttributes);
         modBus.addListener(this::addCreativeItems);
         BLOCKS.register("salt_lick", () -> SaltLickContent.BLOCK);
@@ -181,7 +185,20 @@ public final class NeoForgeEntrypoint {
         ITEMS.register("jersey_cheese_wedge", () -> CheeseWedgeContent.JERSEY_WEDGE);
         ITEMS.register("goat_cheese_wedge", () -> CheeseWedgeContent.GOAT_WEDGE);
         ITEMS.register("sheep_cheese_wedge", () -> CheeseWedgeContent.SHEEP_WEDGE);
+        ITEMS.register("raw_peacock", () -> PeafowlContent.RAW_PEACOCK);
+        ITEMS.register("cooked_peacock", () -> PeafowlContent.COOKED_PEACOCK);
+        ITEMS.register("raw_prime_peacock", () -> PeafowlContent.RAW_PRIME_PEACOCK);
+        ITEMS.register("cooked_prime_peacock", () -> PeafowlContent.COOKED_PRIME_PEACOCK);
+        ITEMS.register("peacock_egg_blue", () -> PeafowlContent.PEACOCK_EGG_BLUE);
+        ITEMS.register("peacock_egg_white", () -> PeafowlContent.PEACOCK_EGG_WHITE);
         ITEMS.register("brown_egg", () -> BrownEggContent.BROWN_EGG);
+        ITEMS.register("blue_peafowl_feather", () -> PeafowlContent.FEATHERS[0]);
+        ITEMS.register("white_peafowl_feather", () -> PeafowlContent.FEATHERS[1]);
+        ITEMS.register("taupe_peafowl_feather", () -> PeafowlContent.FEATHERS[2]);
+        ITEMS.register("purple_peafowl_feather", () -> PeafowlContent.FEATHERS[3]);
+        ITEMS.register("peach_peafowl_feather", () -> PeafowlContent.FEATHERS[4]);
+        ITEMS.register("opal_peafowl_feather", () -> PeafowlContent.FEATHERS[5]);
+        ITEMS.register("charcoal_peafowl_feather", () -> PeafowlContent.FEATHERS[6]);
         ITEMS.register("raw_prime_chicken", () -> PrimeChickenContent.RAW_PRIME_CHICKEN);
         ITEMS.register("cooked_prime_chicken", () -> PrimeChickenContent.COOKED_PRIME_CHICKEN);
         ITEMS.register("raw_prime_mutton", () -> PrimeMuttonContent.RAW_PRIME_MUTTON);
@@ -225,6 +242,7 @@ public final class NeoForgeEntrypoint {
 
     private void registerEntityAttributes(EntityAttributeCreationEvent event) {
         event.put(DraftHorseContent.DRAFT_HORSE, DraftHorseEntity.createAttributes().build());
+        event.put(PeafowlEntity.TYPE, PeafowlEntity.createAttributes().build());
     }
 
     private void addCreativeItems(BuildCreativeModeTabContentsEvent event) {

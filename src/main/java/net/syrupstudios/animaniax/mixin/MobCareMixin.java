@@ -42,6 +42,8 @@ import net.syrupstudios.animaniax.entity.PigBreedState;
 import net.syrupstudios.animaniax.entity.GoatBreedState;
 import net.syrupstudios.animaniax.entity.SheepBreedState;
 import net.syrupstudios.animaniax.entity.ChickenBreedState;
+import net.syrupstudios.animaniax.entity.PeafowlEntity;
+import net.syrupstudios.animaniax.entity.PeafowlMorphState;
 import net.syrupstudios.animaniax.entity.AnimalProfile;
 import net.syrupstudios.animaniax.entity.AnimalProfile.Capability;
 import net.syrupstudios.animaniax.entity.RabbitBreedState;
@@ -291,6 +293,7 @@ abstract class MobCareMixin implements AnimalCareState, AnimalSleepState, PigBre
                     + (mob.getType() == EntityType.PIG ? "Breed: " + animaniax$pigBreed + " | Mud: " + animaniax$mudEnrichment + "/100 | " : "")
                     + (mob.getType() == EntityType.SHEEP ? "Breed: " + ((SheepBreedState) mob).animaniax$getSheepBreed() + " | " : "")
                     + (mob.getType() == EntityType.CHICKEN ? "Breed: " + ((ChickenBreedState) mob).animaniax$getChickenBreed() + " | " : "")
+                    + (mob.getType() == PeafowlEntity.TYPE ? "Morph: " + ((PeafowlMorphState) mob).animaniax$getMorph() + " | " : "")
                     + (animaniax$isContent() ? "Content" : mob.getType() == EntityType.PIG
                             ? "Unhappy: feed, water, and mud access are needed for breeding"
                             : "Unhappy: feed and water to restore production");

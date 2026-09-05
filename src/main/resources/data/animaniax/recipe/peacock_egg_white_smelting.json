@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "item": "animaniax:peacock_egg_white"
+  },
+  "result": {
+    "id": "animaniax:plain_omelette"
+  },
+  "experience": 0.3,
+  "cookingtime": 200
+}

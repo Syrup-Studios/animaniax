@@ -110,6 +110,7 @@ public final class AnimalProfile {
                 Map.entry(EntityType.SHEEP, sleepProfile(caps(Capability.CARE, Capability.SLEEP, Capability.GROWTH, Capability.REPRODUCTIVE_INTERACTIONS, Capability.GESTATION, Capability.SALT_LICK_GOAL, Capability.GRASS_GOAL, Capability.HERDING_GOAL, Capability.NATURAL_GRAZING_GOAL, Capability.REMOVE_NATURAL_WATER), () -> troughDiet(Items.WHEAT), Profiles.stringBreed(EntityType.SHEEP, Profiles.SHEEP_BREED), Profiles::farmSleepBeds)),
                 Map.entry(EntityType.PIG, sleepProfile(caps(Capability.CARE, Capability.SLEEP, Capability.GROWTH, Capability.REPRODUCTIVE_INTERACTIONS, Capability.GESTATION, Capability.SALT_LICK_GOAL, Capability.GRASS_GOAL, Capability.PIG_ENRICHMENT_GOALS, Capability.NATURAL_GRAZING_GOAL, Capability.TROUGH_SLOP, Capability.REMOVE_NATURAL_WATER), () -> troughDiet(Items.CARROT, Items.POTATO, Items.POISONOUS_POTATO, Items.BEETROOT, Items.BREAD), Profiles.stringBreed(EntityType.PIG, Profiles.PIG_BREED), Profiles::farmSleepBeds)),
                 Map.entry(EntityType.CHICKEN, sleepProfile(caps(Capability.CARE, Capability.SLEEP, Capability.GROWTH, Capability.REPRODUCTIVE_INTERACTIONS, Capability.POULTRY_REPRODUCTION, Capability.SEED_GOAL, Capability.NESTING_GOAL), () -> troughDiet(50), Profiles::inheritChickenBreed, Profiles::farmSleepBeds)),
+                Map.entry(PeafowlEntity.TYPE, profile(caps(Capability.CARE, Capability.GROWTH, Capability.REPRODUCTIVE_INTERACTIONS, Capability.POULTRY_REPRODUCTION, Capability.SEED_GOAL, Capability.NESTING_GOAL), () -> troughDiet(50), Profiles::inheritPeafowlMorph)),
                 Map.entry(EntityType.RABBIT, sleepProfile(caps(Capability.CARE, Capability.SLEEP, Capability.GROWTH, Capability.REPRODUCTIVE_INTERACTIONS, Capability.GESTATION, Capability.GRASS_GOAL), () -> troughDiet(Items.WHEAT, Items.CARROT, Items.BEETROOT, Items.APPLE), Profiles.stringBreed(EntityType.RABBIT, Profiles.RABBIT_BREED), time -> (time > 20_000L && time < 24_000L) || (time > 10_000L && time < 15_000L), Profiles::farmSleepBeds)),
                 Map.entry(EntityType.GOAT, sleepProfile(caps(Capability.CARE, Capability.SLEEP, Capability.GROWTH, Capability.REPRODUCTIVE_INTERACTIONS, Capability.GESTATION, Capability.SALT_LICK_GOAL, Capability.GRASS_GOAL, Capability.HERDING_GOAL, Capability.NATURAL_GRAZING_GOAL, Capability.REMOVE_NATURAL_WATER), () -> troughDiet(Items.WHEAT, Items.APPLE), Profiles.stringBreed(EntityType.GOAT, Profiles.GOAT_BREED), Profiles::farmSleepBeds)),
                 Map.entry(DraftHorseContent.DRAFT_HORSE, sleepProfile(caps(Capability.CARE, Capability.SLEEP, Capability.GROWTH, Capability.REPRODUCTIVE_INTERACTIONS, Capability.GESTATION, Capability.SALT_LICK_GOAL, Capability.GRASS_GOAL, Capability.NATURAL_GRAZING_GOAL, Capability.REMOVE_NATURAL_WATER), () -> troughDiet(Items.WHEAT, Items.APPLE, Items.CARROT), null, Profiles::farmSleepBeds))
@@ -151,6 +152,14 @@ public final class AnimalProfile {
             if (stage == BreedStage.SPAWN_CHILD && first.getType() == EntityType.CHICKEN && second.getType() == EntityType.CHICKEN
                     && child instanceof ChickenBreedState c && first instanceof ChickenBreedState a && second instanceof ChickenBreedState b) {
                 c.animaniax$setChickenBreed(first.getRandom().nextBoolean() ? a.animaniax$getChickenBreed() : b.animaniax$getChickenBreed());
+            }
+        }
+
+        private static void inheritPeafowlMorph(Entity child, Animal first, Animal second, BreedStage stage, boolean useFirst) {
+            if (stage == BreedStage.SPAWN_CHILD && child instanceof PeafowlMorphState c
+                    && first.getType() == PeafowlEntity.TYPE && second.getType() == PeafowlEntity.TYPE
+                    && first instanceof PeafowlMorphState a && second instanceof PeafowlMorphState b) {
+                c.animaniax$setMorph(first.getRandom().nextBoolean() ? a.animaniax$getMorph() : b.animaniax$getMorph());
             }
         }
 

@@ -36,6 +36,7 @@ import net.syrupstudios.animaniax.item.TruffleContent;
 import net.syrupstudios.animaniax.item.AnimalMilkContent;
 import net.syrupstudios.animaniax.item.SlopContent;
 import net.syrupstudios.animaniax.item.CheeseWedgeContent;
+import net.syrupstudios.animaniax.item.PeafowlContent;
 import net.syrupstudios.animaniax.item.BrownEggContent;
 import net.syrupstudios.animaniax.item.PrimeChickenContent;
 import net.syrupstudios.animaniax.item.PrimeMuttonContent;
@@ -44,6 +45,7 @@ import net.syrupstudios.animaniax.item.PrimeRabbitContent;
 import net.syrupstudios.animaniax.item.PrimeMeatContent;
 import net.syrupstudios.animaniax.block.SheepWoolContent;
 import net.syrupstudios.animaniax.entity.DraftHorseContent;
+import net.syrupstudios.animaniax.entity.PeafowlEntity;
 import net.syrupstudios.animaniax.item.RidingCropContent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -80,6 +82,7 @@ public final class FabricEntrypoint implements ModInitializer {
         SlopContent.registerFabric();
         CheeseWedgeContent.registerFabric();
         RidingCropContent.registerFabric();
+        PeafowlContent.registerFabric();
         BrownEggContent.registerFabric();
         PrimeChickenContent.registerFabric();
         PrimeMuttonContent.registerFabric();
@@ -87,7 +90,10 @@ public final class FabricEntrypoint implements ModInitializer {
         PrimeRabbitContent.registerFabric();
         PrimeMeatContent.registerFabric();
         DraftHorseContent.registerFabric();
+        PeafowlEntity.registerFabric();
         SpawnPlacements.register(DraftHorseContent.DRAFT_HORSE, SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules);
+        SpawnPlacements.register(PeafowlEntity.TYPE, SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules);
         BiomeModifications.addSpawn(BiomeSelectors.tag(TagKey.create(Registries.BIOME,
                 ResourceLocation.fromNamespaceAndPath("animaniax", "cow_spawns"))),
@@ -98,6 +104,9 @@ public final class FabricEntrypoint implements ModInitializer {
         BiomeModifications.addSpawn(BiomeSelectors.tag(TagKey.create(Registries.BIOME,
                 DraftHorseContent.id("draft_horse_spawns"))), MobCategory.CREATURE,
                 DraftHorseContent.DRAFT_HORSE, 8, 1, 2);
+        BiomeModifications.addSpawn(BiomeSelectors.tag(TagKey.create(Registries.BIOME,
+                PeafowlEntity.id("peafowl_spawns"))), MobCategory.CREATURE,
+                PeafowlEntity.TYPE, 8, 1, 3);
         ServerLifecycleEvents.SERVER_STARTING.register(server -> {
             AnimalCareConfig.load(server.getWorldPath(LevelResource.ROOT).resolve("serverconfig/animaniax.properties"));
             TroughContent.registerWaterBucketBehavior();

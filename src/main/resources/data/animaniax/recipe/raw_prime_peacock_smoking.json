@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:smoking",
+  "ingredient": {
+    "item": "animaniax:raw_prime_peacock"
+  },
+  "result": {
+    "id": "animaniax:cooked_prime_peacock"
+  },
+  "experience": 0.3,
+  "cookingtime": 100
+}
