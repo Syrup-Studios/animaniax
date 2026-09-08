@@ -5,14 +5,18 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;
 import net.fabricmc.fabric.api.client.render.fluid.v1.SimpleFluidRenderHandler;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.minecraft.client.renderer.entity.HorseRenderer;
 import net.syrupstudios.animaniax.client.PeafowlRenderer;
 import net.syrupstudios.animaniax.entity.DraftHorseContent;
 import net.syrupstudios.animaniax.entity.PeafowlEntity;
+import net.syrupstudios.animaniax.item.AnimalSpawnEggContent;
+import net.syrupstudios.animaniax.item.AnimalSpawnEggItem;
 
 public final class FabricClientEntrypoint implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
+        ColorProviderRegistry.ITEM.register(AnimalSpawnEggItem::color, AnimalSpawnEggContent.ITEM);
         registerMilk("friesian", net.syrupstudios.animaniax.block.AnimalMilkFluids.FRIESIAN_SOURCE,
                 net.syrupstudios.animaniax.block.AnimalMilkFluids.FRIESIAN_FLOWING);
         registerMilk("holstein", net.syrupstudios.animaniax.block.AnimalMilkFluids.HOLSTEIN_SOURCE,

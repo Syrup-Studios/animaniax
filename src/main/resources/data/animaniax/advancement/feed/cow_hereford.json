@@ -1,0 +1,69 @@
+{
+  "criteria": {
+    "fed_juvenile": {
+      "trigger": "animaniax:feed_animal",
+      "conditions": {
+        "item": {
+          "items": "#minecraft:cow_food"
+        },
+        "entity": {
+          "type": "minecraft:cow",
+          "flags": {
+            "is_baby": true
+          },
+          "nbt": "{AnimaniaxCowBreed:\"Hereford\"}"
+        }
+      }
+    },
+    "fed_female": {
+      "trigger": "animaniax:feed_animal",
+      "conditions": {
+        "item": {
+          "items": "#minecraft:cow_food"
+        },
+        "entity": {
+          "type": "minecraft:cow",
+          "flags": {
+            "is_baby": false
+          },
+          "nbt": "{AnimaniaxCowBreed:\"Hereford\",AnimaniaxFemale:1b}"
+        }
+      }
+    },
+    "fed_male": {
+      "trigger": "animaniax:feed_animal",
+      "conditions": {
+        "item": {
+          "items": "#minecraft:cow_food"
+        },
+        "entity": {
+          "type": "minecraft:cow",
+          "flags": {
+            "is_baby": false
+          },
+          "nbt": "{AnimaniaxCowBreed:\"Hereford\",AnimaniaxFemale:0b}"
+        }
+      }
+    }
+  },
+  "parent": "animaniax:feed/root",
+  "display": {
+    "icon": {
+      "id": "minecraft:wheat"
+    },
+    "title": {
+      "translate": "advancements.animaniax.feed.cow_hereford.title"
+    },
+    "description": {
+      "translate": "advancements.animaniax.feed.cow_hereford.description"
+    },
+    "frame": "task"
+  },
+  "requirements": [
+    [
+      "fed_juvenile",
+      "fed_female",
+      "fed_male"
+    ]
+  ]
+}

@@ -360,9 +360,12 @@ abstract class MobCareMixin implements AnimalCareState, AnimalSleepState, PigBre
                 return;
             }
             if (needsCare) {
+                ItemStack feedItem = held.copy();
                 player.sendSystemMessage(net.minecraft.network.chat.Component.literal(animaniax$isContent()
                         ? "The animal is content and can produce again." : "The animal ate."));
                 if (!player.getAbilities().instabuild) held.shrink(1);
+                if (player instanceof net.minecraft.server.level.ServerPlayer serverPlayer)
+                    net.syrupstudios.animaniax.advancement.FeedAnimalTrigger.INSTANCE.trigger(serverPlayer, mob, feedItem);
                 animaniax$markHandFeedAfterSleepCheck(mob);
             }
             cir.setReturnValue(InteractionResult.SUCCESS);

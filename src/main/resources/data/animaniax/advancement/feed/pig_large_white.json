@@ -1,0 +1,69 @@
+{
+  "criteria": {
+    "fed_juvenile": {
+      "trigger": "animaniax:feed_animal",
+      "conditions": {
+        "item": {
+          "items": "#minecraft:pig_food"
+        },
+        "entity": {
+          "type": "minecraft:pig",
+          "flags": {
+            "is_baby": true
+          },
+          "nbt": "{AnimaniaxPigBreed:\"Large White\"}"
+        }
+      }
+    },
+    "fed_female": {
+      "trigger": "animaniax:feed_animal",
+      "conditions": {
+        "item": {
+          "items": "#minecraft:pig_food"
+        },
+        "entity": {
+          "type": "minecraft:pig",
+          "flags": {
+            "is_baby": false
+          },
+          "nbt": "{AnimaniaxPigBreed:\"Large White\",AnimaniaxFemale:1b}"
+        }
+      }
+    },
+    "fed_male": {
+      "trigger": "animaniax:feed_animal",
+      "conditions": {
+        "item": {
+          "items": "#minecraft:pig_food"
+        },
+        "entity": {
+          "type": "minecraft:pig",
+          "flags": {
+            "is_baby": false
+          },
+          "nbt": "{AnimaniaxPigBreed:\"Large White\",AnimaniaxFemale:0b}"
+        }
+      }
+    }
+  },
+  "parent": "animaniax:feed/root",
+  "display": {
+    "icon": {
+      "id": "minecraft:carrot"
+    },
+    "title": {
+      "translate": "advancements.animaniax.feed.pig_large_white.title"
+    },
+    "description": {
+      "translate": "advancements.animaniax.feed.pig_large_white.description"
+    },
+    "frame": "task"
+  },
+  "requirements": [
+    [
+      "fed_juvenile",
+      "fed_female",
+      "fed_male"
+    ]
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "parent": "animaniax:feed/root",
+  "display": {
+    "icon": {
+      "id": "minecraft:egg"
+    },
+    "title": {
+      "translate": "advancements.animaniax.feed.peafowl_purple.title"
+    },
+    "description": {
+      "translate": "advancements.animaniax.feed.peafowl_purple.description"
+    },
+    "frame": "task"
+  },
+  "criteria": {
+    "fed_peachick": {
+      "trigger": "animaniax:feed_animal",
+      "conditions": {
+        "item": {
+          "items": "#animaniax:poultry_foods"
+        },
+        "entity": {
+          "type": "animaniax:peafowl",
+          "flags": {
+            "is_baby": true
+          },
+          "nbt": "{AnimaniaxPeafowlMorph:\"Purple\"}"
+        }
+      }
+    },
+    "fed_peahen": {
+      "trigger": "animaniax:feed_animal",
+      "conditions": {
+        "item": {
+          "items": "#animaniax:poultry_foods"
+        },
+        "entity": {
+          "type": "animaniax:peafowl",
+          "flags": {
+            "is_baby": false
+          },
+          "nbt": "{AnimaniaxPeafowlMorph:\"Purple\",AnimaniaxHen:1b}"
+        }
+      }
+    },
+    "fed_peacock": {
+      "trigger": "animaniax:feed_animal",
+      "conditions": {
+        "item": {
+          "items": "#animaniax:poultry_foods"
+        },
+        "entity": {
+          "type": "animaniax:peafowl",
+          "flags": {
+            "is_baby": false
+          },
+          "nbt": "{AnimaniaxPeafowlMorph:\"Purple\",AnimaniaxHen:0b}"
+        }
+      }
+    }
+  },
+  "requirements": [
+    [
+      "fed_peachick",
+      "fed_peahen",
+      "fed_peacock"
+    ]
+  ]
+}

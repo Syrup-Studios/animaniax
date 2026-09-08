@@ -18,6 +18,7 @@ import net.syrupstudios.animaniax.config.AnimalCareConfig;
 import net.syrupstudios.animaniax.entity.DraftHorseContent;
 import net.syrupstudios.animaniax.entity.DraftHorseEntity;
 import net.syrupstudios.animaniax.entity.PeafowlEntity;
+import net.syrupstudios.animaniax.item.AnimalSpawnEggContent;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.block.Block;
@@ -88,8 +89,11 @@ public final class NeoForgeEntrypoint {
     private static final net.neoforged.neoforge.registries.DeferredHolder<FluidType, FluidType> SHEEP_MILK_TYPE = registerMilkType("sheep");
     private static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(Registries.RECIPE_SERIALIZER, "animaniax");
     private static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(Registries.ENTITY_TYPE, "animaniax");
+    private static final DeferredRegister<net.minecraft.advancements.CriterionTrigger<?>> TRIGGERS = DeferredRegister.create(Registries.TRIGGER_TYPE, "animaniax");
 
     public NeoForgeEntrypoint(IEventBus modBus) {
+        TRIGGERS.register("feed_animal", () -> net.syrupstudios.animaniax.advancement.FeedAnimalTrigger.INSTANCE);
+        TRIGGERS.register(modBus);
         net.neoforged.neoforge.common.NeoForgeMod.enableMilkFluid();
         FLUID_TYPES.register(modBus);
         registerMilkFluid("friesian");
@@ -102,6 +106,7 @@ public final class NeoForgeEntrypoint {
         ITEMS.register("draft_horse_spawn_egg", () -> DraftHorseContent.DRAFT_HORSE_SPAWN_EGG);
         ENTITY_TYPES.register("peafowl", () -> PeafowlEntity.TYPE);
         ITEMS.register("peafowl_spawn_egg", () -> PeafowlEntity.SPAWN_EGG);
+        ITEMS.register("animal_spawn_egg", () -> AnimalSpawnEggContent.ITEM);
         modBus.addListener(this::registerEntityAttributes);
         modBus.addListener(this::addCreativeItems);
         BLOCKS.register("salt_lick", () -> SaltLickContent.BLOCK);
@@ -250,8 +255,10 @@ public final class NeoForgeEntrypoint {
         if (!spawnEggs && !event.getTabKey().equals(CreativeModeTabs.INGREDIENTS)) return;
         BuiltInRegistries.ITEM.stream()
                 .filter(item -> BuiltInRegistries.ITEM.getKey(item).getNamespace().equals("animaniax")
-                        && (item instanceof SpawnEggItem) == spawnEggs)
+                        && (item instanceof SpawnEggItem) == spawnEggs
+                        && (spawnEggs || item != AnimalSpawnEggContent.ITEM))
                 .forEach(event::accept);
+        if (spawnEggs) AnimalSpawnEggContent.ITEM.creativeForms().forEach(event::accept);
     }
 }
 */

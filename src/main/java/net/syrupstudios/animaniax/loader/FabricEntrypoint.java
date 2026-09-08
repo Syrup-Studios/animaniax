@@ -47,6 +47,7 @@ import net.syrupstudios.animaniax.block.SheepWoolContent;
 import net.syrupstudios.animaniax.entity.DraftHorseContent;
 import net.syrupstudios.animaniax.entity.PeafowlEntity;
 import net.syrupstudios.animaniax.item.RidingCropContent;
+import net.syrupstudios.animaniax.item.AnimalSpawnEggContent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -55,12 +56,15 @@ public final class FabricEntrypoint implements ModInitializer {
 
     @Override
     public void onInitialize() {
+        net.syrupstudios.animaniax.advancement.FeedAnimalTrigger.register();
         ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.INGREDIENTS).register(entries ->
                 BuiltInRegistries.ITEM.stream().filter(item -> BuiltInRegistries.ITEM.getKey(item).getNamespace().equals("animaniax")
-                        && !(item instanceof SpawnEggItem)).forEach(entries::accept));
+                        && !(item instanceof SpawnEggItem) && item != AnimalSpawnEggContent.ITEM).forEach(entries::accept));
         ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.SPAWN_EGGS).register(entries ->
                 BuiltInRegistries.ITEM.stream().filter(item -> BuiltInRegistries.ITEM.getKey(item).getNamespace().equals("animaniax")
                         && item instanceof SpawnEggItem).forEach(entries::accept));
+        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.SPAWN_EGGS).register(entries ->
+                AnimalSpawnEggContent.ITEM.creativeForms().forEach(entries::accept));
         TroughContent.registerFabric();
         SeedPileContent.registerFabric();
         StrawContent.registerFabric();
@@ -78,6 +82,7 @@ public final class FabricEntrypoint implements ModInitializer {
         TruffleContent.registerFabric();
         net.syrupstudios.animaniax.item.OmeletteContent.registerFabric();
         AnimalMilkContent.registerFabric();
+        AnimalSpawnEggContent.registerFabric();
         SheepWoolContent.registerFabric();
         SlopContent.registerFabric();
         CheeseWedgeContent.registerFabric();

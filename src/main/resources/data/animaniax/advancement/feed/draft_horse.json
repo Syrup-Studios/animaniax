@@ -1,0 +1,68 @@
+{
+  "parent": "animaniax:feed/root",
+  "display": {
+    "icon": {
+      "id": "minecraft:wheat"
+    },
+    "title": {
+      "translate": "advancements.animaniax.feed.draft_horse.title"
+    },
+    "description": {
+      "translate": "advancements.animaniax.feed.draft_horse.description"
+    },
+    "frame": "task"
+  },
+  "criteria": {
+    "fed_foal": {
+      "trigger": "animaniax:feed_animal",
+      "conditions": {
+        "item": {
+          "items": "#minecraft:horse_food"
+        },
+        "entity": {
+          "type": "animaniax:draft_horse",
+          "flags": {
+            "is_baby": true
+          }
+        }
+      }
+    },
+    "fed_mare": {
+      "trigger": "animaniax:feed_animal",
+      "conditions": {
+        "item": {
+          "items": "#minecraft:horse_food"
+        },
+        "entity": {
+          "type": "animaniax:draft_horse",
+          "flags": {
+            "is_baby": false
+          },
+          "nbt": "{AnimaniaxFemale:1b}"
+        }
+      }
+    },
+    "fed_stallion": {
+      "trigger": "animaniax:feed_animal",
+      "conditions": {
+        "item": {
+          "items": "#minecraft:horse_food"
+        },
+        "entity": {
+          "type": "animaniax:draft_horse",
+          "flags": {
+            "is_baby": false
+          },
+          "nbt": "{AnimaniaxFemale:0b}"
+        }
+      }
+    }
+  },
+  "requirements": [
+    [
+      "fed_foal",
+      "fed_mare",
+      "fed_stallion"
+    ]
+  ]
+}

@@ -8,8 +8,11 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.syrupstudios.animaniax.entity.DraftHorseContent;
 import net.syrupstudios.animaniax.entity.PeafowlEntity;
+import net.syrupstudios.animaniax.item.AnimalSpawnEggContent;
+import net.syrupstudios.animaniax.item.AnimalSpawnEggItem;
 
 @EventBusSubscriber(modid = "animaniax", bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public final class NeoForgeClientEvents {
@@ -19,6 +22,11 @@ public final class NeoForgeClientEvents {
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(DraftHorseContent.DRAFT_HORSE, HorseRenderer::new);
         event.registerEntityRenderer(PeafowlEntity.TYPE, PeafowlRenderer::new);
+    }
+
+    @SubscribeEvent
+    public static void registerItemColors(RegisterColorHandlersEvent.Item event) {
+        event.register(AnimalSpawnEggItem::color, AnimalSpawnEggContent.ITEM);
     }
 }
 */

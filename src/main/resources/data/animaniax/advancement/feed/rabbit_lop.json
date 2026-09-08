@@ -1,0 +1,69 @@
+{
+  "criteria": {
+    "fed_juvenile": {
+      "trigger": "animaniax:feed_animal",
+      "conditions": {
+        "item": {
+          "items": "#minecraft:rabbit_food"
+        },
+        "entity": {
+          "type": "minecraft:rabbit",
+          "flags": {
+            "is_baby": true
+          },
+          "nbt": "{AnimaniaxRabbitBreed:\"Lop\"}"
+        }
+      }
+    },
+    "fed_female": {
+      "trigger": "animaniax:feed_animal",
+      "conditions": {
+        "item": {
+          "items": "#minecraft:rabbit_food"
+        },
+        "entity": {
+          "type": "minecraft:rabbit",
+          "flags": {
+            "is_baby": false
+          },
+          "nbt": "{AnimaniaxRabbitBreed:\"Lop\",AnimaniaxFemale:1b}"
+        }
+      }
+    },
+    "fed_male": {
+      "trigger": "animaniax:feed_animal",
+      "conditions": {
+        "item": {
+          "items": "#minecraft:rabbit_food"
+        },
+        "entity": {
+          "type": "minecraft:rabbit",
+          "flags": {
+            "is_baby": false
+          },
+          "nbt": "{AnimaniaxRabbitBreed:\"Lop\",AnimaniaxFemale:0b}"
+        }
+      }
+    }
+  },
+  "parent": "animaniax:feed/root",
+  "display": {
+    "icon": {
+      "id": "minecraft:golden_carrot"
+    },
+    "title": {
+      "translate": "advancements.animaniax.feed.rabbit_lop.title"
+    },
+    "description": {
+      "translate": "advancements.animaniax.feed.rabbit_lop.description"
+    },
+    "frame": "task"
+  },
+  "requirements": [
+    [
+      "fed_juvenile",
+      "fed_female",
+      "fed_male"
+    ]
+  ]
+}

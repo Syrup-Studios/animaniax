@@ -88,6 +88,7 @@ public final class DraftHorseEntity extends Horse {
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack held = player.getItemInHand(hand);
+        ItemStack feedItem = held.copy();
         AnimalCareState care = (AnimalCareState) (Object) this;
         if (held.is(Items.WATER_BUCKET)) {
             if (level().isClientSide) return InteractionResult.SUCCESS;
@@ -118,12 +119,17 @@ public final class DraftHorseEntity extends Horse {
         }
         if (needsCare && consumed) care.animaniax$feedForCare();
         if (careFood && consumed) care.animaniax$markPlayerInteraction(true);
+        boolean feedTriggered = careFood && consumed && (!feedHandledByAnimal || isBaby());
+        if (feedTriggered && player instanceof net.minecraft.server.level.ServerPlayer serverPlayer)
+            net.syrupstudios.animaniax.advancement.FeedAnimalTrigger.INSTANCE.trigger(serverPlayer, this, feedItem);
         if (careFood && canStartBreeding()) {
             if (!consumed && !player.getAbilities().instabuild) {
                 held.shrink(1);
                 consumed = true;
             }
             if (consumed || player.getAbilities().instabuild) {
+                if (!feedTriggered && !feedHandledByAnimal && player instanceof net.minecraft.server.level.ServerPlayer serverPlayer)
+                    net.syrupstudios.animaniax.advancement.FeedAnimalTrigger.INSTANCE.trigger(serverPlayer, this, feedItem);
                 care.animaniax$markPlayerInteraction(true);
                 setInLove(player);
                 return InteractionResult.SUCCESS;
