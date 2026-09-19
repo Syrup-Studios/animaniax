@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "tag": "animaniax:hamster_seeds" },
+    { "tag": "animaniax:hamster_seeds" },
+    { "tag": "animaniax:hamster_seeds" }
+  ],
+  "result": {
+    "id": "animaniax:hamster_food",
+    "count": 3
+  }
+}

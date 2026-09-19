@@ -4,6 +4,7 @@ package net.syrupstudios.animaniax.loader;
 /*
 import net.minecraft.client.renderer.entity.HorseRenderer;
 import net.syrupstudios.animaniax.client.PeafowlRenderer;
+import net.syrupstudios.animaniax.client.HamsterRenderer;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -11,6 +12,7 @@ import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.syrupstudios.animaniax.entity.DraftHorseContent;
 import net.syrupstudios.animaniax.entity.PeafowlEntity;
+import net.syrupstudios.animaniax.entity.HamsterEntity;
 import net.syrupstudios.animaniax.item.AnimalSpawnEggContent;
 import net.syrupstudios.animaniax.item.AnimalSpawnEggItem;
 
@@ -22,6 +24,7 @@ public final class NeoForgeClientEvents {
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(DraftHorseContent.DRAFT_HORSE, HorseRenderer::new);
         event.registerEntityRenderer(PeafowlEntity.TYPE, PeafowlRenderer::new);
+        event.registerEntityRenderer(HamsterEntity.TYPE, HamsterRenderer::new);
     }
 
     @SubscribeEvent

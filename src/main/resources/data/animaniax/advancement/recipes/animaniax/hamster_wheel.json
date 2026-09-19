@@ -1,0 +1,43 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_ingredient_1": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "#c:ingots/iron"
+          }
+        ]
+      }
+    },
+    "has_ingredient_2": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:stone_slab"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "animaniax:hamster_wheel"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_ingredient_1",
+      "has_ingredient_2",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "animaniax:hamster_wheel"
+    ]
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": "#animaniax:hamster_spawns",
+  "spawners": [
+    {
+      "type": "animaniax:hamster",
+      "weight": 6,
+      "minCount": 2,
+      "maxCount": 4
+    }
+  ]
+}

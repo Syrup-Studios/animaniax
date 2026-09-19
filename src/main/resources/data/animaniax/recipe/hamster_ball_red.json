@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "PPP",
+    "PDP",
+    "PPP"
+  ],
+  "key": {
+    "P": {
+      "item": "minecraft:glass_pane"
+    },
+    "D": {
+      "item": "minecraft:red_dye"
+    }
+  },
+  "result": {
+    "id": "animaniax:hamster_ball_red",
+    "count": 1
+  }
+}

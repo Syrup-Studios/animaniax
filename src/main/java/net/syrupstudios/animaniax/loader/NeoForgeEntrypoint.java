@@ -18,6 +18,7 @@ import net.syrupstudios.animaniax.config.AnimalCareConfig;
 import net.syrupstudios.animaniax.entity.DraftHorseContent;
 import net.syrupstudios.animaniax.entity.DraftHorseEntity;
 import net.syrupstudios.animaniax.entity.PeafowlEntity;
+import net.syrupstudios.animaniax.entity.HamsterEntity;
 import net.syrupstudios.animaniax.item.AnimalSpawnEggContent;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -29,6 +30,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.syrupstudios.animaniax.block.NestContent;
 import net.syrupstudios.animaniax.block.TroughContent;
+import net.syrupstudios.animaniax.block.PetBowlContent;
 import net.syrupstudios.animaniax.block.SeedPileContent;
 import net.syrupstudios.animaniax.block.StrawContent;
 import net.syrupstudios.animaniax.block.MudContent;
@@ -36,6 +38,7 @@ import net.syrupstudios.animaniax.block.SaltLickContent;
 import net.syrupstudios.animaniax.block.CheeseMoldContent;
 import net.syrupstudios.animaniax.item.TruffleContent;
 import net.syrupstudios.animaniax.item.OmeletteContent;
+import net.syrupstudios.animaniax.item.HamsterFoodContent;
 import net.syrupstudios.animaniax.item.AnimalMilkContent;
 import net.syrupstudios.animaniax.item.SlopContent;
 import net.syrupstudios.animaniax.item.SlopRecipe;
@@ -49,6 +52,9 @@ import net.syrupstudios.animaniax.item.PrimeRabbitContent;
 import net.syrupstudios.animaniax.item.PrimeMeatContent;
 import net.syrupstudios.animaniax.block.SheepWoolContent;
 import net.syrupstudios.animaniax.item.PrimeMeatCuttingRecipe;
+import net.syrupstudios.animaniax.item.HamsterCarryContent;
+import net.syrupstudios.animaniax.item.HamsterBallContent;
+import net.minecraft.world.item.DyeColor;
 import net.syrupstudios.animaniax.item.CheeseCuttingRecipe;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -106,7 +112,13 @@ public final class NeoForgeEntrypoint {
         ITEMS.register("draft_horse_spawn_egg", () -> DraftHorseContent.DRAFT_HORSE_SPAWN_EGG);
         ENTITY_TYPES.register("peafowl", () -> PeafowlEntity.TYPE);
         ITEMS.register("peafowl_spawn_egg", () -> PeafowlEntity.SPAWN_EGG);
+        ENTITY_TYPES.register("hamster", () -> HamsterEntity.TYPE);
+        ITEMS.register("hamster_spawn_egg", () -> HamsterEntity.SPAWN_EGG);
         ITEMS.register("animal_spawn_egg", () -> AnimalSpawnEggContent.ITEM);
+        ITEMS.register("carried_hamster", () -> HamsterCarryContent.CARRIED_HAMSTER);
+        ITEMS.register("hamster_ball", () -> HamsterBallContent.CLEAR);
+        for (DyeColor color : DyeColor.values()) ITEMS.register("hamster_ball_" + color.getName(), () -> HamsterBallContent.COLORED[color.getId()]);
+        ITEMS.register("hamster_food", () -> HamsterFoodContent.HAMSTER_FOOD);
         modBus.addListener(this::registerEntityAttributes);
         modBus.addListener(this::addCreativeItems);
         BLOCKS.register("salt_lick", () -> SaltLickContent.BLOCK);
@@ -148,6 +160,7 @@ public final class NeoForgeEntrypoint {
         ITEMS.register("suffolk_brown_wool", () -> SheepWoolContent.SUFFOLK_BROWN);
         BLOCK_ENTITIES.register("cheese_mold", () -> CheeseMoldContent.MOLD_ENTITY);
         BLOCKS.register("trough", () -> TroughContent.TROUGH);
+        BLOCKS.register("pet_bowl", () -> PetBowlContent.BLOCK);
         BLOCKS.register("wheat_seed_pile", () -> SeedPileContent.WHEAT);
         BLOCKS.register("pumpkin_seed_pile", () -> SeedPileContent.PUMPKIN);
         BLOCKS.register("melon_seed_pile", () -> SeedPileContent.MELON);
@@ -155,6 +168,7 @@ public final class NeoForgeEntrypoint {
         BLOCKS.register("straw", () -> StrawContent.BLOCK);
         BLOCKS.register("mud", () -> MudContent.BLOCK);
         ITEMS.register("trough", () -> TroughContent.TROUGH_ITEM);
+        ITEMS.register("pet_bowl", () -> PetBowlContent.ITEM);
         ITEMS.register("wheat_seed_pile", () -> SeedPileContent.WHEAT_ITEM);
         ITEMS.register("pumpkin_seed_pile", () -> SeedPileContent.PUMPKIN_ITEM);
         ITEMS.register("melon_seed_pile", () -> SeedPileContent.MELON_ITEM);
@@ -162,6 +176,7 @@ public final class NeoForgeEntrypoint {
         ITEMS.register("straw", () -> StrawContent.ITEM);
         ITEMS.register("mud", () -> MudContent.ITEM);
         BLOCK_ENTITIES.register("trough", () -> TroughContent.TROUGH_ENTITY);
+        BLOCK_ENTITIES.register("pet_bowl", () -> PetBowlContent.BLOCK_ENTITY);
         BLOCK_ENTITIES.register("nest", () -> NestContent.NEST_ENTITY);
         BLOCKS.register("nest", () -> NestContent.NEST);
         ITEMS.register("nest", () -> NestContent.NEST_ITEM);
@@ -248,6 +263,7 @@ public final class NeoForgeEntrypoint {
     private void registerEntityAttributes(EntityAttributeCreationEvent event) {
         event.put(DraftHorseContent.DRAFT_HORSE, DraftHorseEntity.createAttributes().build());
         event.put(PeafowlEntity.TYPE, PeafowlEntity.createAttributes().build());
+        event.put(HamsterEntity.TYPE, HamsterEntity.createAttributes().build());
     }
 
     private void addCreativeItems(BuildCreativeModeTabContentsEvent event) {

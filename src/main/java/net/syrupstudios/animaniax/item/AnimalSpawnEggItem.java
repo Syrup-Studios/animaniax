@@ -38,12 +38,13 @@ import net.syrupstudios.animaniax.entity.SheepBreedState;
 import net.syrupstudios.animaniax.entity.DraftHorseContent;
 import net.syrupstudios.animaniax.entity.PeafowlEntity;
 import net.syrupstudios.animaniax.entity.PeafowlMorphState;
+import net.syrupstudios.animaniax.entity.HamsterEntity;
 
 public final class AnimalSpawnEggItem extends Item {
     private static final String FORM_KEY = "AnimaniaxSpawnForm";
     private static final List<Form> FORMS = createForms();
-    private static final List<String> GLOBAL_GROUPS = List.of("cow", "pig", "chicken", "goat", "sheep", "horse", "rabbit", "peafowl");
-    private static final Set<String> MALE_ONLY_GROUPS = Set.of();
+    private static final List<String> GLOBAL_GROUPS = List.of("cow", "pig", "chicken", "goat", "sheep", "horse", "hamster", "rabbit", "peafowl");
+    private static final Set<String> MALE_ONLY_GROUPS = Set.of("hamster");
 
     public AnimalSpawnEggItem() {
         super(new Properties().stacksTo(64));
@@ -118,7 +119,10 @@ public final class AnimalSpawnEggItem extends Item {
             return forms.get(level.getRandom().nextInt(forms.size()));
         }
 
-        throw new IllegalStateException("Unknown random animal group: " + group);
+        return switch (group) {
+            case "hamster" -> oneOff("hamster", "Hamster", "Standard", HamsterEntity.TYPE);
+            default -> throw new IllegalStateException("Unknown random animal group: " + group);
+        };
     }
 
     private static Form oneOff(String family, String label, String breed, EntityType<? extends Mob> type) {

@@ -157,6 +157,8 @@ abstract class MobCareMixin implements AnimalCareState, AnimalSleepState, PigBre
         animaniax$hungerLimit = AnimalCareConfig.feedTimer + mob.getRandom().nextInt(100);
         animaniax$thirstLimit = AnimalCareConfig.waterTimer + mob.getRandom().nextInt(100);
         goalSelector.addGoal(6, new SaltLickGoal(mob));
+        if (AnimalProfile.has(mob.getType(), Capability.PET_FOOD_GOAL))
+            goalSelector.addGoal(6, new AnimalCareGoal(mob, AnimalCareGoal.Need.PET_BOWL_FOOD));
         if (mob.getType() == EntityType.COW) goalSelector.addGoal(0, new BullRetaliationGoal(mob));
         if (mob.getType() == EntityType.SHEEP)
             goalSelector.addGoal(8, new SheepSparringGoal((net.minecraft.world.entity.animal.Sheep) mob));

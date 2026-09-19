@@ -25,11 +25,13 @@ import net.syrupstudios.animaniax.entity.AnimalSleepState;
 import net.syrupstudios.animaniax.block.TroughBlock;
 import net.syrupstudios.animaniax.config.AnimalCareConfig;
 import net.syrupstudios.animaniax.block.TroughContent;
+import net.syrupstudios.animaniax.block.PetBowlBlockEntity;
+import net.syrupstudios.animaniax.block.PetBowlContent;
 import net.syrupstudios.animaniax.block.SeedPileContent;
 import net.syrupstudios.animaniax.item.TruffleContent;
 
 public final class AnimalCareGoal extends Goal {
-    public enum Need { WATER, GRASS, SEEDS, MUD, TRUFFLE }
+    public enum Need { WATER, GRASS, SEEDS, MUD, TRUFFLE, PET_BOWL_FOOD }
 
     private final Mob mob;
     private final AnimalCareState care;
@@ -73,7 +75,7 @@ public final class AnimalCareGoal extends Goal {
             target = animaniax$findMud();
             return target != null && mob.getRandom().nextInt(200) != 0;
         }
-        if (need == Need.WATER || need == Need.GRASS || need == Need.SEEDS) {
+        if (need == Need.WATER || need == Need.GRASS || need == Need.SEEDS || need == Need.PET_BOWL_FOOD) {
             boolean blocked = !animaniax$needsCare() || mob.isVehicle() || mob.isPassenger()
                     || mob.isSleeping() || ((AnimalSleepState) mob).animaniax$isSleeping()
                     || AnimalCareConfig.requireAnimalInteractionForAI && !care.animaniax$wasInteractedWith();
@@ -92,7 +94,8 @@ public final class AnimalCareGoal extends Goal {
                 case WATER -> animaniax$findWaterApproach();
                 case GRASS -> animaniax$findGrass();
                 case SEEDS -> animaniax$findSeeds();
-                    default -> throw new IllegalStateException();
+                case PET_BOWL_FOOD -> animaniax$findPetBowlFood();
+                default -> throw new IllegalStateException();
             };
             if (need != Need.WATER) scanAtTick = mob.tickCount + 40;
             return target != null;
@@ -105,6 +108,7 @@ public final class AnimalCareGoal extends Goal {
             case SEEDS -> animaniax$findSeeds();
             case MUD -> animaniax$findMud();
             case TRUFFLE -> animaniax$findTruffle();
+            case PET_BOWL_FOOD -> animaniax$findPetBowlFood();
         };
         scanAtTick = mob.tickCount + 40;
         return target != null;
@@ -120,7 +124,7 @@ public final class AnimalCareGoal extends Goal {
     @Override
     public void start() {
         mudContactTicks = 0;
-        boolean inReach = need == Need.GRASS
+        boolean inReach = (need == Need.GRASS || need == Need.PET_BOWL_FOOD || need == Need.WATER && animaniax$isPet())
                 && mob.distanceToSqr(target.getX() + 0.5, target.getY(), target.getZ() + 0.5) <= 2.25;
         if (inReach) mob.getNavigation().stop();
         finished = !inReach && !(need == Need.MUD || need == Need.GRASS
@@ -137,8 +141,10 @@ public final class AnimalCareGoal extends Goal {
                         || mob.blockPosition().equals(target.below())))) {
             if (need == Need.WATER) {
                 if (waterSource != null && animaniax$drinkFrom(waterSource)) {
-                    care.animaniax$drink();
+                    if (animaniax$isPet()) care.animaniax$waterForCare(); else care.animaniax$drink();
                 }
+            } else if (need == Need.PET_BOWL_FOOD && animaniax$eatPetBowlFood()) {
+                care.animaniax$feedForCare();
                 careChecksUntilSearch = AnimalCareConfig.ticksBetweenAIFirings;
             } else if (need == Need.GRASS && animaniax$eatGrass()) {
                 if (foodBlock != null && mob.level().getBlockState(foodBlock).is(TroughContent.TROUGH)
@@ -186,10 +192,18 @@ public final class AnimalCareGoal extends Goal {
             case SEEDS -> care.animaniax$needsSeeds();
             case MUD -> mob.level().isDay() && care.animaniax$needsMud();
             case TRUFFLE -> care.animaniax$needsGraze() && AnimalProfile.has(mob.getType(), Capability.PIG_ENRICHMENT_GOALS);
+            case PET_BOWL_FOOD -> !care.animaniax$isFed() && animaniax$isPet();
         };
     }
 
+    private boolean animaniax$isPet() {
+        return AnimalProfile.has(mob.getType(), Capability.PET_FOOD_GOAL);
+    }
+
     private boolean animaniax$drinkFrom(BlockPos source) {
+        if (animaniax$isPet() && mob.level().getBlockState(source).is(PetBowlContent.BLOCK)
+                && mob.level().getBlockEntity(source) instanceof PetBowlBlockEntity bowl)
+            return bowl.consumeWater(50);
         if (mob.level().getBlockState(source).is(TroughContent.TROUGH))
             return TroughBlock.consumeWater(mob.level(), source, mob.getType());
         if (!mob.level().getBlockState(source).is(Blocks.WATER) || animaniax$isOceanOrBeach(source)) return false;
@@ -244,14 +258,14 @@ public final class AnimalCareGoal extends Goal {
                         boolean trough = mob.level().getBlockState(candidatePos).is(TroughContent.TROUGH)
                                 && mob.level().getBlockState(candidatePos).getValue(TroughBlock.CONTENT) == 1
                                 && mob.level().getBlockState(candidatePos).getValue(TroughBlock.LEVEL) > 0;
-                        boolean petBowl = false;
+                        boolean petBowl = animaniax$isPet() && mob.level().getBlockState(candidatePos).is(PetBowlContent.BLOCK) && mob.level().getBlockEntity(candidatePos) instanceof PetBowlBlockEntity bowl && bowl.getWaterAmount() >= 50;
                         if (!trough && !petBowl && (!mob.level().getBlockState(candidatePos).is(Blocks.WATER)
                                 || animaniax$isOceanOrBeach(candidatePos))) continue;
                         for (Direction direction : Direction.Plane.HORIZONTAL) {
                             BlockPos approach = trough || petBowl ? candidatePos.relative(direction) : candidatePos.relative(direction).above();
                             if (!mob.level().hasChunkAt(approach) || !mob.level().getBlockState(approach).isAir()
                                     || !mob.level().getBlockState(approach.below()).isFaceSturdy(mob.level(), approach.below(), Direction.UP)) continue;
-                            boolean inReach = mob.distanceToSqr(approach.getX() + 0.5, approach.getY(), approach.getZ() + 0.5) <= 2.25;
+                            boolean inReach = animaniax$isPet() && mob.distanceToSqr(approach.getX() + 0.5, approach.getY(), approach.getZ() + 0.5) <= 2.25;
                             if (!inReach) {
                                 var path = mob.getNavigation().createPath(approach, 0);
                                 if (path == null || !path.canReach()) continue;
@@ -264,6 +278,45 @@ public final class AnimalCareGoal extends Goal {
             }
         waterSource = bestSource;
         return bestApproach;
+    }
+
+    private BlockPos animaniax$findPetBowlFood() {
+            BlockPos origin = mob.blockPosition();
+            int range = AnimalCareConfig.aiBlockSearchRange;
+            BlockPos bestSource = null;
+            BlockPos bestApproach = null;
+            double bestDist = Double.MAX_VALUE;
+            for (int dy = -2; dy <= 2; dy++) {
+                for (int dx = -range; dx <= range; dx++) {
+                    for (int dz = -range; dz <= range; dz++) {
+                        if (dx * dx + dz * dz > range * range) continue;
+                        BlockPos candidatePos = origin.offset(dx, dy, dz);
+                        if (!mob.level().hasChunkAt(candidatePos)) continue;
+                        if (!mob.level().getBlockState(candidatePos).is(PetBowlContent.BLOCK)
+                                || !(mob.level().getBlockEntity(candidatePos) instanceof PetBowlBlockEntity bowl)
+                                || !bowl.canFeed(mob.getType())) continue;
+                        for (Direction direction : Direction.Plane.HORIZONTAL) {
+                            BlockPos approach = candidatePos.relative(direction);
+                            if (!mob.level().hasChunkAt(approach) || !mob.level().getBlockState(approach).isAir()
+                                    || !mob.level().getBlockState(approach.below()).isFaceSturdy(mob.level(), approach.below(), Direction.UP)) continue;
+                            if (mob.distanceToSqr(approach.getX() + 0.5, approach.getY(), approach.getZ() + 0.5) > 2.25) {
+                                var path = mob.getNavigation().createPath(approach, 0);
+                                if (path == null || !path.canReach()) continue;
+                            }
+                            double distance = mob.distanceToSqr(approach.getX() + 0.5, approach.getY(), approach.getZ() + 0.5);
+                            if (distance < bestDist) { bestDist = distance; bestApproach = approach; bestSource = candidatePos; }
+                        }
+                    }
+                }
+            }
+        foodBlock = bestSource;
+        return bestApproach;
+    }
+
+    private boolean animaniax$eatPetBowlFood() {
+        return foodBlock != null && mob.level().getBlockState(foodBlock).is(PetBowlContent.BLOCK)
+                && mob.level().getBlockEntity(foodBlock) instanceof PetBowlBlockEntity bowl
+                && bowl.consumeFood(mob.getType());
     }
 
     private BlockPos animaniax$findGrass() {

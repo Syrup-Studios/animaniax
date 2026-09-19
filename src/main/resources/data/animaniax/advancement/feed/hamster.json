@@ -1,0 +1,35 @@
+{
+  "parent": "animaniax:feed/root",
+  "display": {
+    "icon": {
+      "id": "minecraft:apple"
+    },
+    "title": {
+      "translate": "advancements.animaniax.feed.hamster.title"
+    },
+    "description": {
+      "translate": "advancements.animaniax.feed.hamster.description"
+    },
+    "frame": "task"
+  },
+  "criteria": {
+    "fed": {
+      "trigger": "animaniax:feed_animal",
+      "conditions": {
+        "item": {
+          "items": [
+            "animaniax:hamster_food",
+            "minecraft:apple",
+            "minecraft:wheat_seeds",
+            "minecraft:melon_seeds",
+            "minecraft:beetroot_seeds",
+            "minecraft:pumpkin_seeds"
+          ]
+        },
+        "entity": {
+          "type": "animaniax:hamster"
+        }
+      }
+    }
+  }
+}

@@ -8,8 +8,10 @@ import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.minecraft.client.renderer.entity.HorseRenderer;
 import net.syrupstudios.animaniax.client.PeafowlRenderer;
+import net.syrupstudios.animaniax.client.HamsterRenderer;
 import net.syrupstudios.animaniax.entity.DraftHorseContent;
 import net.syrupstudios.animaniax.entity.PeafowlEntity;
+import net.syrupstudios.animaniax.entity.HamsterEntity;
 import net.syrupstudios.animaniax.item.AnimalSpawnEggContent;
 import net.syrupstudios.animaniax.item.AnimalSpawnEggItem;
 
@@ -31,6 +33,7 @@ public final class FabricClientEntrypoint implements ClientModInitializer {
                 net.syrupstudios.animaniax.block.AnimalMilkFluids.GENERIC_FLOWING);
         EntityRendererRegistry.register(DraftHorseContent.DRAFT_HORSE, HorseRenderer::new);
         EntityRendererRegistry.register(PeafowlEntity.TYPE, PeafowlRenderer::new);
+        EntityRendererRegistry.register(HamsterEntity.TYPE, HamsterRenderer::new);
     }
 
     private static void registerMilk(String kind, net.minecraft.world.level.material.Fluid source,

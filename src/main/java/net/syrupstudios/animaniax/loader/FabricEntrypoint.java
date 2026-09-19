@@ -27,12 +27,14 @@ import net.minecraft.world.level.storage.LevelResource;
 import net.syrupstudios.animaniax.config.AnimalCareConfig;
 import net.syrupstudios.animaniax.block.NestContent;
 import net.syrupstudios.animaniax.block.TroughContent;
+import net.syrupstudios.animaniax.block.PetBowlContent;
 import net.syrupstudios.animaniax.block.SeedPileContent;
 import net.syrupstudios.animaniax.block.StrawContent;
 import net.syrupstudios.animaniax.block.MudContent;
 import net.syrupstudios.animaniax.block.SaltLickContent;
 import net.syrupstudios.animaniax.block.CheeseMoldContent;
 import net.syrupstudios.animaniax.item.TruffleContent;
+import net.syrupstudios.animaniax.item.HamsterFoodContent;
 import net.syrupstudios.animaniax.item.AnimalMilkContent;
 import net.syrupstudios.animaniax.item.SlopContent;
 import net.syrupstudios.animaniax.item.CheeseWedgeContent;
@@ -44,8 +46,11 @@ import net.syrupstudios.animaniax.item.GoatMeatContent;
 import net.syrupstudios.animaniax.item.PrimeRabbitContent;
 import net.syrupstudios.animaniax.item.PrimeMeatContent;
 import net.syrupstudios.animaniax.block.SheepWoolContent;
+import net.syrupstudios.animaniax.item.HamsterCarryContent;
+import net.syrupstudios.animaniax.item.HamsterBallContent;
 import net.syrupstudios.animaniax.entity.DraftHorseContent;
 import net.syrupstudios.animaniax.entity.PeafowlEntity;
+import net.syrupstudios.animaniax.entity.HamsterEntity;
 import net.syrupstudios.animaniax.item.RidingCropContent;
 import net.syrupstudios.animaniax.item.AnimalSpawnEggContent;
 import org.slf4j.Logger;
@@ -66,6 +71,7 @@ public final class FabricEntrypoint implements ModInitializer {
         ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.SPAWN_EGGS).register(entries ->
                 AnimalSpawnEggContent.ITEM.creativeForms().forEach(entries::accept));
         TroughContent.registerFabric();
+        PetBowlContent.registerFabric();
         SeedPileContent.registerFabric();
         StrawContent.registerFabric();
         MudContent.registerFabric();
@@ -81,6 +87,7 @@ public final class FabricEntrypoint implements ModInitializer {
                         : null);
         TruffleContent.registerFabric();
         net.syrupstudios.animaniax.item.OmeletteContent.registerFabric();
+        HamsterFoodContent.registerFabric();
         AnimalMilkContent.registerFabric();
         AnimalSpawnEggContent.registerFabric();
         SheepWoolContent.registerFabric();
@@ -94,11 +101,16 @@ public final class FabricEntrypoint implements ModInitializer {
         GoatMeatContent.registerFabric();
         PrimeRabbitContent.registerFabric();
         PrimeMeatContent.registerFabric();
+        HamsterCarryContent.registerFabric();
+        HamsterBallContent.registerFabric();
         DraftHorseContent.registerFabric();
         PeafowlEntity.registerFabric();
+        HamsterEntity.registerFabric();
         SpawnPlacements.register(DraftHorseContent.DRAFT_HORSE, SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules);
         SpawnPlacements.register(PeafowlEntity.TYPE, SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules);
+        SpawnPlacements.register(HamsterEntity.TYPE, SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules);
         BiomeModifications.addSpawn(BiomeSelectors.tag(TagKey.create(Registries.BIOME,
                 ResourceLocation.fromNamespaceAndPath("animaniax", "cow_spawns"))),
@@ -112,6 +124,9 @@ public final class FabricEntrypoint implements ModInitializer {
         BiomeModifications.addSpawn(BiomeSelectors.tag(TagKey.create(Registries.BIOME,
                 PeafowlEntity.id("peafowl_spawns"))), MobCategory.CREATURE,
                 PeafowlEntity.TYPE, 8, 1, 3);
+        BiomeModifications.addSpawn(BiomeSelectors.tag(TagKey.create(Registries.BIOME,
+                HamsterEntity.id("hamster_spawns"))), MobCategory.CREATURE,
+                HamsterEntity.TYPE, 6, 2, 4);
         ServerLifecycleEvents.SERVER_STARTING.register(server -> {
             AnimalCareConfig.load(server.getWorldPath(LevelResource.ROOT).resolve("serverconfig/animaniax.properties"));
             TroughContent.registerWaterBucketBehavior();

@@ -1,0 +1,14 @@
+{
+  "replace": false,
+  "values": [
+    "animaniax:hamster_food",
+    "minecraft:apple",
+    "minecraft:wheat_seeds",
+    "minecraft:melon_seeds",
+    "minecraft:beetroot_seeds",
+    "minecraft:pumpkin_seeds",
+    { "id": "simplecorn:corncob", "required": false },
+    { "id": "biomesoplenty:turnip_seeds", "required": false },
+    { "id": "harvestcraft:cornitem", "required": false }
+  ]
+}

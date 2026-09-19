@@ -12,6 +12,7 @@ import net.syrupstudios.animaniax.config.AnimalCareConfig;
 import net.syrupstudios.animaniax.entity.AnimalProfile;
 import net.syrupstudios.animaniax.entity.AnimalSleepState;
 import net.syrupstudios.animaniax.entity.AnimalReproductionState;
+import net.syrupstudios.animaniax.entity.HamsterEntity;
 
 public final class AnimalSleepGoal extends Goal {
     private static final int SEARCH_RANGE = 16;
@@ -53,6 +54,7 @@ public final class AnimalSleepGoal extends Goal {
         delay = 0;
         if (!isSleepTime() || mob.isLeashed() || mob.isVehicle()
                 || mob.isPassenger() || mob.getTarget() != null || mob.isOnFire() || mob.isInWater()
+                || mob.getType() == HamsterEntity.TYPE && ((HamsterEntity) mob).isInBall()
                 || mob.level().isRainingAt(mob.blockPosition()) || mob.getRandom().nextInt(3) != 0) return false;
         target = findBed();
         return target != null;
@@ -94,6 +96,7 @@ public final class AnimalSleepGoal extends Goal {
         return !AnimalCareConfig.animalsSleep || isOrderedToSit()
                 || !isSleepTime() || mob.isOnFire() || mob.isLeashed()
                 || mob.isVehicle() || mob.isPassenger() || mob.isInWater() || mob.getTarget() != null
+                || mob.getType() == HamsterEntity.TYPE && ((HamsterEntity) mob).isInBall()
                 || mob.getLastHurtByMob() != null && mob.tickCount - mob.getLastHurtByMobTimestamp() < 20
                 || mob.isFreezing() || mob.level().getBlockState(pos).is(Blocks.POWDER_SNOW)
                 || mob instanceof AnimalReproductionState reproduction && reproduction.animaniax$isPregnant()
