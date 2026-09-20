@@ -28,6 +28,8 @@ import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.syrupstudios.animaniax.block.HamsterWheelBlockEntity;
+import net.syrupstudios.animaniax.block.HamsterWheelContent;
 import net.syrupstudios.animaniax.block.NestContent;
 import net.syrupstudios.animaniax.block.TroughContent;
 import net.syrupstudios.animaniax.block.PetBowlContent;
@@ -178,6 +180,9 @@ public final class NeoForgeEntrypoint {
         BLOCK_ENTITIES.register("trough", () -> TroughContent.TROUGH_ENTITY);
         BLOCK_ENTITIES.register("pet_bowl", () -> PetBowlContent.BLOCK_ENTITY);
         BLOCK_ENTITIES.register("nest", () -> NestContent.NEST_ENTITY);
+        BLOCKS.register("hamster_wheel", () -> HamsterWheelContent.WHEEL);
+        ITEMS.register("hamster_wheel", () -> HamsterWheelContent.ITEM);
+        BLOCK_ENTITIES.register("hamster_wheel", () -> HamsterWheelContent.ENTITY);
         BLOCKS.register("nest", () -> NestContent.NEST);
         ITEMS.register("nest", () -> NestContent.NEST_ITEM);
         ITEMS.register("truffle", () -> TruffleContent.TRUFFLE);

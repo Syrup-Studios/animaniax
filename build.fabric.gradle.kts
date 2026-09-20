@@ -10,11 +10,16 @@ group = property("mod.group") as String
 version = modVersion
 base.archivesName = modId
 
+repositories {
+    maven("https://maven.fabricmc.net/")
+}
+
 dependencies {
     minecraft("com.mojang:minecraft:$minecraftVersion")
     loomx.applyMojangMappings()
     modImplementation("net.fabricmc:fabric-loader:${property("deps.fabric_loader")}")
     modImplementation("net.fabricmc.fabric-api:fabric-api:${property("deps.fabric_api")}")
+    include(modApi("teamreborn:energy:4.1.0")!!)
 }
 
 java {

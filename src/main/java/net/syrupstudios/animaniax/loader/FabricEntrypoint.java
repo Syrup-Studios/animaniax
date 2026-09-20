@@ -25,6 +25,8 @@ import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.storage.LevelResource;
 import net.syrupstudios.animaniax.config.AnimalCareConfig;
+import net.syrupstudios.animaniax.block.HamsterWheelContent;
+import net.syrupstudios.animaniax.block.FabricWheelEnergy;
 import net.syrupstudios.animaniax.block.NestContent;
 import net.syrupstudios.animaniax.block.TroughContent;
 import net.syrupstudios.animaniax.block.PetBowlContent;
@@ -78,6 +80,8 @@ public final class FabricEntrypoint implements ModInitializer {
         SaltLickContent.registerFabric();
         CheeseMoldContent.registerFabric();
         NestContent.registerFabric();
+        HamsterWheelContent.registerFabric();
+        FabricWheelEnergy.register();
         net.syrupstudios.animaniax.block.AnimalMilkFluids.registerFabric();
         FluidStorage.GENERAL_COMBINED_PROVIDER.register(context ->
                 context.getItemVariant().getItem() == net.minecraft.world.item.Items.MILK_BUCKET
