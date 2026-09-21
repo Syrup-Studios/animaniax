@@ -20,6 +20,12 @@ import net.syrupstudios.animaniax.entity.HamsterEntity;
 import net.syrupstudios.animaniax.item.HamsterCarryContent;
 import net.syrupstudios.animaniax.item.HamsterCarryItem;
 import net.syrupstudios.animaniax.item.HamsterFoodContent;
+//? if neoforge {
+/*
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.energy.IEnergyStorage;
+*/
+//?}
 
 public final class HamsterWheelBlockEntity extends BlockEntity implements WorldlyContainer {
     private static final int FOOD_CAPACITY = 16;
@@ -97,6 +103,22 @@ public final class HamsterWheelBlockEntity extends BlockEntity implements Worldl
                 if (wheel.ticks % 20 == 0) wheel.setChanged();
             }
         }
+        //? if neoforge {
+        /*
+        for (Direction direction : Direction.values()) {
+            if (wheel.energy <= 0) break;
+            BlockPos neighborPos = pos.relative(direction);
+            if (!level.hasChunkAt(neighborPos)) continue;
+            if (level.getBlockEntity(neighborPos) == wheel) continue;
+            IEnergyStorage receiver = level.getCapability(Capabilities.EnergyStorage.BLOCK, neighborPos, direction.getOpposite());
+            int offered = wheel.energy;
+            if (receiver != null && offered > 0) {
+                int accepted = receiver.receiveEnergy(offered, false);
+                wheel.extractEnergy(Math.min(offered, Math.max(0, accepted)));
+            }
+        }
+        */
+        //?}
         //? if fabric {
         FabricWheelEnergy.push(wheel);
         //?}

@@ -12,6 +12,9 @@ import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.energy.IEnergyStorage;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.storage.LevelResource;
 import net.syrupstudios.animaniax.config.AnimalCareConfig;
@@ -122,6 +125,7 @@ public final class NeoForgeEntrypoint {
         for (DyeColor color : DyeColor.values()) ITEMS.register("hamster_ball_" + color.getName(), () -> HamsterBallContent.COLORED[color.getId()]);
         ITEMS.register("hamster_food", () -> HamsterFoodContent.HAMSTER_FOOD);
         modBus.addListener(this::registerEntityAttributes);
+        modBus.addListener(this::registerCapabilities);
         modBus.addListener(this::addCreativeItems);
         BLOCKS.register("salt_lick", () -> SaltLickContent.BLOCK);
         BLOCKS.register("dorset_brown_wool", () -> SheepWoolContent.DORSET_BROWN_BLOCK);
@@ -263,6 +267,21 @@ public final class NeoForgeEntrypoint {
         FLUIDS.register("milk_" + kind, () -> net.syrupstudios.animaniax.block.AnimalMilkFluids.source(kind));
         FLUIDS.register("flowing_milk_" + kind, () -> net.syrupstudios.animaniax.block.AnimalMilkFluids.flowing(kind));
         BLOCKS.register("milk_" + kind, () -> net.syrupstudios.animaniax.block.AnimalMilkFluids.block(kind));
+    }
+
+    private void registerCapabilities(RegisterCapabilitiesEvent event) {
+        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, HamsterWheelContent.ENTITY, (wheel, side) ->
+                new IEnergyStorage() {
+                    @Override public int getEnergyStored() { return wheel.getEnergy(); }
+                    @Override public int getMaxEnergyStored() { return wheel.getEnergyCapacity(); }
+                    @Override public boolean canExtract() { return true; }
+                    @Override public boolean canReceive() { return false; }
+                    @Override public int receiveEnergy(int amount, boolean simulate) { return 0; }
+                    @Override public int extractEnergy(int amount, boolean simulate) {
+                        int extracted = Math.min(Math.max(0, Math.min(amount, 400)), wheel.getEnergy());
+                        return simulate ? extracted : wheel.extractEnergy(extracted);
+                    }
+                });
     }
 
     private void registerEntityAttributes(EntityAttributeCreationEvent event) {
