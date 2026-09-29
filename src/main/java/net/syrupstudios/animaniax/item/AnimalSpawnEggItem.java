@@ -36,6 +36,12 @@ import net.syrupstudios.animaniax.entity.PigBreedState;
 import net.syrupstudios.animaniax.entity.RabbitBreedState;
 import net.syrupstudios.animaniax.entity.SheepBreedState;
 import net.syrupstudios.animaniax.entity.DraftHorseContent;
+import net.syrupstudios.animaniax.entity.CatBreed;
+import net.syrupstudios.animaniax.entity.CatContent;
+import net.syrupstudios.animaniax.entity.CompanionCatEntity;
+import net.syrupstudios.animaniax.entity.DogBreed;
+import net.syrupstudios.animaniax.entity.DogContent;
+import net.syrupstudios.animaniax.entity.DogEntity;
 import net.syrupstudios.animaniax.entity.PeafowlEntity;
 import net.syrupstudios.animaniax.entity.PeafowlMorphState;
 import net.syrupstudios.animaniax.entity.HamsterEntity;
@@ -43,7 +49,7 @@ import net.syrupstudios.animaniax.entity.HamsterEntity;
 public final class AnimalSpawnEggItem extends Item {
     private static final String FORM_KEY = "AnimaniaxSpawnForm";
     private static final List<Form> FORMS = createForms();
-    private static final List<String> GLOBAL_GROUPS = List.of("cow", "pig", "chicken", "goat", "sheep", "horse", "hamster", "rabbit", "peafowl");
+    private static final List<String> GLOBAL_GROUPS = List.of("cow", "pig", "chicken", "goat", "sheep", "horse", "cat", "dog", "hamster", "rabbit", "peafowl");
     private static final Set<String> MALE_ONLY_GROUPS = Set.of("hamster");
 
     public AnimalSpawnEggItem() {
@@ -161,7 +167,8 @@ public final class AnimalSpawnEggItem extends Item {
             case "goat" -> ((GoatBreedState) mob).animaniax$setGoatBreed(form.breed());
             case "chicken" -> ((ChickenBreedState) mob).animaniax$setChickenBreed(form.breed());
             case "rabbit" -> ((RabbitBreedState) mob).animaniax$setRabbitBreed(form.breed());
-
+            case "cat" -> ((CompanionCatEntity) mob).setBreed(CatBreed.byId(breedId(form.breed())));
+            case "dog" -> ((DogEntity) mob).setBreed(DogBreed.byId(breedId(form.breed())));
             case "peafowl" -> ((PeafowlMorphState) mob).animaniax$setMorph(form.breed());
             default -> { }
         }
@@ -249,6 +256,56 @@ public final class AnimalSpawnEggItem extends Item {
 
         addBreed(forms, "draft_horse", "draft", "Draft Horse", DraftHorseContent.DRAFT_HORSE,
                 0x6D4C35, 0xC6A77A, "foal", "mare", "stallion");
+
+        addBreed(forms, "cat", "american_shorthair", "American Shorthair", CatContent.TYPE,
+                0x8A755B, 0xD6C6A8, "kitten", "queen", "tom");
+        addBreed(forms, "cat", "asiatic", "Asiatic", CatContent.TYPE,
+                0x38302B, 0xC7A86D, "kitten", "queen", "tom");
+        addBreed(forms, "cat", "exotic", "Exotic", CatContent.TYPE,
+                0xD7C4A1, 0xEAE2D4, "kitten", "queen", "tom");
+        addBreed(forms, "cat", "norwegian", "Norwegian", CatContent.TYPE,
+                0xE2DED5, 0xFFFFFF, "kitten", "queen", "tom");
+        addBreed(forms, "cat", "ocelot", "Ocelot", CatContent.TYPE,
+                0xC3893D, 0x44372A, "kitten", "queen", "tom");
+        addBreed(forms, "cat", "ragdoll", "Ragdoll", CatContent.TYPE,
+                0xD8D0C2, 0x76614E, "kitten", "queen", "tom");
+        addBreed(forms, "cat", "siamese", "Siamese", CatContent.TYPE,
+                0xE9D6B5, 0x59483A, "kitten", "queen", "tom");
+        addBreed(forms, "cat", "tabby", "Tabby", CatContent.TYPE,
+                0xA3723E, 0x45372B, "kitten", "queen", "tom");
+        addRandom(forms, "cat", "Cat", CatContent.TYPE, 0xA3723E, 0xD6C6A8);
+
+        addBreed(forms, "dog", "blood_hound", "Blood Hound", DogContent.TYPE,
+                0x6B422B, 0xB38A65, "puppy", "female", "male");
+        addBreed(forms, "dog", "chihuahua", "Chihuahua", DogContent.TYPE,
+                0xB89165, 0xE5D3B6, "puppy", "female", "male");
+        addBreed(forms, "dog", "collie", "Collie", DogContent.TYPE,
+                0x302C29, 0xD9C6A5, "puppy", "female", "male");
+        addBreed(forms, "dog", "corgi", "Corgi", DogContent.TYPE,
+                0xAD7340, 0xE5C994, "puppy", "female", "male");
+        addBreed(forms, "dog", "dachshund", "Dachshund", DogContent.TYPE,
+                0x583B29, 0xB17A4A, "puppy", "female", "male");
+        addBreed(forms, "dog", "fox", "Fox", DogContent.TYPE,
+                0xB35C2E, 0xE6C58C, "puppy", "female", "male");
+        addBreed(forms, "dog", "german_shepherd", "German Shepherd", DogContent.TYPE,
+                0x62442F, 0xC79A5C, "puppy", "female", "male");
+        addBreed(forms, "dog", "great_dane", "Great Dane", DogContent.TYPE,
+                0x88745F, 0xD2C3AD, "puppy", "female", "male");
+        addBreed(forms, "dog", "greyhound", "Greyhound", DogContent.TYPE,
+                0x827466, 0xC8BBA9, "puppy", "female", "male");
+        addBreed(forms, "dog", "husky", "Husky", DogContent.TYPE,
+                0x55524D, 0xD9D7D2, "puppy", "female", "male");
+        addBreed(forms, "dog", "labrador", "Labrador", DogContent.TYPE,
+                0x63472F, 0xB88950, "puppy", "female", "male");
+        addBreed(forms, "dog", "pomeranian", "Pomeranian", DogContent.TYPE,
+                0xC4945C, 0xEAD6AE, "puppy", "female", "male");
+        addBreed(forms, "dog", "poodle", "Poodle", DogContent.TYPE,
+                0x45352D, 0xB69B79, "puppy", "female", "male");
+        addBreed(forms, "dog", "pug", "Pug", DogContent.TYPE,
+                0xAE8A63, 0x3C312B, "puppy", "female", "male");
+        addBreed(forms, "dog", "wolf", "Wolf", DogContent.TYPE,
+                0x85827B, 0xC5C1B8, "puppy", "female", "male");
+        addRandom(forms, "dog", "Dog", DogContent.TYPE, 0x8C6749, 0xD5C3A2);
 
         addBreed(forms, "peafowl", "blue", "Blue", PeafowlEntity.TYPE,
                 0x315B9A, 0xD5C6A5, "peachick", "peahen", "peacock");

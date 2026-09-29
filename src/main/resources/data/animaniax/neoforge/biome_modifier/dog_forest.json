@@ -1,0 +1,5 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": "#animaniax:dog_forest_spawns",
+  "spawners": [{"type": "animaniax:dog", "weight": 5, "minCount": 2, "maxCount": 2}]
+}

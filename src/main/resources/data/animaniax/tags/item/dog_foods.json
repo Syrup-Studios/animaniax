@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "#c:foods/raw_beef",
+      "required": false
+    },
+    "minecraft:beef"
+  ]
+}

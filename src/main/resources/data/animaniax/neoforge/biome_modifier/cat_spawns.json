@@ -1,0 +1,5 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": "#animaniax:cat_spawns",
+  "spawners": [{"type": "animaniax:cat", "weight": 5, "minCount": 2, "maxCount": 2}]
+}

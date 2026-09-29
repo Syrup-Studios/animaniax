@@ -1,0 +1,69 @@
+{
+  "criteria": {
+    "fed_juvenile": {
+      "trigger": "animaniax:feed_animal",
+      "conditions": {
+        "item": {
+          "items": "#animaniax:cat_foods"
+        },
+        "entity": {
+          "type": "animaniax:cat",
+          "flags": {
+            "is_baby": true
+          },
+          "nbt": "{AnimaniaxBreed:\"american_shorthair\"}"
+        }
+      }
+    },
+    "fed_female": {
+      "trigger": "animaniax:feed_animal",
+      "conditions": {
+        "item": {
+          "items": "#animaniax:cat_foods"
+        },
+        "entity": {
+          "type": "animaniax:cat",
+          "flags": {
+            "is_baby": false
+          },
+          "nbt": "{AnimaniaxBreed:\"american_shorthair\",AnimaniaxFemale:1b}"
+        }
+      }
+    },
+    "fed_male": {
+      "trigger": "animaniax:feed_animal",
+      "conditions": {
+        "item": {
+          "items": "#animaniax:cat_foods"
+        },
+        "entity": {
+          "type": "animaniax:cat",
+          "flags": {
+            "is_baby": false
+          },
+          "nbt": "{AnimaniaxBreed:\"american_shorthair\",AnimaniaxFemale:0b}"
+        }
+      }
+    }
+  },
+  "parent": "animaniax:feed/root",
+  "display": {
+    "icon": {
+      "id": "minecraft:cod"
+    },
+    "title": {
+      "translate": "advancements.animaniax.feed.cat_american_shorthair.title"
+    },
+    "description": {
+      "translate": "advancements.animaniax.feed.cat_american_shorthair.description"
+    },
+    "frame": "task"
+  },
+  "requirements": [
+    [
+      "fed_juvenile",
+      "fed_female",
+      "fed_male"
+    ]
+  ]
+}

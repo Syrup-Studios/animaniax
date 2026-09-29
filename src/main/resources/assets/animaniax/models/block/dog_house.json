@@ -1,0 +1,17 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "red": "minecraft:block/red_terracotta",
+    "roof": "minecraft:block/white_terracotta",
+    "inside": "minecraft:block/black_terracotta",
+    "particle": "minecraft:block/red_terracotta"
+  },
+  "elements": [
+    { "from": [0, 0, 3], "to": [4, 10, 16], "faces": { "north": {"texture":"#red"}, "south": {"texture":"#red"}, "east": {"texture":"#red"}, "west": {"texture":"#red"}, "up": {"texture":"#red"}, "down": {"texture":"#red"} } },
+    { "from": [12, 0, 3], "to": [16, 10, 16], "faces": { "north": {"texture":"#red"}, "south": {"texture":"#red"}, "east": {"texture":"#red"}, "west": {"texture":"#red"}, "up": {"texture":"#red"}, "down": {"texture":"#red"} } },
+    { "from": [4, 0, 14], "to": [12, 10, 16], "faces": { "north": {"texture":"#inside"}, "south": {"texture":"#red"}, "east": {"texture":"#red"}, "west": {"texture":"#red"}, "up": {"texture":"#red"}, "down": {"texture":"#red"} } },
+    { "from": [0, 7, 3], "to": [16, 10, 16], "faces": { "north": {"texture":"#red"}, "south": {"texture":"#red"}, "east": {"texture":"#red"}, "west": {"texture":"#red"}, "up": {"texture":"#red"}, "down": {"texture":"#red"} } },
+    { "from": [0, 10, 2], "to": [16, 12, 16], "faces": { "north": {"texture":"#roof"}, "south": {"texture":"#roof"}, "east": {"texture":"#roof"}, "west": {"texture":"#roof"}, "up": {"texture":"#roof"}, "down": {"texture":"#roof"} } },
+    { "from": [2, 12, 3], "to": [14, 14, 15], "faces": { "north": {"texture":"#roof"}, "south": {"texture":"#roof"}, "east": {"texture":"#roof"}, "west": {"texture":"#roof"}, "up": {"texture":"#roof"}, "down": {"texture":"#roof"} } }
+  ]
+}

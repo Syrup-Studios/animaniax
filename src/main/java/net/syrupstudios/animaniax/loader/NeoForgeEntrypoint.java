@@ -19,6 +19,10 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.storage.LevelResource;
 import net.syrupstudios.animaniax.config.AnimalCareConfig;
 import net.syrupstudios.animaniax.entity.DraftHorseContent;
+import net.syrupstudios.animaniax.entity.DogContent;
+import net.syrupstudios.animaniax.entity.DogEntity;
+import net.syrupstudios.animaniax.entity.CatContent;
+import net.syrupstudios.animaniax.entity.CompanionCatEntity;
 import net.syrupstudios.animaniax.entity.DraftHorseEntity;
 import net.syrupstudios.animaniax.entity.PeafowlEntity;
 import net.syrupstudios.animaniax.entity.HamsterEntity;
@@ -36,6 +40,8 @@ import net.syrupstudios.animaniax.block.HamsterWheelContent;
 import net.syrupstudios.animaniax.block.NestContent;
 import net.syrupstudios.animaniax.block.TroughContent;
 import net.syrupstudios.animaniax.block.PetBowlContent;
+import net.syrupstudios.animaniax.block.PetBedContent;
+import net.syrupstudios.animaniax.block.DecorativePropContent;
 import net.syrupstudios.animaniax.block.SeedPileContent;
 import net.syrupstudios.animaniax.block.StrawContent;
 import net.syrupstudios.animaniax.block.MudContent;
@@ -118,6 +124,10 @@ public final class NeoForgeEntrypoint {
         ENTITY_TYPES.register("peafowl", () -> PeafowlEntity.TYPE);
         ITEMS.register("peafowl_spawn_egg", () -> PeafowlEntity.SPAWN_EGG);
         ENTITY_TYPES.register("hamster", () -> HamsterEntity.TYPE);
+        ENTITY_TYPES.register("dog", () -> DogContent.TYPE);
+        ITEMS.register("dog_spawn_egg", () -> DogContent.SPAWN_EGG);
+        ENTITY_TYPES.register("cat", () -> CatContent.TYPE);
+        ITEMS.register("cat_spawn_egg", () -> CatContent.SPAWN_EGG);
         ITEMS.register("hamster_spawn_egg", () -> HamsterEntity.SPAWN_EGG);
         ITEMS.register("animal_spawn_egg", () -> AnimalSpawnEggContent.ITEM);
         ITEMS.register("carried_hamster", () -> HamsterCarryContent.CARRIED_HAMSTER);
@@ -167,6 +177,12 @@ public final class NeoForgeEntrypoint {
         BLOCK_ENTITIES.register("cheese_mold", () -> CheeseMoldContent.MOLD_ENTITY);
         BLOCKS.register("trough", () -> TroughContent.TROUGH);
         BLOCKS.register("pet_bowl", () -> PetBowlContent.BLOCK);
+        BLOCKS.register("cat_bed_1", () -> PetBedContent.CAT_BED_1);
+        BLOCKS.register("cat_bed_2", () -> PetBedContent.CAT_BED_2);
+        BLOCKS.register("dog_pillow", () -> PetBedContent.DOG_PILLOW);
+        BLOCKS.register("cat_tower", () -> DecorativePropContent.CAT_TOWER);
+        BLOCKS.register("dog_house", () -> DecorativePropContent.DOG_HOUSE);
+        BLOCKS.register("litter_box", () -> DecorativePropContent.LITTER_BOX);
         BLOCKS.register("wheat_seed_pile", () -> SeedPileContent.WHEAT);
         BLOCKS.register("pumpkin_seed_pile", () -> SeedPileContent.PUMPKIN);
         BLOCKS.register("melon_seed_pile", () -> SeedPileContent.MELON);
@@ -175,6 +191,12 @@ public final class NeoForgeEntrypoint {
         BLOCKS.register("mud", () -> MudContent.BLOCK);
         ITEMS.register("trough", () -> TroughContent.TROUGH_ITEM);
         ITEMS.register("pet_bowl", () -> PetBowlContent.ITEM);
+        ITEMS.register("cat_bed_1", () -> PetBedContent.CAT_BED_1_ITEM);
+        ITEMS.register("cat_bed_2", () -> PetBedContent.CAT_BED_2_ITEM);
+        ITEMS.register("dog_pillow", () -> PetBedContent.DOG_PILLOW_ITEM);
+        ITEMS.register("cat_tower", () -> DecorativePropContent.CAT_TOWER_ITEM);
+        ITEMS.register("dog_house", () -> DecorativePropContent.DOG_HOUSE_ITEM);
+        ITEMS.register("litter_box", () -> DecorativePropContent.LITTER_BOX_ITEM);
         ITEMS.register("wheat_seed_pile", () -> SeedPileContent.WHEAT_ITEM);
         ITEMS.register("pumpkin_seed_pile", () -> SeedPileContent.PUMPKIN_ITEM);
         ITEMS.register("melon_seed_pile", () -> SeedPileContent.MELON_ITEM);
@@ -288,6 +310,8 @@ public final class NeoForgeEntrypoint {
         event.put(DraftHorseContent.DRAFT_HORSE, DraftHorseEntity.createAttributes().build());
         event.put(PeafowlEntity.TYPE, PeafowlEntity.createAttributes().build());
         event.put(HamsterEntity.TYPE, HamsterEntity.createAttributes().build());
+        event.put(DogContent.TYPE, DogEntity.createAttributes().build());
+        event.put(CatContent.TYPE, CompanionCatEntity.createAttributes().build());
     }
 
     private void addCreativeItems(BuildCreativeModeTabContentsEvent event) {

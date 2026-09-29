@@ -3,6 +3,10 @@ package net.syrupstudios.animaniax.loader;
 //? if neoforge {
 /*
 import net.minecraft.client.renderer.entity.HorseRenderer;
+import net.syrupstudios.animaniax.entity.DogContent;
+import net.syrupstudios.animaniax.entity.CatContent;
+import net.minecraft.client.renderer.entity.CatRenderer;
+import net.minecraft.client.renderer.entity.WolfRenderer;
 import net.syrupstudios.animaniax.client.PeafowlRenderer;
 import net.syrupstudios.animaniax.client.HamsterRenderer;
 import net.neoforged.api.distmarker.Dist;
@@ -22,6 +26,8 @@ public final class NeoForgeClientEvents {
 
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
+        event.registerEntityRenderer(DogContent.TYPE, WolfRenderer::new);
+        event.registerEntityRenderer(CatContent.TYPE, CatRenderer::new);
         event.registerEntityRenderer(DraftHorseContent.DRAFT_HORSE, HorseRenderer::new);
         event.registerEntityRenderer(PeafowlEntity.TYPE, PeafowlRenderer::new);
         event.registerEntityRenderer(HamsterEntity.TYPE, HamsterRenderer::new);

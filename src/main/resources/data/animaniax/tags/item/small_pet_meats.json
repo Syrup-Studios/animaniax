@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:rabbit",
+    "minecraft:chicken",
+    "animaniax:raw_prime_mutton",
+    "animaniax:raw_prime_rabbit",
+    "animaniax:raw_prime_chicken"
+  ]
+}

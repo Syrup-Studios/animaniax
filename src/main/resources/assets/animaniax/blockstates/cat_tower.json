@@ -1,0 +1,1 @@
+{"variants":{"facing=north":{"model":"animaniax:block/cat_tower"},"facing=east":{"model":"animaniax:block/cat_tower","y":90},"facing=south":{"model":"animaniax:block/cat_tower","y":180},"facing=west":{"model":"animaniax:block/cat_tower","y":270}}}

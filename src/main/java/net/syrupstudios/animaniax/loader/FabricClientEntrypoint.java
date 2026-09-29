@@ -7,6 +7,10 @@ import net.fabricmc.fabric.api.client.render.fluid.v1.SimpleFluidRenderHandler;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.minecraft.client.renderer.entity.HorseRenderer;
+import net.syrupstudios.animaniax.entity.DogContent;
+import net.syrupstudios.animaniax.entity.CatContent;
+import net.minecraft.client.renderer.entity.CatRenderer;
+import net.minecraft.client.renderer.entity.WolfRenderer;
 import net.syrupstudios.animaniax.client.PeafowlRenderer;
 import net.syrupstudios.animaniax.client.HamsterRenderer;
 import net.syrupstudios.animaniax.entity.DraftHorseContent;
@@ -31,6 +35,8 @@ public final class FabricClientEntrypoint implements ClientModInitializer {
                 net.syrupstudios.animaniax.block.AnimalMilkFluids.SHEEP_FLOWING);
         registerMilk("generic", net.syrupstudios.animaniax.block.AnimalMilkFluids.GENERIC_SOURCE,
                 net.syrupstudios.animaniax.block.AnimalMilkFluids.GENERIC_FLOWING);
+        EntityRendererRegistry.register(DogContent.TYPE, WolfRenderer::new);
+        EntityRendererRegistry.register(CatContent.TYPE, CatRenderer::new);
         EntityRendererRegistry.register(DraftHorseContent.DRAFT_HORSE, HorseRenderer::new);
         EntityRendererRegistry.register(PeafowlEntity.TYPE, PeafowlRenderer::new);
         EntityRendererRegistry.register(HamsterEntity.TYPE, HamsterRenderer::new);

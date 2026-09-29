@@ -1,0 +1,69 @@
+{
+  "criteria": {
+    "fed_juvenile": {
+      "trigger": "animaniax:feed_animal",
+      "conditions": {
+        "item": {
+          "items": "#animaniax:dog_foods"
+        },
+        "entity": {
+          "type": "animaniax:dog",
+          "flags": {
+            "is_baby": true
+          },
+          "nbt": "{AnimaniaxBreed:\"husky\"}"
+        }
+      }
+    },
+    "fed_female": {
+      "trigger": "animaniax:feed_animal",
+      "conditions": {
+        "item": {
+          "items": "#animaniax:dog_foods"
+        },
+        "entity": {
+          "type": "animaniax:dog",
+          "flags": {
+            "is_baby": false
+          },
+          "nbt": "{AnimaniaxBreed:\"husky\",AnimaniaxFemale:1b}"
+        }
+      }
+    },
+    "fed_male": {
+      "trigger": "animaniax:feed_animal",
+      "conditions": {
+        "item": {
+          "items": "#animaniax:dog_foods"
+        },
+        "entity": {
+          "type": "animaniax:dog",
+          "flags": {
+            "is_baby": false
+          },
+          "nbt": "{AnimaniaxBreed:\"husky\",AnimaniaxFemale:0b}"
+        }
+      }
+    }
+  },
+  "parent": "animaniax:feed/root",
+  "display": {
+    "icon": {
+      "id": "minecraft:beef"
+    },
+    "title": {
+      "translate": "advancements.animaniax.feed.dog_husky.title"
+    },
+    "description": {
+      "translate": "advancements.animaniax.feed.dog_husky.description"
+    },
+    "frame": "task"
+  },
+  "requirements": [
+    [
+      "fed_juvenile",
+      "fed_female",
+      "fed_male"
+    ]
+  ]
+}

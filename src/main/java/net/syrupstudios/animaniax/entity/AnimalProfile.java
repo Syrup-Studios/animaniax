@@ -19,6 +19,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.syrupstudios.animaniax.block.PetBedContent;
 import net.syrupstudios.animaniax.block.StrawContent;
 
 /** Internal capabilities for the animals that use the shared care and breeding rules. */
@@ -114,6 +115,8 @@ public final class AnimalProfile {
                 Map.entry(EntityType.RABBIT, sleepProfile(caps(Capability.CARE, Capability.SLEEP, Capability.GROWTH, Capability.REPRODUCTIVE_INTERACTIONS, Capability.GESTATION, Capability.GRASS_GOAL), () -> troughDiet(Items.WHEAT, Items.CARROT, Items.BEETROOT, Items.APPLE), Profiles.stringBreed(EntityType.RABBIT, Profiles.RABBIT_BREED), time -> (time > 20_000L && time < 24_000L) || (time > 10_000L && time < 15_000L), Profiles::farmSleepBeds)),
                 Map.entry(EntityType.GOAT, sleepProfile(caps(Capability.CARE, Capability.SLEEP, Capability.GROWTH, Capability.REPRODUCTIVE_INTERACTIONS, Capability.GESTATION, Capability.SALT_LICK_GOAL, Capability.GRASS_GOAL, Capability.HERDING_GOAL, Capability.NATURAL_GRAZING_GOAL, Capability.REMOVE_NATURAL_WATER), () -> troughDiet(Items.WHEAT, Items.APPLE), Profiles.stringBreed(EntityType.GOAT, Profiles.GOAT_BREED), Profiles::farmSleepBeds)),
                 Map.entry(DraftHorseContent.DRAFT_HORSE, sleepProfile(caps(Capability.CARE, Capability.SLEEP, Capability.GROWTH, Capability.REPRODUCTIVE_INTERACTIONS, Capability.GESTATION, Capability.SALT_LICK_GOAL, Capability.GRASS_GOAL, Capability.NATURAL_GRAZING_GOAL, Capability.REMOVE_NATURAL_WATER), () -> troughDiet(Items.WHEAT, Items.APPLE, Items.CARROT), null, Profiles::farmSleepBeds)),
+                Map.entry(DogContent.TYPE, sleepProfile(caps(Capability.CARE, Capability.SLEEP, Capability.GROWTH, Capability.REPRODUCTIVE_INTERACTIONS, Capability.GESTATION, Capability.PET_FOOD_GOAL), () -> bowlDiet(Items.BEEF), Profiles::inheritDogBreed, () -> List.of(new SleepBed(PetBedContent.DOG_PILLOW, 0, 0), new SleepBed(StrawContent.BLOCK, 0, 0)))),
+                Map.entry(CatContent.TYPE, sleepProfile(caps(Capability.CARE, Capability.SLEEP, Capability.GROWTH, Capability.REPRODUCTIVE_INTERACTIONS, Capability.GESTATION, Capability.PET_FOOD_GOAL), () -> bowlDiet(Items.COD, Items.SALMON, Items.TROPICAL_FISH, Items.PUFFERFISH), Profiles::inheritCatBreed, () -> List.of(new SleepBed(PetBedContent.CAT_BED_1, 0, 0), new SleepBed(PetBedContent.CAT_BED_2, 0, 0)))),
                 Map.entry(HamsterEntity.TYPE, sleepProfile(caps(Capability.SLEEP, Capability.SHOULDER_CARRY), () -> new Diet(Set.of(), Set.of(net.syrupstudios.animaniax.item.HamsterFoodContent.HAMSTER_FOOD), 50), null, true, () -> List.of(new SleepBed(StrawContent.BLOCK, 0, 0))))
         );
 
@@ -164,6 +167,21 @@ public final class AnimalProfile {
             }
         }
 
+        private static void inheritDogBreed(Entity child, Animal first, Animal second, BreedStage stage, boolean useFirst) {
+            if (stage == BreedStage.EXTRA_LITTER && child instanceof DogEntity c
+                    && first instanceof DogEntity a && second instanceof DogEntity b) {
+                DogEntity parent = useFirst ? a : b;
+                c.setBreed(parent.getBreed());
+                c.setVariant(parent.getVariant());
+            }
+        }
+
+        private static void inheritCatBreed(Entity child, Animal first, Animal second, BreedStage stage, boolean useFirst) {
+            if (stage == BreedStage.EXTRA_LITTER && child instanceof CompanionCatEntity c
+                    && first instanceof CompanionCatEntity a && second instanceof CompanionCatEntity b) {
+                c.setBreed(useFirst ? a.getBreed() : b.getBreed());
+            }
+        }
     }
 
     private AnimalProfile() {}
@@ -216,6 +234,8 @@ public final class AnimalProfile {
     }
 
     public static boolean acceptsPetBowlFood(EntityType<?> type, ItemStack stack) {
+        if (type == CatContent.TYPE) return stack.is(CAT_FOODS);
+        if (type == DogContent.TYPE) return stack.is(DOG_FOODS);
         Profile profile = type == null ? null : Profiles.BY_TYPE.get(type);
         Diet diet = profile == null ? null : profile.food();
         return diet != null && diet.bowlFeed().contains(stack.getItem());

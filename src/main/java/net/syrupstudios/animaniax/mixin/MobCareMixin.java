@@ -34,6 +34,9 @@ import net.syrupstudios.animaniax.entity.ai.SaltLickGoal;
 import net.syrupstudios.animaniax.entity.AnimalCareState;
 import net.syrupstudios.animaniax.entity.AnimalSleepState;
 import net.syrupstudios.animaniax.config.AnimalCareConfig;
+import net.syrupstudios.animaniax.entity.DogContent;
+import net.syrupstudios.animaniax.entity.DogEntity;
+import net.syrupstudios.animaniax.entity.CatContent;
 import net.syrupstudios.animaniax.entity.AnimalReproductionState;
 import net.syrupstudios.animaniax.entity.AnimalSterilizationState;
 import net.syrupstudios.animaniax.entity.ChickenSexState;
@@ -243,6 +246,7 @@ abstract class MobCareMixin implements AnimalCareState, AnimalSleepState, PigBre
         }
         if (!mob.level().isClientSide && animaniax$isReproductiveAnimal(mob))
             ((AnimalCareState) mob).animaniax$markPlayerInteraction(false);
+        if (mob instanceof DogEntity || mob.getType() == CatContent.TYPE) return;
         if (mob.getType() == EntityType.MOOSHROOM && held.is(Items.BOWL)) {
             if (!mob.level().isClientSide) {
                 AnimalReproductionState reproduction = (AnimalReproductionState) mob;
@@ -461,7 +465,8 @@ abstract class MobCareMixin implements AnimalCareState, AnimalSleepState, PigBre
     @Unique
     public boolean animaniax$feedForCare() {
         Mob mob = (Mob) (Object) this;
-        if (!mob.isBaby() && animaniax$hunger >= 100) return false;
+        if (!mob.isBaby() && animaniax$hunger >= 100
+                && mob.getType() != DogContent.TYPE && mob.getType() != CatContent.TYPE) return false;
         animaniax$careActivated = true;
         animaniax$resetHunger(mob);
         return true;
