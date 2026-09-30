@@ -7,6 +7,7 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.server.ServerAboutToStartEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
+import net.neoforged.neoforge.event.village.VillagerTradesEvent;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
@@ -275,6 +276,20 @@ public final class NeoForgeEntrypoint {
         BLOCK_ENTITIES.register(modBus);
         RECIPE_SERIALIZERS.register(modBus);
         ENTITY_TYPES.register(modBus);
+        modBus.addListener((net.neoforged.neoforge.registries.RegisterEvent event) -> {
+            if (event.getRegistryKey().equals(Registries.POINT_OF_INTEREST_TYPE))
+                event.register(Registries.POINT_OF_INTEREST_TYPE, net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("animaniax", "pet_seller"),
+                        () -> new net.minecraft.world.entity.ai.village.poi.PoiType(
+                                java.util.Set.of(net.syrupstudios.animaniax.block.PetBedContent.CAT_BED_1.defaultBlockState(), net.syrupstudios.animaniax.block.PetBedContent.CAT_BED_2.defaultBlockState()), 1, 1));
+            if (event.getRegistryKey().equals(Registries.VILLAGER_PROFESSION))
+                event.register(Registries.VILLAGER_PROFESSION, net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("animaniax", "pet_seller"),
+                        () -> net.syrupstudios.animaniax.entity.PetSellerContent.PROFESSION);
+        });
+        NeoForge.EVENT_BUS.addListener((VillagerTradesEvent event) -> {
+            if (event.getType() != net.syrupstudios.animaniax.entity.PetSellerContent.PROFESSION) return;
+            for (int level = 1; level <= 3; level++)
+                event.getTrades().get(level).addAll(net.syrupstudios.animaniax.entity.PetSellerContent.listingsForLevel(level));
+        });
         NeoForge.EVENT_BUS.addListener((ServerAboutToStartEvent event) -> {
             AnimalCareConfig.load(event.getServer().getWorldPath(LevelResource.ROOT).resolve("serverconfig/animaniax.properties"));
         });

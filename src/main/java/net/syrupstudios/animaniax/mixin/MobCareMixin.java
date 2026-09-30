@@ -29,6 +29,7 @@ import net.syrupstudios.animaniax.entity.ai.BullRetaliationGoal;
 import net.syrupstudios.animaniax.entity.ai.SheepSparringGoal;
 import net.syrupstudios.animaniax.entity.ai.GoatSparringGoal;
 import net.syrupstudios.animaniax.entity.ai.NestingGoal;
+import net.syrupstudios.animaniax.entity.ai.DogHerdGoal;
 import net.syrupstudios.animaniax.entity.ai.PigSnuffleGoal;
 import net.syrupstudios.animaniax.entity.ai.SaltLickGoal;
 import net.syrupstudios.animaniax.entity.AnimalCareState;
@@ -160,6 +161,8 @@ abstract class MobCareMixin implements AnimalCareState, AnimalSleepState, PigBre
         animaniax$hungerLimit = AnimalCareConfig.feedTimer + mob.getRandom().nextInt(100);
         animaniax$thirstLimit = AnimalCareConfig.waterTimer + mob.getRandom().nextInt(100);
         goalSelector.addGoal(6, new SaltLickGoal(mob));
+        if (AnimalProfile.has(mob.getType(), Capability.HERDING_GOAL) && mob instanceof Animal animal)
+            goalSelector.addGoal(1, new DogHerdGoal(animal));
         if (AnimalProfile.has(mob.getType(), Capability.PET_FOOD_GOAL))
             goalSelector.addGoal(6, new AnimalCareGoal(mob, AnimalCareGoal.Need.PET_BOWL_FOOD));
         if (mob.getType() == EntityType.COW) goalSelector.addGoal(0, new BullRetaliationGoal(mob));

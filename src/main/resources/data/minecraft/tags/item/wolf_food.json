@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "animaniax:raw_horse",
+    "animaniax:cooked_horse",
+    "#animaniax:additional_wolf_foods"
+  ]
+}

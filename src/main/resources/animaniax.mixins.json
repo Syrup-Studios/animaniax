@@ -34,7 +34,8 @@
     "ChickenNaturalBreedMixin",
     "CowSpawnPlacementMixin",
     "NaturalSpawnCapMixin",
-    "SeedPilePlacementMixin"
+    "SeedPilePlacementMixin",
+    "PoiTypesAccessor"
   ],
   "client": [
     "FaintingGoatPoseMixin",

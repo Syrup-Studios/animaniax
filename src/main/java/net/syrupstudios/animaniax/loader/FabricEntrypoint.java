@@ -118,6 +118,7 @@ public final class FabricEntrypoint implements ModInitializer {
         HamsterEntity.registerFabric();
         DogContent.registerFabric();
         CatContent.registerFabric();
+        net.syrupstudios.animaniax.entity.PetSellerContent.registerFabric();
         SpawnPlacements.register(DraftHorseContent.DRAFT_HORSE, SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules);
         SpawnPlacements.register(PeafowlEntity.TYPE, SpawnPlacementTypes.ON_GROUND,
