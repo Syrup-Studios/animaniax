@@ -38,8 +38,9 @@ public class CompanionCatEntity extends Cat {
         targetSelector.addGoal(2, new NonTameRandomTargetGoal<LivingEntity>(this, LivingEntity.class, true,
                 target -> target instanceof PeafowlEntity peafowl && peafowl.isBaby()
                         || target.getType() == EntityType.CHICKEN && target.isBaby()
-                        || target instanceof HamsterEntity
-                        || target instanceof net.minecraft.world.entity.monster.Silverfish) {
+                        || target instanceof HamsterEntity || target instanceof FerretEntity
+                        || target instanceof net.minecraft.world.entity.monster.Silverfish
+                        || target instanceof HedgehogEntity) {
             @Override public boolean canUse() {
                 return animaniax$canHunt() && super.canUse();
             }

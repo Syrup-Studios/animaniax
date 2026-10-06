@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "#animaniax:small_pet_eggs",
+    "#animaniax:small_pet_meats",
+    "minecraft:carrot",
+    "minecraft:beetroot",
+    "minecraft:apple"
+  ]
+}

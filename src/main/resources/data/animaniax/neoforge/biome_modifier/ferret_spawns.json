@@ -1,0 +1,8 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": "#animaniax:ferret_spawns",
+  "spawners": [
+    { "type": "animaniax:ferret_grey", "weight": 8, "minCount": 1, "maxCount": 3 },
+    { "type": "animaniax:ferret_white", "weight": 8, "minCount": 1, "maxCount": 3 }
+  ]
+}

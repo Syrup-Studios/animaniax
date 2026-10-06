@@ -51,12 +51,18 @@ import net.syrupstudios.animaniax.item.PrimeRabbitContent;
 import net.syrupstudios.animaniax.item.PrimeMeatContent;
 import net.syrupstudios.animaniax.block.SheepWoolContent;
 import net.syrupstudios.animaniax.item.HamsterCarryContent;
+import net.syrupstudios.animaniax.item.FerretCarryContent;
+import net.syrupstudios.animaniax.item.HedgehogCarryContent;
 import net.syrupstudios.animaniax.item.HamsterBallContent;
 import net.syrupstudios.animaniax.entity.DraftHorseContent;
 import net.syrupstudios.animaniax.entity.DogContent;
 import net.syrupstudios.animaniax.entity.CatContent;
 import net.syrupstudios.animaniax.entity.PeafowlEntity;
 import net.syrupstudios.animaniax.entity.HamsterEntity;
+import net.syrupstudios.animaniax.entity.FerretContent;
+import net.syrupstudios.animaniax.entity.FerretEntity;
+import net.syrupstudios.animaniax.entity.HedgehogContent;
+import net.syrupstudios.animaniax.entity.HedgehogEntity;
 import net.syrupstudios.animaniax.item.RidingCropContent;
 import net.syrupstudios.animaniax.item.AnimalSpawnEggContent;
 import org.slf4j.Logger;
@@ -112,10 +118,14 @@ public final class FabricEntrypoint implements ModInitializer {
         PrimeRabbitContent.registerFabric();
         PrimeMeatContent.registerFabric();
         HamsterCarryContent.registerFabric();
+        FerretCarryContent.registerFabric();
+        HedgehogCarryContent.registerFabric();
         HamsterBallContent.registerFabric();
         DraftHorseContent.registerFabric();
         PeafowlEntity.registerFabric();
         HamsterEntity.registerFabric();
+        FerretContent.registerFabric();
+        HedgehogContent.registerFabric();
         DogContent.registerFabric();
         CatContent.registerFabric();
         net.syrupstudios.animaniax.entity.PetSellerContent.registerFabric();
@@ -123,9 +133,17 @@ public final class FabricEntrypoint implements ModInitializer {
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules);
         SpawnPlacements.register(PeafowlEntity.TYPE, SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules);
+        SpawnPlacements.register(FerretContent.GREY, SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules);
+        SpawnPlacements.register(FerretContent.WHITE, SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules);
         SpawnPlacements.register(DogContent.TYPE, SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules);
         SpawnPlacements.register(CatContent.TYPE, SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules);
+        SpawnPlacements.register(HedgehogContent.HEDGEHOG, SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules);
+        SpawnPlacements.register(HedgehogContent.HEDGEHOG_ALBINO, SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules);
         SpawnPlacements.register(HamsterEntity.TYPE, SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules);
@@ -141,6 +159,10 @@ public final class FabricEntrypoint implements ModInitializer {
         BiomeModifications.addSpawn(BiomeSelectors.tag(TagKey.create(Registries.BIOME,
                 PeafowlEntity.id("peafowl_spawns"))), MobCategory.CREATURE,
                 PeafowlEntity.TYPE, 8, 1, 3);
+        BiomeModifications.addSpawn(BiomeSelectors.tag(TagKey.create(Registries.BIOME,
+                FerretContent.id("ferret_spawns"))), MobCategory.CREATURE, FerretContent.GREY, 8, 1, 3);
+        BiomeModifications.addSpawn(BiomeSelectors.tag(TagKey.create(Registries.BIOME,
+                FerretContent.id("ferret_spawns"))), MobCategory.CREATURE, FerretContent.WHITE, 8, 1, 3);
         BiomeModifications.addSpawn(BiomeSelectors.tag(TagKey.create(Registries.BIOME, DogContent.id("dog_forest_spawns"))),
                 MobCategory.CREATURE, DogContent.TYPE, 5, 2, 2);
         BiomeModifications.addSpawn(BiomeSelectors.tag(TagKey.create(Registries.BIOME, DogContent.id("dog_mountain_spawns"))),
@@ -149,6 +171,10 @@ public final class FabricEntrypoint implements ModInitializer {
                 MobCategory.CREATURE, DogContent.TYPE, 5, 2, 2);
         BiomeModifications.addSpawn(BiomeSelectors.tag(TagKey.create(Registries.BIOME, CatContent.id("cat_spawns"))),
                 MobCategory.CREATURE, CatContent.TYPE, 5, 2, 2);
+        BiomeModifications.addSpawn(BiomeSelectors.tag(TagKey.create(Registries.BIOME, HedgehogContent.id("hedgehog_spawns"))),
+                MobCategory.CREATURE, HedgehogContent.HEDGEHOG, 8, 1, 3);
+        BiomeModifications.addSpawn(BiomeSelectors.tag(TagKey.create(Registries.BIOME, HedgehogContent.id("hedgehog_albino_spawns"))),
+                MobCategory.CREATURE, HedgehogContent.HEDGEHOG_ALBINO, 4, 1, 2);
         BiomeModifications.addSpawn(BiomeSelectors.tag(TagKey.create(Registries.BIOME,
                 HamsterEntity.id("hamster_spawns"))), MobCategory.CREATURE,
                 HamsterEntity.TYPE, 6, 2, 4);

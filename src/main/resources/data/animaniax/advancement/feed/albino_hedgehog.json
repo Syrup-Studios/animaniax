@@ -1,0 +1,189 @@
+{
+  "parent": "animaniax:feed/root",
+  "display": {
+    "icon": {
+      "id": "minecraft:carrot"
+    },
+    "title": {
+      "translate": "advancements.animaniax.feed.albino_hedgehog.title"
+    },
+    "description": {
+      "translate": "advancements.animaniax.feed.albino_hedgehog.description"
+    },
+    "frame": "task"
+  },
+  "criteria": {
+    "fed_carrot": {
+      "trigger": "animaniax:feed_animal",
+      "conditions": {
+        "item": {
+          "items": [
+            "minecraft:carrot"
+          ]
+        },
+        "entity": {
+          "type": "animaniax:hedgehog_albino"
+        }
+      }
+    },
+    "fed_beetroot": {
+      "trigger": "animaniax:feed_animal",
+      "conditions": {
+        "item": {
+          "items": [
+            "minecraft:beetroot"
+          ]
+        },
+        "entity": {
+          "type": "animaniax:hedgehog_albino"
+        }
+      }
+    },
+    "fed_apple": {
+      "trigger": "animaniax:feed_animal",
+      "conditions": {
+        "item": {
+          "items": [
+            "minecraft:apple"
+          ]
+        },
+        "entity": {
+          "type": "animaniax:hedgehog_albino"
+        }
+      }
+    },
+    "fed_egg": {
+      "trigger": "animaniax:feed_animal",
+      "conditions": {
+        "item": {
+          "items": [
+            "minecraft:egg"
+          ]
+        },
+        "entity": {
+          "type": "animaniax:hedgehog_albino"
+        }
+      }
+    },
+    "fed_brown_egg": {
+      "trigger": "animaniax:feed_animal",
+      "conditions": {
+        "item": {
+          "items": [
+            "animaniax:brown_egg"
+          ]
+        },
+        "entity": {
+          "type": "animaniax:hedgehog_albino"
+        }
+      }
+    },
+    "fed_peacock_egg_blue": {
+      "trigger": "animaniax:feed_animal",
+      "conditions": {
+        "item": {
+          "items": [
+            "animaniax:peacock_egg_blue"
+          ]
+        },
+        "entity": {
+          "type": "animaniax:hedgehog_albino"
+        }
+      }
+    },
+    "fed_peacock_egg_white": {
+      "trigger": "animaniax:feed_animal",
+      "conditions": {
+        "item": {
+          "items": [
+            "animaniax:peacock_egg_white"
+          ]
+        },
+        "entity": {
+          "type": "animaniax:hedgehog_albino"
+        }
+      }
+    },
+    "fed_rabbit": {
+      "trigger": "animaniax:feed_animal",
+      "conditions": {
+        "item": {
+          "items": [
+            "minecraft:rabbit"
+          ]
+        },
+        "entity": {
+          "type": "animaniax:hedgehog_albino"
+        }
+      }
+    },
+    "fed_chicken": {
+      "trigger": "animaniax:feed_animal",
+      "conditions": {
+        "item": {
+          "items": [
+            "minecraft:chicken"
+          ]
+        },
+        "entity": {
+          "type": "animaniax:hedgehog_albino"
+        }
+      }
+    },
+    "fed_raw_prime_rabbit": {
+      "trigger": "animaniax:feed_animal",
+      "conditions": {
+        "item": {
+          "items": [
+            "animaniax:raw_prime_rabbit"
+          ]
+        },
+        "entity": {
+          "type": "animaniax:hedgehog_albino"
+        }
+      }
+    },
+    "fed_raw_prime_chicken": {
+      "trigger": "animaniax:feed_animal",
+      "conditions": {
+        "item": {
+          "items": [
+            "animaniax:raw_prime_chicken"
+          ]
+        },
+        "entity": {
+          "type": "animaniax:hedgehog_albino"
+        }
+      }
+    },
+    "fed_raw_prime_mutton": {
+      "trigger": "animaniax:feed_animal",
+      "conditions": {
+        "item": {
+          "items": [
+            "animaniax:raw_prime_mutton"
+          ]
+        },
+        "entity": {
+          "type": "animaniax:hedgehog_albino"
+        }
+      }
+    }
+  },
+  "requirements": [
+    [
+      "fed_carrot",
+      "fed_beetroot",
+      "fed_apple",
+      "fed_egg",
+      "fed_brown_egg",
+      "fed_peacock_egg_blue",
+      "fed_peacock_egg_white",
+      "fed_rabbit",
+      "fed_chicken",
+      "fed_raw_prime_rabbit",
+      "fed_raw_prime_chicken",
+      "fed_raw_prime_mutton"
+    ]
+  ]
+}

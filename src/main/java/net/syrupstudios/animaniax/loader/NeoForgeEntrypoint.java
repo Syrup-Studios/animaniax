@@ -27,6 +27,10 @@ import net.syrupstudios.animaniax.entity.CompanionCatEntity;
 import net.syrupstudios.animaniax.entity.DraftHorseEntity;
 import net.syrupstudios.animaniax.entity.PeafowlEntity;
 import net.syrupstudios.animaniax.entity.HamsterEntity;
+import net.syrupstudios.animaniax.entity.FerretContent;
+import net.syrupstudios.animaniax.entity.FerretEntity;
+import net.syrupstudios.animaniax.entity.HedgehogContent;
+import net.syrupstudios.animaniax.entity.HedgehogEntity;
 import net.syrupstudios.animaniax.item.AnimalSpawnEggContent;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -65,6 +69,8 @@ import net.syrupstudios.animaniax.item.PrimeMeatContent;
 import net.syrupstudios.animaniax.block.SheepWoolContent;
 import net.syrupstudios.animaniax.item.PrimeMeatCuttingRecipe;
 import net.syrupstudios.animaniax.item.HamsterCarryContent;
+import net.syrupstudios.animaniax.item.FerretCarryContent;
+import net.syrupstudios.animaniax.item.HedgehogCarryContent;
 import net.syrupstudios.animaniax.item.HamsterBallContent;
 import net.minecraft.world.item.DyeColor;
 import net.syrupstudios.animaniax.item.CheeseCuttingRecipe;
@@ -125,13 +131,23 @@ public final class NeoForgeEntrypoint {
         ENTITY_TYPES.register("peafowl", () -> PeafowlEntity.TYPE);
         ITEMS.register("peafowl_spawn_egg", () -> PeafowlEntity.SPAWN_EGG);
         ENTITY_TYPES.register("hamster", () -> HamsterEntity.TYPE);
+        ENTITY_TYPES.register("ferret_grey", () -> FerretContent.GREY);
+        ITEMS.register("ferret_grey_spawn_egg", () -> FerretContent.GREY_SPAWN_EGG);
+        ENTITY_TYPES.register("ferret_white", () -> FerretContent.WHITE);
+        ITEMS.register("ferret_white_spawn_egg", () -> FerretContent.WHITE_SPAWN_EGG);
         ENTITY_TYPES.register("dog", () -> DogContent.TYPE);
         ITEMS.register("dog_spawn_egg", () -> DogContent.SPAWN_EGG);
         ENTITY_TYPES.register("cat", () -> CatContent.TYPE);
         ITEMS.register("cat_spawn_egg", () -> CatContent.SPAWN_EGG);
+        ENTITY_TYPES.register("hedgehog", () -> HedgehogContent.HEDGEHOG);
+        ITEMS.register("hedgehog_spawn_egg", () -> HedgehogContent.HEDGEHOG_SPAWN_EGG);
+        ENTITY_TYPES.register("hedgehog_albino", () -> HedgehogContent.HEDGEHOG_ALBINO);
+        ITEMS.register("hedgehog_albino_spawn_egg", () -> HedgehogContent.HEDGEHOG_ALBINO_SPAWN_EGG);
         ITEMS.register("hamster_spawn_egg", () -> HamsterEntity.SPAWN_EGG);
         ITEMS.register("animal_spawn_egg", () -> AnimalSpawnEggContent.ITEM);
         ITEMS.register("carried_hamster", () -> HamsterCarryContent.CARRIED_HAMSTER);
+        ITEMS.register("carried_ferret", () -> FerretCarryContent.CARRIED_FERRET);
+        ITEMS.register("carried_hedgehog", () -> HedgehogCarryContent.CARRIED_HEDGEHOG);
         ITEMS.register("hamster_ball", () -> HamsterBallContent.CLEAR);
         for (DyeColor color : DyeColor.values()) ITEMS.register("hamster_ball_" + color.getName(), () -> HamsterBallContent.COLORED[color.getId()]);
         ITEMS.register("hamster_food", () -> HamsterFoodContent.HAMSTER_FOOD);
@@ -325,8 +341,12 @@ public final class NeoForgeEntrypoint {
         event.put(DraftHorseContent.DRAFT_HORSE, DraftHorseEntity.createAttributes().build());
         event.put(PeafowlEntity.TYPE, PeafowlEntity.createAttributes().build());
         event.put(HamsterEntity.TYPE, HamsterEntity.createAttributes().build());
+        event.put(FerretContent.GREY, FerretEntity.createAttributes().build());
+        event.put(FerretContent.WHITE, FerretEntity.createAttributes().build());
         event.put(DogContent.TYPE, DogEntity.createAttributes().build());
         event.put(CatContent.TYPE, CompanionCatEntity.createAttributes().build());
+        event.put(HedgehogContent.HEDGEHOG, HedgehogEntity.createAttributes().build());
+        event.put(HedgehogContent.HEDGEHOG_ALBINO, HedgehogEntity.createAttributes().build());
     }
 
     private void addCreativeItems(BuildCreativeModeTabContentsEvent event) {

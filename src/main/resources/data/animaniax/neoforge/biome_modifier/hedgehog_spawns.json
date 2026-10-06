@@ -1,0 +1,7 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": "#animaniax:hedgehog_spawns",
+  "spawners": [
+    { "type": "animaniax:hedgehog", "weight": 8, "minCount": 1, "maxCount": 3 }
+  ]
+}

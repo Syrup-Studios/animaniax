@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.entity.CatRenderer;
 import net.minecraft.client.renderer.entity.WolfRenderer;
 import net.syrupstudios.animaniax.client.PeafowlRenderer;
 import net.syrupstudios.animaniax.client.HamsterRenderer;
+import net.syrupstudios.animaniax.client.FerretRenderer;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -17,6 +18,9 @@ import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.syrupstudios.animaniax.entity.DraftHorseContent;
 import net.syrupstudios.animaniax.entity.PeafowlEntity;
 import net.syrupstudios.animaniax.entity.HamsterEntity;
+import net.syrupstudios.animaniax.entity.FerretContent;
+import net.syrupstudios.animaniax.entity.HedgehogContent;
+import net.syrupstudios.animaniax.client.HedgehogRenderer;
 import net.syrupstudios.animaniax.item.AnimalSpawnEggContent;
 import net.syrupstudios.animaniax.item.AnimalSpawnEggItem;
 
@@ -31,6 +35,10 @@ public final class NeoForgeClientEvents {
         event.registerEntityRenderer(DraftHorseContent.DRAFT_HORSE, HorseRenderer::new);
         event.registerEntityRenderer(PeafowlEntity.TYPE, PeafowlRenderer::new);
         event.registerEntityRenderer(HamsterEntity.TYPE, HamsterRenderer::new);
+        event.registerEntityRenderer(FerretContent.GREY, FerretRenderer::new);
+        event.registerEntityRenderer(FerretContent.WHITE, FerretRenderer::new);
+        event.registerEntityRenderer(HedgehogContent.HEDGEHOG, HedgehogRenderer::new);
+        event.registerEntityRenderer(HedgehogContent.HEDGEHOG_ALBINO, HedgehogRenderer::new);
     }
 
     @SubscribeEvent

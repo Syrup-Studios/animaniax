@@ -117,7 +117,15 @@ public final class AnimalProfile {
                 Map.entry(DraftHorseContent.DRAFT_HORSE, sleepProfile(caps(Capability.CARE, Capability.SLEEP, Capability.GROWTH, Capability.REPRODUCTIVE_INTERACTIONS, Capability.GESTATION, Capability.SALT_LICK_GOAL, Capability.GRASS_GOAL, Capability.NATURAL_GRAZING_GOAL, Capability.REMOVE_NATURAL_WATER), () -> troughDiet(Items.WHEAT, Items.APPLE, Items.CARROT), null, Profiles::farmSleepBeds)),
                 Map.entry(DogContent.TYPE, sleepProfile(caps(Capability.CARE, Capability.SLEEP, Capability.GROWTH, Capability.REPRODUCTIVE_INTERACTIONS, Capability.GESTATION, Capability.PET_FOOD_GOAL), () -> bowlDiet(Items.BEEF), Profiles::inheritDogBreed, () -> List.of(new SleepBed(PetBedContent.DOG_PILLOW, 0, 0), new SleepBed(StrawContent.BLOCK, 0, 0)))),
                 Map.entry(CatContent.TYPE, sleepProfile(caps(Capability.CARE, Capability.SLEEP, Capability.GROWTH, Capability.REPRODUCTIVE_INTERACTIONS, Capability.GESTATION, Capability.PET_FOOD_GOAL), () -> bowlDiet(Items.COD, Items.SALMON, Items.TROPICAL_FISH, Items.PUFFERFISH), Profiles::inheritCatBreed, () -> List.of(new SleepBed(PetBedContent.CAT_BED_1, 0, 0), new SleepBed(PetBedContent.CAT_BED_2, 0, 0)))),
-                Map.entry(HamsterEntity.TYPE, sleepProfile(caps(Capability.SLEEP, Capability.SHOULDER_CARRY), () -> new Diet(Set.of(), Set.of(net.syrupstudios.animaniax.item.HamsterFoodContent.HAMSTER_FOOD), 50), null, true, () -> List.of(new SleepBed(StrawContent.BLOCK, 0, 0))))
+                Map.entry(HamsterEntity.TYPE, sleepProfile(caps(Capability.SLEEP, Capability.SHOULDER_CARRY), () -> new Diet(Set.of(), Set.of(net.syrupstudios.animaniax.item.HamsterFoodContent.HAMSTER_FOOD), 50), null, true, () -> List.of(new SleepBed(StrawContent.BLOCK, 0, 0)))),
+                Map.entry(FerretContent.GREY, sleepProfile(caps(Capability.SLEEP, Capability.SHOULDER_CARRY), () -> troughDiet(50, Items.EGG, net.syrupstudios.animaniax.item.BrownEggContent.BROWN_EGG), null, Profiles::farmSleepBeds)),
+                Map.entry(FerretContent.WHITE, sleepProfile(caps(Capability.SLEEP, Capability.SHOULDER_CARRY), () -> troughDiet(50, Items.EGG, net.syrupstudios.animaniax.item.BrownEggContent.BROWN_EGG), null, Profiles::farmSleepBeds)),
+                Map.entry(HedgehogContent.HEDGEHOG, sleepProfile(caps(Capability.SHOULDER_CARRY, Capability.SLEEP),
+                        () -> troughDiet(50, Items.CARROT, Items.BEETROOT, Items.APPLE, Items.EGG, net.syrupstudios.animaniax.item.BrownEggContent.BROWN_EGG),
+                        null, true, () -> List.of(new SleepBed(StrawContent.BLOCK, 0, 0), new SleepBed(Blocks.GRASS_BLOCK, -1, 1)))),
+                Map.entry(HedgehogContent.HEDGEHOG_ALBINO, sleepProfile(caps(Capability.SHOULDER_CARRY, Capability.SLEEP),
+                        () -> troughDiet(50, Items.CARROT, Items.BEETROOT, Items.APPLE, Items.EGG, net.syrupstudios.animaniax.item.BrownEggContent.BROWN_EGG),
+                        null, true, () -> List.of(new SleepBed(StrawContent.BLOCK, 0, 0), new SleepBed(Blocks.GRASS_BLOCK, -1, 1))))
         );
 
         private static Set<Capability> caps(Capability... capabilities) { return Set.of(capabilities); }

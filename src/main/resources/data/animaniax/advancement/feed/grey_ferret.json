@@ -1,0 +1,161 @@
+{
+  "parent": "animaniax:feed/root",
+  "display": {
+    "icon": {
+      "id": "minecraft:mutton"
+    },
+    "title": {
+      "translate": "advancements.animaniax.feed.grey_ferret.title"
+    },
+    "description": {
+      "translate": "advancements.animaniax.feed.grey_ferret.description"
+    },
+    "frame": "task"
+  },
+  "criteria": {
+    "fed_mutton": {
+      "trigger": "animaniax:feed_animal",
+      "conditions": {
+        "item": {
+          "items": [
+            "minecraft:mutton"
+          ]
+        },
+        "entity": {
+          "type": "animaniax:ferret_grey"
+        }
+      }
+    },
+    "fed_rabbit": {
+      "trigger": "animaniax:feed_animal",
+      "conditions": {
+        "item": {
+          "items": [
+            "minecraft:rabbit"
+          ]
+        },
+        "entity": {
+          "type": "animaniax:ferret_grey"
+        }
+      }
+    },
+    "fed_chicken": {
+      "trigger": "animaniax:feed_animal",
+      "conditions": {
+        "item": {
+          "items": [
+            "minecraft:chicken"
+          ]
+        },
+        "entity": {
+          "type": "animaniax:ferret_grey"
+        }
+      }
+    },
+    "fed_egg": {
+      "trigger": "animaniax:feed_animal",
+      "conditions": {
+        "item": {
+          "items": [
+            "minecraft:egg"
+          ]
+        },
+        "entity": {
+          "type": "animaniax:ferret_grey"
+        }
+      }
+    },
+    "fed_brown_egg": {
+      "trigger": "animaniax:feed_animal",
+      "conditions": {
+        "item": {
+          "items": [
+            "animaniax:brown_egg"
+          ]
+        },
+        "entity": {
+          "type": "animaniax:ferret_grey"
+        }
+      }
+    },
+    "fed_peacock_egg_blue": {
+      "trigger": "animaniax:feed_animal",
+      "conditions": {
+        "item": {
+          "items": [
+            "animaniax:peacock_egg_blue"
+          ]
+        },
+        "entity": {
+          "type": "animaniax:ferret_grey"
+        }
+      }
+    },
+    "fed_peacock_egg_white": {
+      "trigger": "animaniax:feed_animal",
+      "conditions": {
+        "item": {
+          "items": [
+            "animaniax:peacock_egg_white"
+          ]
+        },
+        "entity": {
+          "type": "animaniax:ferret_grey"
+        }
+      }
+    },
+    "fed_raw_prime_mutton": {
+      "trigger": "animaniax:feed_animal",
+      "conditions": {
+        "item": {
+          "items": [
+            "animaniax:raw_prime_mutton"
+          ]
+        },
+        "entity": {
+          "type": "animaniax:ferret_grey"
+        }
+      }
+    },
+    "fed_raw_prime_rabbit": {
+      "trigger": "animaniax:feed_animal",
+      "conditions": {
+        "item": {
+          "items": [
+            "animaniax:raw_prime_rabbit"
+          ]
+        },
+        "entity": {
+          "type": "animaniax:ferret_grey"
+        }
+      }
+    },
+    "fed_raw_prime_chicken": {
+      "trigger": "animaniax:feed_animal",
+      "conditions": {
+        "item": {
+          "items": [
+            "animaniax:raw_prime_chicken"
+          ]
+        },
+        "entity": {
+          "type": "animaniax:ferret_grey"
+        }
+      }
+    }
+  },
+  "requirements": [
+    [
+      "fed_mutton",
+      "fed_rabbit",
+      "fed_chicken",
+      "fed_egg",
+      "fed_brown_egg",
+      "fed_peacock_egg_blue",
+      "fed_peacock_egg_white",
+      "fed_raw_prime_mutton",
+      "fed_raw_prime_rabbit",
+      "fed_raw_prime_chicken"
+    ]
+  ]
+}

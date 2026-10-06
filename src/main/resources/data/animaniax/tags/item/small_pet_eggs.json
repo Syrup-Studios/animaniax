@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:egg",
+    "animaniax:brown_egg",
+    "animaniax:peacock_egg_blue",
+    "animaniax:peacock_egg_white"
+  ]
+}
