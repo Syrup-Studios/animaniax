@@ -105,6 +105,11 @@ public final class HedgehogEntity extends TamableAnimal {
             @Override public boolean canUse() { return AnimalCareConfig.animalsCanAttackOthers && super.canUse(); }
             @Override public boolean canContinueToUse() { return AnimalCareConfig.animalsCanAttackOthers && super.canContinueToUse(); }
         });
+        targetSelector.addGoal(2, new net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal<>(this, net.minecraft.world.entity.animal.frog.Frog.class,
+                10, true, false, frog -> frog instanceof CommonFrogEntity || frog instanceof ToadEntity) {
+            @Override public boolean canUse() { return AnimalCareConfig.animalsCanAttackOthers && super.canUse(); }
+            @Override public boolean canContinueToUse() { return AnimalCareConfig.animalsCanAttackOthers && super.canContinueToUse(); }
+        });
     }
 
     @Override public InteractionResult mobInteract(Player player, InteractionHand hand) {

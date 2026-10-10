@@ -36,7 +36,8 @@ public class CompanionCatEntity extends Cat {
         playGoal = new JuvenilePlayGoal(this, CompanionCatEntity.class);
         goalSelector.addGoal(7, playGoal);
         targetSelector.addGoal(2, new NonTameRandomTargetGoal<LivingEntity>(this, LivingEntity.class, true,
-                target -> target instanceof PeafowlEntity peafowl && peafowl.isBaby()
+                target -> target instanceof CommonFrogEntity || target instanceof ToadEntity
+                        || target instanceof PeafowlEntity peafowl && peafowl.isBaby()
                         || target.getType() == EntityType.CHICKEN && target.isBaby()
                         || target instanceof HamsterEntity || target instanceof FerretEntity
                         || target instanceof net.minecraft.world.entity.monster.Silverfish

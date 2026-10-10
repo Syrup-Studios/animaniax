@@ -87,6 +87,8 @@ public final class PeafowlEntity extends Chicken implements PeafowlMorphState {
         boolean hit = target.hurt(source, 2.0F);
         if (hit && level() instanceof ServerLevel serverLevel)
             EnchantmentHelper.doPostAttackEffects(serverLevel, target, source);
+        if (target instanceof CommonFrogEntity || target instanceof DartFrogEntity || target instanceof ToadEntity)
+            ((AnimalCareState) (Object) this).animaniax$graze();
         if (target instanceof Player player)
             player.knockback(1.0D, getX() - target.getX(), getZ() - target.getZ());
         return hit;
