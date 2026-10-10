@@ -63,6 +63,8 @@ import net.syrupstudios.animaniax.entity.FerretContent;
 import net.syrupstudios.animaniax.entity.FerretEntity;
 import net.syrupstudios.animaniax.entity.HedgehogContent;
 import net.syrupstudios.animaniax.entity.HedgehogEntity;
+import net.syrupstudios.animaniax.entity.FrogContent;
+import net.syrupstudios.animaniax.item.FrogLegContent;
 import net.syrupstudios.animaniax.item.RidingCropContent;
 import net.syrupstudios.animaniax.item.AnimalSpawnEggContent;
 import org.slf4j.Logger;
@@ -129,6 +131,8 @@ public final class FabricEntrypoint implements ModInitializer {
         DogContent.registerFabric();
         CatContent.registerFabric();
         net.syrupstudios.animaniax.entity.PetSellerContent.registerFabric();
+        FrogContent.registerFabric();
+        FrogLegContent.registerFabric();
         SpawnPlacements.register(DraftHorseContent.DRAFT_HORSE, SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules);
         SpawnPlacements.register(PeafowlEntity.TYPE, SpawnPlacementTypes.ON_GROUND,
@@ -147,6 +151,12 @@ public final class FabricEntrypoint implements ModInitializer {
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules);
         SpawnPlacements.register(HamsterEntity.TYPE, SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules);
+        SpawnPlacements.register(FrogContent.COMMON_FROG, SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, net.minecraft.world.entity.animal.frog.Frog::checkFrogSpawnRules);
+        SpawnPlacements.register(FrogContent.DART_FROG, SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, net.minecraft.world.entity.animal.frog.Frog::checkFrogSpawnRules);
+        SpawnPlacements.register(FrogContent.TOAD, SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, net.minecraft.world.entity.animal.frog.Frog::checkFrogSpawnRules);
         BiomeModifications.addSpawn(BiomeSelectors.tag(TagKey.create(Registries.BIOME,
                 ResourceLocation.fromNamespaceAndPath("animaniax", "cow_spawns"))),
                 MobCategory.CREATURE, EntityType.COW, 8, 4, 4);
@@ -178,6 +188,12 @@ public final class FabricEntrypoint implements ModInitializer {
         BiomeModifications.addSpawn(BiomeSelectors.tag(TagKey.create(Registries.BIOME,
                 HamsterEntity.id("hamster_spawns"))), MobCategory.CREATURE,
                 HamsterEntity.TYPE, 6, 2, 4);
+        BiomeModifications.addSpawn(BiomeSelectors.tag(TagKey.create(Registries.BIOME, FrogContent.id("common_frog_spawns"))),
+                MobCategory.CREATURE, FrogContent.COMMON_FROG, 8, 2, 4);
+        BiomeModifications.addSpawn(BiomeSelectors.tag(TagKey.create(Registries.BIOME, FrogContent.id("dart_frog_spawns"))),
+                MobCategory.CREATURE, FrogContent.DART_FROG, 8, 2, 4);
+        BiomeModifications.addSpawn(BiomeSelectors.tag(TagKey.create(Registries.BIOME, FrogContent.id("toad_spawns"))),
+                MobCategory.CREATURE, FrogContent.TOAD, 8, 2, 4);
         ServerLifecycleEvents.SERVER_STARTING.register(server -> {
             AnimalCareConfig.load(server.getWorldPath(LevelResource.ROOT).resolve("serverconfig/animaniax.properties"));
             TroughContent.registerWaterBucketBehavior();

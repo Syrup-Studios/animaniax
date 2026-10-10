@@ -1,0 +1,12 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": "#animaniax:common_frog_spawns",
+  "spawners": [
+    {
+      "type": "animaniax:common_frog",
+      "weight": 8,
+      "minCount": 2,
+      "maxCount": 4
+    }
+  ]
+}

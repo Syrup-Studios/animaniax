@@ -11,6 +11,7 @@ import net.syrupstudios.animaniax.entity.DogContent;
 import net.syrupstudios.animaniax.entity.CatContent;
 import net.minecraft.client.renderer.entity.CatRenderer;
 import net.minecraft.client.renderer.entity.WolfRenderer;
+import net.minecraft.client.renderer.entity.FrogRenderer;
 import net.syrupstudios.animaniax.client.PeafowlRenderer;
 import net.syrupstudios.animaniax.client.HamsterRenderer;
 import net.syrupstudios.animaniax.client.FerretRenderer;
@@ -20,6 +21,7 @@ import net.syrupstudios.animaniax.entity.HamsterEntity;
 import net.syrupstudios.animaniax.entity.FerretContent;
 import net.syrupstudios.animaniax.entity.HedgehogContent;
 import net.syrupstudios.animaniax.client.HedgehogRenderer;
+import net.syrupstudios.animaniax.entity.FrogContent;
 import net.syrupstudios.animaniax.item.AnimalSpawnEggContent;
 import net.syrupstudios.animaniax.item.AnimalSpawnEggItem;
 
@@ -48,6 +50,9 @@ public final class FabricClientEntrypoint implements ClientModInitializer {
         EntityRendererRegistry.register(FerretContent.WHITE, FerretRenderer::new);
         EntityRendererRegistry.register(HedgehogContent.HEDGEHOG, HedgehogRenderer::new);
         EntityRendererRegistry.register(HedgehogContent.HEDGEHOG_ALBINO, HedgehogRenderer::new);
+        EntityRendererRegistry.register(FrogContent.COMMON_FROG, FrogRenderer::new);
+        EntityRendererRegistry.register(FrogContent.DART_FROG, FrogRenderer::new);
+        EntityRendererRegistry.register(FrogContent.TOAD, FrogRenderer::new);
     }
 
     private static void registerMilk(String kind, net.minecraft.world.level.material.Fluid source,

@@ -31,6 +31,8 @@ import net.syrupstudios.animaniax.entity.FerretContent;
 import net.syrupstudios.animaniax.entity.FerretEntity;
 import net.syrupstudios.animaniax.entity.HedgehogContent;
 import net.syrupstudios.animaniax.entity.HedgehogEntity;
+import net.syrupstudios.animaniax.entity.FrogContent;
+import net.syrupstudios.animaniax.item.FrogLegContent;
 import net.syrupstudios.animaniax.item.AnimalSpawnEggContent;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -144,6 +146,12 @@ public final class NeoForgeEntrypoint {
         ENTITY_TYPES.register("hedgehog_albino", () -> HedgehogContent.HEDGEHOG_ALBINO);
         ITEMS.register("hedgehog_albino_spawn_egg", () -> HedgehogContent.HEDGEHOG_ALBINO_SPAWN_EGG);
         ITEMS.register("hamster_spawn_egg", () -> HamsterEntity.SPAWN_EGG);
+        ENTITY_TYPES.register("common_frog", () -> FrogContent.COMMON_FROG);
+        ITEMS.register("common_frog_spawn_egg", () -> FrogContent.COMMON_FROG_SPAWN_EGG);
+        ENTITY_TYPES.register("dart_frog", () -> FrogContent.DART_FROG);
+        ITEMS.register("dart_frog_spawn_egg", () -> FrogContent.DART_FROG_SPAWN_EGG);
+        ENTITY_TYPES.register("toad", () -> FrogContent.TOAD);
+        ITEMS.register("toad_spawn_egg", () -> FrogContent.TOAD_SPAWN_EGG);
         ITEMS.register("animal_spawn_egg", () -> AnimalSpawnEggContent.ITEM);
         ITEMS.register("carried_hamster", () -> HamsterCarryContent.CARRIED_HAMSTER);
         ITEMS.register("carried_ferret", () -> FerretCarryContent.CARRIED_FERRET);
@@ -151,6 +159,8 @@ public final class NeoForgeEntrypoint {
         ITEMS.register("hamster_ball", () -> HamsterBallContent.CLEAR);
         for (DyeColor color : DyeColor.values()) ITEMS.register("hamster_ball_" + color.getName(), () -> HamsterBallContent.COLORED[color.getId()]);
         ITEMS.register("hamster_food", () -> HamsterFoodContent.HAMSTER_FOOD);
+        ITEMS.register("raw_frog_legs", () -> FrogLegContent.RAW_FROG_LEGS);
+        ITEMS.register("cooked_frog_legs", () -> FrogLegContent.COOKED_FROG_LEGS);
         modBus.addListener(this::registerEntityAttributes);
         modBus.addListener(this::registerCapabilities);
         modBus.addListener(this::addCreativeItems);
@@ -347,6 +357,9 @@ public final class NeoForgeEntrypoint {
         event.put(CatContent.TYPE, CompanionCatEntity.createAttributes().build());
         event.put(HedgehogContent.HEDGEHOG, HedgehogEntity.createAttributes().build());
         event.put(HedgehogContent.HEDGEHOG_ALBINO, HedgehogEntity.createAttributes().build());
+        event.put(FrogContent.COMMON_FROG, net.minecraft.world.entity.animal.frog.Frog.createAttributes().build());
+        event.put(FrogContent.DART_FROG, net.minecraft.world.entity.animal.frog.Frog.createAttributes().build());
+        event.put(FrogContent.TOAD, net.syrupstudios.animaniax.entity.ToadEntity.createAttributes().build());
     }
 
     private void addCreativeItems(BuildCreativeModeTabContentsEvent event) {

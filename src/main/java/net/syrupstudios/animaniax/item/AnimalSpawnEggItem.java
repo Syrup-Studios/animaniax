@@ -47,12 +47,14 @@ import net.syrupstudios.animaniax.entity.PeafowlMorphState;
 import net.syrupstudios.animaniax.entity.HamsterEntity;
 import net.syrupstudios.animaniax.entity.FerretContent;
 import net.syrupstudios.animaniax.entity.HedgehogContent;
+import net.syrupstudios.animaniax.entity.FrogContent;
 
 public final class AnimalSpawnEggItem extends Item {
     private static final String FORM_KEY = "AnimaniaxSpawnForm";
     private static final List<Form> FORMS = createForms();
-    private static final List<String> GLOBAL_GROUPS = List.of("cow", "pig", "chicken", "goat", "sheep", "horse", "cat", "dog", "hamster", "ferret", "hedgehog", "rabbit", "peafowl");
-    private static final Set<String> MALE_ONLY_GROUPS = Set.of("hamster", "ferret", "hedgehog");
+    private static final List<String> GLOBAL_GROUPS = List.of("cow", "pig", "chicken", "goat", "sheep",
+            "horse", "cat", "dog", "hamster", "ferret", "hedgehog", "amphibian", "rabbit", "peafowl");
+    private static final Set<String> MALE_ONLY_GROUPS = Set.of("hamster", "ferret", "hedgehog", "amphibian");
 
     public AnimalSpawnEggItem() {
         super(new Properties().stacksTo(64));
@@ -133,6 +135,9 @@ public final class AnimalSpawnEggItem extends Item {
                     oneOff("ferret", "Ferret", "White", FerretContent.WHITE));
             case "hedgehog" -> choose(level, oneOff("hedgehog", "Hedgehog", "Normal", HedgehogContent.HEDGEHOG),
                     oneOff("hedgehog", "Hedgehog", "Albino", HedgehogContent.HEDGEHOG_ALBINO));
+            case "amphibian" -> choose(level, oneOff("amphibian", "Amphibian", "Common Frog", FrogContent.COMMON_FROG),
+                    oneOff("amphibian", "Amphibian", "Dart Frog", FrogContent.DART_FROG),
+                    oneOff("amphibian", "Amphibian", "Toad", FrogContent.TOAD));
             default -> throw new IllegalStateException("Unknown random animal group: " + group);
         };
     }

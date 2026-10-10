@@ -7,6 +7,7 @@ import net.syrupstudios.animaniax.entity.DogContent;
 import net.syrupstudios.animaniax.entity.CatContent;
 import net.minecraft.client.renderer.entity.CatRenderer;
 import net.minecraft.client.renderer.entity.WolfRenderer;
+import net.minecraft.client.renderer.entity.FrogRenderer;
 import net.syrupstudios.animaniax.client.PeafowlRenderer;
 import net.syrupstudios.animaniax.client.HamsterRenderer;
 import net.syrupstudios.animaniax.client.FerretRenderer;
@@ -21,6 +22,7 @@ import net.syrupstudios.animaniax.entity.HamsterEntity;
 import net.syrupstudios.animaniax.entity.FerretContent;
 import net.syrupstudios.animaniax.entity.HedgehogContent;
 import net.syrupstudios.animaniax.client.HedgehogRenderer;
+import net.syrupstudios.animaniax.entity.FrogContent;
 import net.syrupstudios.animaniax.item.AnimalSpawnEggContent;
 import net.syrupstudios.animaniax.item.AnimalSpawnEggItem;
 
@@ -39,6 +41,9 @@ public final class NeoForgeClientEvents {
         event.registerEntityRenderer(FerretContent.WHITE, FerretRenderer::new);
         event.registerEntityRenderer(HedgehogContent.HEDGEHOG, HedgehogRenderer::new);
         event.registerEntityRenderer(HedgehogContent.HEDGEHOG_ALBINO, HedgehogRenderer::new);
+        event.registerEntityRenderer(FrogContent.COMMON_FROG, FrogRenderer::new);
+        event.registerEntityRenderer(FrogContent.DART_FROG, FrogRenderer::new);
+        event.registerEntityRenderer(FrogContent.TOAD, FrogRenderer::new);
     }
 
     @SubscribeEvent

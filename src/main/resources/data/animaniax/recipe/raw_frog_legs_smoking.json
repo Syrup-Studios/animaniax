@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:smoking",
+  "ingredient": { "item": "animaniax:raw_frog_legs" },
+  "result": { "id": "animaniax:cooked_frog_legs" },
+  "experience": 0.3,
+  "cookingtime": 100
+}
