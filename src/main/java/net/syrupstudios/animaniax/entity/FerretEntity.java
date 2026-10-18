@@ -32,6 +32,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.syrupstudios.animaniax.block.TroughBlock;
 import net.syrupstudios.animaniax.block.TroughBlockEntity;
 import net.syrupstudios.animaniax.block.TroughContent;
+import net.syrupstudios.animaniax.entity.ai.AnimalsCanAttackTargetGoal;
 import net.minecraft.world.entity.monster.Silverfish;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.server.level.ServerPlayer;
@@ -57,33 +58,21 @@ public final class FerretEntity extends TamableAnimal {
 
     public FerretEntity(EntityType<? extends TamableAnimal> type, Level level) {
         super(type, level);
-        fedTicks = AnimalCareConfig.feedTimer + getRandom().nextInt(100);
-        wateredTicks = (int) Math.min(Integer.MAX_VALUE, (long) AnimalCareConfig.waterTimer * 2 + getRandom().nextInt(200));
+        fedTicks = PetCarePenalty.initialFedTicks(getRandom());
+        wateredTicks = PetCarePenalty.initialWaterTicks(getRandom());
     }
 
     @Override public void tick() {
         super.tick();
         if (!level().isClientSide) {
             if (nestForageCooldown > 0) nestForageCooldown--;
-            boolean careActive = !AnimalCareConfig.ambianceMode && (careInteracted || !AnimalCareConfig.requireAnimalInteractionForAI);
+            boolean careActive = PetCarePenalty.isCareActive(careInteracted);
             if (careActive) {
                 if (!AnimalCareConfig.ambianceMode && fedTicks > 0) fedTicks--;
                 if (wateredTicks > 0) wateredTicks--;
             }
-            if (careActive) {
-                if (fedTicks == 0 && wateredTicks == 0) {
-                    addEffect(new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.WEAKNESS, 2, 1, false, false));
-                    if (AnimalCareConfig.animalsStarve && !(((AnimalSleepState) (Object) this).animaniax$isSleeping() || isSleeping())) {
-                        if (starvationTimer >= AnimalCareConfig.starvationTimer) {
-                            hurt(damageSources().starve(), 4.0F);
-                            starvationTimer = 0;
-                        }
-                        starvationTimer++;
-                    }
-                } else if (fedTicks == 0 || wateredTicks == 0) {
-                    addEffect(new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.WEAKNESS, 2, 0, false, false));
-                }
-            }
+            starvationTimer = PetCarePenalty.tick(this, fedTicks == 0, wateredTicks == 0, careActive,
+                    ((AnimalSleepState) (Object) this).animaniax$isSleeping() || isSleeping(), starvationTimer);
         }
     }
 
@@ -100,15 +89,9 @@ public final class FerretEntity extends TamableAnimal {
         goalSelector.addGoal(5, new TemptGoal(this, 1.2, Ingredient.of(FERRET_FOODS), false));
         goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 6.0F));
         goalSelector.addGoal(9, new RandomLookAroundGoal(this));
-        targetSelector.addGoal(1, new net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal<>(this, Silverfish.class, true) {
-            @Override public boolean canUse() { return AnimalCareConfig.animalsCanAttackOthers && super.canUse(); }
-            @Override public boolean canContinueToUse() { return AnimalCareConfig.animalsCanAttackOthers && super.canContinueToUse(); }
-        });
-        targetSelector.addGoal(2, new net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal<>(this, net.minecraft.world.entity.animal.frog.Frog.class,
-                10, true, false, frog -> frog instanceof CommonFrogEntity || frog instanceof ToadEntity) {
-            @Override public boolean canUse() { return AnimalCareConfig.animalsCanAttackOthers && super.canUse(); }
-            @Override public boolean canContinueToUse() { return AnimalCareConfig.animalsCanAttackOthers && super.canContinueToUse(); }
-        });
+        targetSelector.addGoal(1, new AnimalsCanAttackTargetGoal<>(this, Silverfish.class, true));
+        targetSelector.addGoal(2, new AnimalsCanAttackTargetGoal<>(this, net.minecraft.world.entity.animal.frog.Frog.class,
+                10, true, false, frog -> frog instanceof CommonFrogEntity || frog instanceof ToadEntity));
         targetSelector.addGoal(2, new net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal<>(this,
                 Chicken.class, 10, false, false,
                 chicken -> chicken instanceof Chicken chick && chick.isBaby()) {
@@ -194,11 +177,11 @@ public final class FerretEntity extends TamableAnimal {
     @Override public void readAdditionalSaveData(net.minecraft.nbt.CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         fedTicks = tag.contains("FedTicks")
-                ? Math.max(0, Math.min(AnimalCareConfig.feedTimer + 99, tag.getInt("FedTicks")))
-                : AnimalCareConfig.feedTimer + getRandom().nextInt(100);
+                ? Math.max(0, Math.min(PetCarePenalty.maxFedTicks(), tag.getInt("FedTicks")))
+                : PetCarePenalty.initialFedTicks(getRandom());
         wateredTicks = tag.contains("WateredTicks")
-                ? Math.max(0, Math.min((int) Math.min(Integer.MAX_VALUE, (long) AnimalCareConfig.waterTimer * 2 + 199), tag.getInt("WateredTicks")))
-                : (int) Math.min(Integer.MAX_VALUE, (long) AnimalCareConfig.waterTimer * 2 + getRandom().nextInt(200));
+                ? Math.max(0, Math.min(PetCarePenalty.maxWaterTicks(), tag.getInt("WateredTicks")))
+                : PetCarePenalty.initialWaterTicks(getRandom());
         starvationTimer = Math.max(0, Math.min(AnimalCareConfig.starvationTimer, tag.getInt("PetStarvationTimer")));
         nestForageCooldown = Math.max(0, Math.min(12000, tag.getInt("NestForageCooldown")));
         careInteracted = tag.contains("CareInteracted") ? tag.getBoolean("CareInteracted") : isTame();
@@ -215,7 +198,7 @@ public final class FerretEntity extends TamableAnimal {
         FerretWaterGoal() { setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK)); }
 
         @Override public boolean canUse() {
-            if (!(!AnimalCareConfig.ambianceMode && (careInteracted || !AnimalCareConfig.requireAnimalInteractionForAI)) || wateredTicks > 0 || isOrderedToSit() || tickCount < nextScan) return false;
+            if (!PetCarePenalty.isCareAIActive(careInteracted) || wateredTicks > 0 || isOrderedToSit() || tickCount < nextScan) return false;
             approach = source = null;
             BlockPos origin = blockPosition();
             ProviderSearch.Candidate result = ProviderSearch.findNearest(FerretEntity.this, origin, AnimalCareConfig.aiBlockSearchRange, (water, canReach) -> {
@@ -243,7 +226,7 @@ public final class FerretEntity extends TamableAnimal {
             return approach != null;
         }
 
-        @Override public boolean canContinueToUse() { return approach != null && (!AnimalCareConfig.ambianceMode && (careInteracted || !AnimalCareConfig.requireAnimalInteractionForAI)) && wateredTicks == 0 && !isOrderedToSit(); }
+        @Override public boolean canContinueToUse() { return approach != null && PetCarePenalty.isCareAIActive(careInteracted) && wateredTicks == 0 && !isOrderedToSit(); }
         @Override public void start() { getNavigation().moveTo(approach.getX() + 0.5, approach.getY(), approach.getZ() + 0.5, 1.0); }
         @Override public void tick() {
             if (distanceToSqr(source.getX() + 0.5, source.getY(), source.getZ() + 0.5) <= 2.25) {
@@ -292,7 +275,7 @@ public final class FerretEntity extends TamableAnimal {
                     blockEntity.removeEggs(1);
                     level().setBlock(nest, state.setValue(NestBlock.EGGS, eggs - 1), 3);
                     nestForageCooldown = 12000;
-                    if ((!AnimalCareConfig.ambianceMode && (careInteracted || !AnimalCareConfig.requireAnimalInteractionForAI))) {
+                    if (PetCarePenalty.isCareAIActive(careInteracted)) {
                         fedTicks = AnimalCareConfig.feedTimer + getRandom().nextInt(100);
                         wateredTicks = AnimalCareConfig.waterTimer + getRandom().nextInt(100);
                     }
@@ -323,7 +306,7 @@ public final class FerretEntity extends TamableAnimal {
     }
 
     private boolean canForageNest() {
-        return (!AnimalCareConfig.ambianceMode && (careInteracted || !AnimalCareConfig.requireAnimalInteractionForAI)) ? fedTicks == 0 : nestForageCooldown == 0;
+        return PetCarePenalty.isCareAIActive(careInteracted) ? fedTicks == 0 : nestForageCooldown == 0;
     }
 
     private final class TroughForageGoal extends Goal {
@@ -334,7 +317,7 @@ public final class FerretEntity extends TamableAnimal {
         TroughForageGoal() { setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK)); }
 
         @Override public boolean canUse() {
-            if (!(!AnimalCareConfig.ambianceMode && (careInteracted || !AnimalCareConfig.requireAnimalInteractionForAI)) || fedTicks > 0 || isOrderedToSit() || tickCount < nextSearch) return false;
+            if (!PetCarePenalty.isCareAIActive(careInteracted) || fedTicks > 0 || isOrderedToSit() || tickCount < nextSearch) return false;
             trough = approach = null;
             BlockPos origin = blockPosition();
             ProviderSearch.Candidate result = ProviderSearch.findNearest(FerretEntity.this, origin, AnimalCareConfig.aiBlockSearchRange, (pos, canReach) -> {
@@ -360,7 +343,7 @@ public final class FerretEntity extends TamableAnimal {
         }
 
         @Override public boolean canContinueToUse() {
-            return trough != null && (!AnimalCareConfig.ambianceMode && (careInteracted || !AnimalCareConfig.requireAnimalInteractionForAI)) && fedTicks == 0 && !isOrderedToSit()
+            return trough != null && PetCarePenalty.isCareAIActive(careInteracted) && fedTicks == 0 && !isOrderedToSit()
                     && level().getBlockState(trough).is(TroughContent.TROUGH)
                     && level().getBlockEntity(trough) instanceof TroughBlockEntity entity
                     && entity.canFeed(getType());
@@ -390,7 +373,7 @@ public final class FerretEntity extends TamableAnimal {
         EatGrassGoal() { setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK, Flag.JUMP)); }
 
         @Override public boolean canUse() {
-            if (!(!AnimalCareConfig.ambianceMode && (careInteracted || !AnimalCareConfig.requireAnimalInteractionForAI)) || fedTicks > 0 || isOrderedToSit()
+            if (!PetCarePenalty.isCareAIActive(careInteracted) || fedTicks > 0 || isOrderedToSit()
                     || isSleeping()
                     || ((AnimalSleepState) (Object) FerretEntity.this).animaniax$isSleeping()
                     || getRandom().nextInt(isBaby() ? 50 : 150) != 0) return false;
@@ -401,7 +384,7 @@ public final class FerretEntity extends TamableAnimal {
         }
 
         @Override public boolean canContinueToUse() {
-            return eatTimer > 0 && (!AnimalCareConfig.ambianceMode && (careInteracted || !AnimalCareConfig.requireAnimalInteractionForAI)) && fedTicks == 0 && !isOrderedToSit()
+            return eatTimer > 0 && PetCarePenalty.isCareAIActive(careInteracted) && fedTicks == 0 && !isOrderedToSit()
                     && !isSleeping()
                     && !((AnimalSleepState) (Object) FerretEntity.this).animaniax$isSleeping();
         }

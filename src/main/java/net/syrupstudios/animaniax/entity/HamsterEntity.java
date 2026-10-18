@@ -107,20 +107,8 @@ public final class HamsterEntity extends TamableAnimal {
                 if (fedTicks > 0) fedTicks--;
                 if (wateredTicks > 0) wateredTicks--;
             }
-            if (careActive) {
-                if (fedTicks == 0 && wateredTicks == 0) {
-                    addEffect(new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.WEAKNESS, 2, 1, false, false));
-                    if (AnimalCareConfig.animalsStarve && !((AnimalSleepState) (Object) this).animaniax$isSleeping()) {
-                        if (starvationTimer >= AnimalCareConfig.starvationTimer) {
-                            hurt(damageSources().starve(), 4.0F);
-                            starvationTimer = 0;
-                        }
-                        starvationTimer++;
-                    }
-                } else if (fedTicks == 0 || wateredTicks == 0) {
-                    addEffect(new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.WEAKNESS, 2, 0, false, false));
-                }
-            }
+            starvationTimer = PetCarePenalty.tick(this, fedTicks == 0, wateredTicks == 0, careActive,
+                    ((AnimalSleepState) (Object) this).animaniax$isSleeping(), starvationTimer);
         }
         if (!level().isClientSide) {
             if (getHealth() < getMaxHealth()) {
@@ -244,7 +232,7 @@ public final class HamsterEntity extends TamableAnimal {
         int color = tag.getInt("BallColor");
         entityData.set(BALL_COLOR, color >= -1 && color < net.minecraft.world.item.DyeColor.values().length ? color : -1);
         fedTicks = tag.contains(FED_TICKS_TAG)
-                ? Math.max(0, Math.min((AnimalCareConfig.feedTimer + 99), tag.getInt(FED_TICKS_TAG)))
+                ? Math.max(0, Math.min(PetCarePenalty.maxFedTicks(), tag.getInt(FED_TICKS_TAG)))
                 : foodTicks();
         wateredTicks = tag.contains(WATERED_TICKS_TAG)
                 ? Math.max(0, tag.getInt(WATERED_TICKS_TAG))
