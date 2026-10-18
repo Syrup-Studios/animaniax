@@ -210,40 +210,28 @@ public final class HedgehogEntity extends TamableAnimal {
         @Override public boolean canUse() {
             if (!(!AnimalCareConfig.ambianceMode && (careInteracted || !AnimalCareConfig.requireAnimalInteractionForAI)) || wateredTicks > 0 || isOrderedToSit() || tickCount < nextScan) return false;
             approach = source = null;
-            BlockPos origin = HedgehogEntity.this.blockPosition();
-            int range = AnimalCareConfig.aiBlockSearchRange;
-            BlockPos bestSource = null;
-            BlockPos bestApproach = null;
-            double bestDist = Double.MAX_VALUE;
-            for (int dy = -2; dy <= 2; dy++) {
-                for (int dx = -range; dx <= range; dx++) {
-                    for (int dz = -range; dz <= range; dz++) {
-                        if (dx * dx + dz * dz > range * range) continue;
-                        BlockPos candidatePos = origin.offset(dx, dy, dz);
-                        if (!HedgehogEntity.this.level().hasChunkAt(candidatePos)) continue;
-                        boolean trough = level().getBlockState(candidatePos).is(TroughContent.TROUGH)
-                                && level().getBlockState(candidatePos).getValue(TroughBlock.CONTENT) == 1
-                                && level().getBlockState(candidatePos).getValue(TroughBlock.LEVEL) > 0;
-                        if (!trough && (!level().getFluidState(candidatePos).is(Fluids.WATER)
-                                || level().getBiome(candidatePos).is(BiomeTags.IS_OCEAN)
-                                || level().getBiome(candidatePos).is(BiomeTags.IS_BEACH))) continue;
-                        boolean inReach = distanceToSqr(candidatePos.getX() + 0.5, candidatePos.getY(), candidatePos.getZ() + 0.5) <= 2.25;
-                        for (Direction dir : Direction.Plane.HORIZONTAL) {
-                            BlockPos candidate = trough ? candidatePos.relative(dir) : candidatePos.relative(dir).above();
-                            if (!level().hasChunkAt(candidate) || !level().getBlockState(candidate).isAir()
-                                    || !level().getBlockState(candidate.below()).isFaceSturdy(level(), candidate.below(), Direction.UP)) continue;
-                            if (!inReach) {
-                                var path = getNavigation().createPath(candidate, 0);
-                                if (path == null || !path.canReach()) continue;
-                            }
-                            double distance = distanceToSqr(candidate.getX() + 0.5, candidate.getY(), candidate.getZ() + 0.5);
-                            if (distance < bestDist) { bestDist = distance; bestApproach = candidate; bestSource = candidatePos; }
-                        }
-                    }
+            BlockPos origin = blockPosition();
+            ProviderSearch.Candidate result = ProviderSearch.findNearest(HedgehogEntity.this, origin, AnimalCareConfig.aiBlockSearchRange, (water, canReach) -> {
+                boolean trough = level().getBlockState(water).is(TroughContent.TROUGH)
+                        && level().getBlockState(water).getValue(TroughBlock.CONTENT) == 1
+                        && level().getBlockState(water).getValue(TroughBlock.LEVEL) > 0;
+                if (!trough && (!level().getFluidState(water).is(Fluids.WATER)
+                        || level().getBiome(water).is(BiomeTags.IS_OCEAN)
+                        || level().getBiome(water).is(BiomeTags.IS_BEACH))) return null;
+                boolean inReach = distanceToSqr(water.getX() + 0.5, water.getY(), water.getZ() + 0.5) <= 2.25;
+                BlockPos nearestApproach = null;
+                double nearestDistance = Double.MAX_VALUE;
+                for (Direction dir : Direction.Plane.HORIZONTAL) {
+                    BlockPos candidate = trough ? water.relative(dir) : water.relative(dir).above();
+                    if (!level().hasChunkAt(candidate) || !level().getBlockState(candidate).isAir()
+                            || !level().getBlockState(candidate.below()).isFaceSturdy(level(), candidate.below(), Direction.UP)
+                            || !inReach && !canReach.test(candidate)) continue;
+                    double distance = distanceToSqr(candidate.getX() + 0.5, candidate.getY(), candidate.getZ() + 0.5);
+                    if (distance < nearestDistance) { nearestDistance = distance; nearestApproach = candidate; }
                 }
-            }
-            source = bestSource;
-            approach = bestApproach;
+                return nearestApproach == null ? null : new ProviderSearch.Candidate(water, nearestApproach);
+            }, candidate -> distanceToSqr(candidate.getX() + 0.5, candidate.getY(), candidate.getZ() + 0.5));
+            if (result != null) { source = result.provider(); approach = result.approach(); }
             nextScan = tickCount + 40;
             return approach != null;
         }
@@ -353,37 +341,25 @@ public final class HedgehogEntity extends TamableAnimal {
         @Override public boolean canUse() {
             if (!(!AnimalCareConfig.ambianceMode && (careInteracted || !AnimalCareConfig.requireAnimalInteractionForAI)) || fedTicks > 0 || isOrderedToSit() || tickCount < nextSearch) return false;
             trough = approach = null;
-            BlockPos origin = HedgehogEntity.this.blockPosition();
-            int range = AnimalCareConfig.aiBlockSearchRange;
-            BlockPos bestSource = null;
-            BlockPos bestApproach = null;
-            double bestDist = Double.MAX_VALUE;
-            for (int dy = -2; dy <= 2; dy++) {
-                for (int dx = -range; dx <= range; dx++) {
-                    for (int dz = -range; dz <= range; dz++) {
-                        if (dx * dx + dz * dz > range * range) continue;
-                        BlockPos candidatePos = origin.offset(dx, dy, dz);
-                        if (!HedgehogEntity.this.level().hasChunkAt(candidatePos)) continue;
-                        if (!level().getBlockState(candidatePos).is(TroughContent.TROUGH)
-                                || !(level().getBlockEntity(candidatePos) instanceof net.syrupstudios.animaniax.block.TroughBlockEntity entity)
-                                || !entity.canFeed(getType())) continue;
-                        boolean inReach = distanceToSqr(candidatePos.getX() + 0.5, candidatePos.getY(), candidatePos.getZ() + 0.5) <= 2.25;
-                        for (Direction dir : Direction.Plane.HORIZONTAL) {
-                            BlockPos candidate = candidatePos.relative(dir);
-                            if (!level().hasChunkAt(candidate) || !level().getBlockState(candidate).isAir()
-                                    || !level().getBlockState(candidate.below()).isFaceSturdy(level(), candidate.below(), Direction.UP)) continue;
-                            if (!inReach) {
-                                var path = getNavigation().createPath(candidate, 0);
-                                if (path == null || !path.canReach()) continue;
-                            }
-                            double distance = distanceToSqr(candidate.getX() + 0.5, candidate.getY(), candidate.getZ() + 0.5);
-                            if (distance < bestDist) { bestDist = distance; bestApproach = candidate; bestSource = candidatePos; }
-                        }
-                    }
+            BlockPos origin = blockPosition();
+            ProviderSearch.Candidate result = ProviderSearch.findNearest(HedgehogEntity.this, origin, AnimalCareConfig.aiBlockSearchRange, (pos, canReach) -> {
+                if (!level().getBlockState(pos).is(TroughContent.TROUGH)
+                        || !(level().getBlockEntity(pos) instanceof net.syrupstudios.animaniax.block.TroughBlockEntity entity)
+                        || !entity.canFeed(getType())) return null;
+                boolean inReach = distanceToSqr(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5) <= 2.25;
+                BlockPos nearestApproach = null;
+                double nearestDistance = Double.MAX_VALUE;
+                for (Direction dir : Direction.Plane.HORIZONTAL) {
+                    BlockPos candidate = pos.relative(dir);
+                    if (!level().hasChunkAt(candidate) || !level().getBlockState(candidate).isAir()
+                            || !level().getBlockState(candidate.below()).isFaceSturdy(level(), candidate.below(), Direction.UP)
+                            || !inReach && !canReach.test(candidate)) continue;
+                    double distance = distanceToSqr(candidate.getX() + 0.5, candidate.getY(), candidate.getZ() + 0.5);
+                    if (distance < nearestDistance) { nearestDistance = distance; nearestApproach = candidate; }
                 }
-            }
-            trough = bestSource;
-            approach = bestApproach;
+                return nearestApproach == null ? null : new ProviderSearch.Candidate(pos, nearestApproach);
+            }, candidate -> distanceToSqr(candidate.getX() + 0.5, candidate.getY(), candidate.getZ() + 0.5));
+            if (result != null) { trough = result.provider(); approach = result.approach(); }
             nextSearch = tickCount + 40;
             return trough != null;
         }

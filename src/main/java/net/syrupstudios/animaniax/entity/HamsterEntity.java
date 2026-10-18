@@ -317,37 +317,25 @@ public final class HamsterEntity extends TamableAnimal {
             if (!careActive() || fedTicks > 0 || isSleepingCare() || isOrderedToSit() || isInBall()
                     || tickCount < nextScan) return false;
             approach = bowlPos = null;
-            BlockPos origin = HamsterEntity.this.blockPosition();
-            int range = 16;
-            BlockPos bestSource = null;
-            BlockPos bestApproach = null;
-            double bestDist = Double.MAX_VALUE;
-            for (int dy = -2; dy <= 2; dy++) {
-                for (int dx = -range; dx <= range; dx++) {
-                    for (int dz = -range; dz <= range; dz++) {
-                        if (dx * dx + dz * dz > range * range) continue;
-                        BlockPos candidatePos = origin.offset(dx, dy, dz);
-                        if (!HamsterEntity.this.level().hasChunkAt(candidatePos)) continue;
-                        if (!level().getBlockState(candidatePos).is(PetBowlContent.BLOCK)
-                                || !(level().getBlockEntity(candidatePos) instanceof PetBowlBlockEntity bowl)
-                                || !bowl.canFeed(TYPE)) continue;
-                        boolean inReach = distanceToSqr(candidatePos.getX() + 0.5, candidatePos.getY(), candidatePos.getZ() + 0.5) <= 2.25;
-                        for (Direction dir : Direction.Plane.HORIZONTAL) {
-                            BlockPos candidate = candidatePos.relative(dir);
-                            if (!level().hasChunkAt(candidate) || !level().getBlockState(candidate).isAir()
-                                    || !level().getBlockState(candidate.below()).isFaceSturdy(level(), candidate.below(), Direction.UP)) continue;
-                            if (!inReach) {
-                                var path = getNavigation().createPath(candidate, 0);
-                                if (path == null || !path.canReach()) continue;
-                            }
-                            double distance = distanceToSqr(candidate.getX() + 0.5, candidate.getY(), candidate.getZ() + 0.5);
-                            if (distance < bestDist) { bestDist = distance; bestApproach = candidate; bestSource = candidatePos; }
-                        }
-                    }
+            BlockPos origin = blockPosition();
+            ProviderSearch.Candidate result = ProviderSearch.findNearest(HamsterEntity.this, origin, 16, (pos, canReach) -> {
+                if (!level().getBlockState(pos).is(PetBowlContent.BLOCK)
+                        || !(level().getBlockEntity(pos) instanceof PetBowlBlockEntity bowl)
+                        || !bowl.canFeed(TYPE)) return null;
+                boolean inReach = distanceToSqr(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5) <= 2.25;
+                BlockPos nearestApproach = null;
+                double nearestDistance = Double.MAX_VALUE;
+                for (Direction dir : Direction.Plane.HORIZONTAL) {
+                    BlockPos candidate = pos.relative(dir);
+                    if (!level().hasChunkAt(candidate) || !level().getBlockState(candidate).isAir()
+                            || !level().getBlockState(candidate.below()).isFaceSturdy(level(), candidate.below(), Direction.UP)
+                            || !inReach && !canReach.test(candidate)) continue;
+                    double distance = distanceToSqr(candidate.getX() + 0.5, candidate.getY(), candidate.getZ() + 0.5);
+                    if (distance < nearestDistance) { nearestDistance = distance; nearestApproach = candidate; }
                 }
-            }
-            bowlPos = bestSource;
-            approach = bestApproach;
+                return nearestApproach == null ? null : new ProviderSearch.Candidate(pos, nearestApproach);
+            }, candidate -> distanceToSqr(candidate.getX() + 0.5, candidate.getY(), candidate.getZ() + 0.5));
+            if (result != null) { bowlPos = result.provider(); approach = result.approach(); }
             nextScan = tickCount + 40;
             return approach != null;
         }
@@ -383,43 +371,31 @@ public final class HamsterEntity extends TamableAnimal {
         @Override public boolean canUse() {
             if (!careActive() || wateredTicks > 0 || isOrderedToSit() || isInBall() || tickCount < nextScan) return false;
             approach = source = null;
-            BlockPos origin = HamsterEntity.this.blockPosition();
-            int range = 16;
-            BlockPos bestSource = null;
-            BlockPos bestApproach = null;
-            double bestDist = Double.MAX_VALUE;
-            for (int dy = -2; dy <= 2; dy++) {
-                for (int dx = -range; dx <= range; dx++) {
-                    for (int dz = -range; dz <= range; dz++) {
-                        if (dx * dx + dz * dz > range * range) continue;
-                        BlockPos candidatePos = origin.offset(dx, dy, dz);
-                        if (!HamsterEntity.this.level().hasChunkAt(candidatePos)) continue;
-                        boolean bowl = level().getBlockState(candidatePos).is(PetBowlContent.BLOCK)
-                                && level().getBlockEntity(candidatePos) instanceof PetBowlBlockEntity petBowl
-                                && petBowl.getWaterAmount() >= 50;
-                        boolean trough = level().getBlockState(candidatePos).is(TroughContent.TROUGH)
-                                && level().getBlockState(candidatePos).getValue(TroughBlock.CONTENT) == 1
-                                && level().getBlockState(candidatePos).getValue(TroughBlock.LEVEL) > 0;
-                        if (!bowl && !trough && (!level().getFluidState(candidatePos).is(Fluids.WATER)
-                                || level().getBiome(candidatePos).is(BiomeTags.IS_OCEAN)
-                                || level().getBiome(candidatePos).is(BiomeTags.IS_BEACH))) continue;
-                        boolean inReach = distanceToSqr(candidatePos.getX() + 0.5, candidatePos.getY(), candidatePos.getZ() + 0.5) <= 2.25;
-                        for (Direction dir : Direction.Plane.HORIZONTAL) {
-                            BlockPos candidate = trough || bowl ? candidatePos.relative(dir) : candidatePos.relative(dir).above();
-                            if (!level().hasChunkAt(candidate) || !level().getBlockState(candidate).isAir()
-                                    || !level().getBlockState(candidate.below()).isFaceSturdy(level(), candidate.below(), Direction.UP)) continue;
-                            if (!inReach) {
-                                var path = getNavigation().createPath(candidate, 0);
-                                if (path == null || !path.canReach()) continue;
-                            }
-                            double distance = distanceToSqr(candidate.getX() + 0.5, candidate.getY(), candidate.getZ() + 0.5);
-                            if (distance < bestDist) { bestDist = distance; bestApproach = candidate; bestSource = candidatePos; }
-                        }
-                    }
+            BlockPos origin = blockPosition();
+            ProviderSearch.Candidate result = ProviderSearch.findNearest(HamsterEntity.this, origin, 16, (water, canReach) -> {
+                boolean bowl = level().getBlockState(water).is(PetBowlContent.BLOCK)
+                        && level().getBlockEntity(water) instanceof PetBowlBlockEntity petBowl
+                        && petBowl.getWaterAmount() >= 50;
+                boolean trough = level().getBlockState(water).is(TroughContent.TROUGH)
+                        && level().getBlockState(water).getValue(TroughBlock.CONTENT) == 1
+                        && level().getBlockState(water).getValue(TroughBlock.LEVEL) > 0;
+                if (!bowl && !trough && (!level().getFluidState(water).is(Fluids.WATER)
+                        || level().getBiome(water).is(BiomeTags.IS_OCEAN)
+                        || level().getBiome(water).is(BiomeTags.IS_BEACH))) return null;
+                boolean inReach = distanceToSqr(water.getX() + 0.5, water.getY(), water.getZ() + 0.5) <= 2.25;
+                BlockPos nearestApproach = null;
+                double nearestDistance = Double.MAX_VALUE;
+                for (Direction dir : Direction.Plane.HORIZONTAL) {
+                    BlockPos candidate = trough || bowl ? water.relative(dir) : water.relative(dir).above();
+                    if (!level().hasChunkAt(candidate) || !level().getBlockState(candidate).isAir()
+                            || !level().getBlockState(candidate.below()).isFaceSturdy(level(), candidate.below(), Direction.UP)
+                            || !inReach && !canReach.test(candidate)) continue;
+                    double distance = distanceToSqr(candidate.getX() + 0.5, candidate.getY(), candidate.getZ() + 0.5);
+                    if (distance < nearestDistance) { nearestDistance = distance; nearestApproach = candidate; }
                 }
-            }
-            source = bestSource;
-            approach = bestApproach;
+                return nearestApproach == null ? null : new ProviderSearch.Candidate(water, nearestApproach);
+            }, candidate -> distanceToSqr(candidate.getX() + 0.5, candidate.getY(), candidate.getZ() + 0.5));
+            if (result != null) { source = result.provider(); approach = result.approach(); }
             nextScan = tickCount + 40;
             return approach != null;
         }

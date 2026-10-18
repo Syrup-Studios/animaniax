@@ -22,6 +22,7 @@ import net.syrupstudios.animaniax.entity.AnimalCareState;
 import net.syrupstudios.animaniax.entity.AnimalProfile;
 import net.syrupstudios.animaniax.entity.AnimalProfile.Capability;
 import net.syrupstudios.animaniax.entity.AnimalSleepState;
+import net.syrupstudios.animaniax.entity.ProviderSearch;
 import net.syrupstudios.animaniax.block.TroughBlock;
 import net.syrupstudios.animaniax.config.AnimalCareConfig;
 import net.syrupstudios.animaniax.block.TroughContent;
@@ -244,73 +245,53 @@ public final class AnimalCareGoal extends Goal {
     }
 
     private BlockPos animaniax$findWaterApproach() {
-            BlockPos origin = mob.blockPosition();
-            int range = AnimalCareConfig.aiBlockSearchRange;
-            BlockPos bestSource = null;
-            BlockPos bestApproach = null;
-            double bestDist = Double.MAX_VALUE;
-            for (int dy = -2; dy <= 2; dy++) {
-                for (int dx = -range; dx <= range; dx++) {
-                    for (int dz = -range; dz <= range; dz++) {
-                        if (dx * dx + dz * dz > range * range) continue;
-                        BlockPos candidatePos = origin.offset(dx, dy, dz);
-                        if (!mob.level().hasChunkAt(candidatePos)) continue;
-                        boolean trough = mob.level().getBlockState(candidatePos).is(TroughContent.TROUGH)
-                                && mob.level().getBlockState(candidatePos).getValue(TroughBlock.CONTENT) == 1
-                                && mob.level().getBlockState(candidatePos).getValue(TroughBlock.LEVEL) > 0;
-                        boolean petBowl = animaniax$isPet() && mob.level().getBlockState(candidatePos).is(PetBowlContent.BLOCK) && mob.level().getBlockEntity(candidatePos) instanceof PetBowlBlockEntity bowl && bowl.getWaterAmount() >= 50;
-                        if (!trough && !petBowl && (!mob.level().getBlockState(candidatePos).is(Blocks.WATER)
-                                || animaniax$isOceanOrBeach(candidatePos))) continue;
-                        for (Direction direction : Direction.Plane.HORIZONTAL) {
-                            BlockPos approach = trough || petBowl ? candidatePos.relative(direction) : candidatePos.relative(direction).above();
-                            if (!mob.level().hasChunkAt(approach) || !mob.level().getBlockState(approach).isAir()
-                                    || !mob.level().getBlockState(approach.below()).isFaceSturdy(mob.level(), approach.below(), Direction.UP)) continue;
-                            boolean inReach = animaniax$isPet() && mob.distanceToSqr(approach.getX() + 0.5, approach.getY(), approach.getZ() + 0.5) <= 2.25;
-                            if (!inReach) {
-                                var path = mob.getNavigation().createPath(approach, 0);
-                                if (path == null || !path.canReach()) continue;
-                            }
-                            double distance = mob.distanceToSqr(approach.getX() + 0.5, approach.getY(), approach.getZ() + 0.5);
-                            if (distance < bestDist) { bestDist = distance; bestApproach = approach; bestSource = candidatePos; }
-                        }
-                    }
-                }
+        ProviderSearch.Candidate result = ProviderSearch.findNearest(mob, mob.blockPosition(), AnimalCareConfig.aiBlockSearchRange, (source, canReach) -> {
+            boolean trough = mob.level().getBlockState(source).is(TroughContent.TROUGH)
+                    && mob.level().getBlockState(source).getValue(TroughBlock.CONTENT) == 1
+                    && mob.level().getBlockState(source).getValue(TroughBlock.LEVEL) > 0;
+            boolean petBowl = animaniax$isPet() && mob.level().getBlockState(source).is(PetBowlContent.BLOCK)
+                    && mob.level().getBlockEntity(source) instanceof PetBowlBlockEntity bowl
+                    && bowl.getWaterAmount() >= 50;
+            if (!trough && !petBowl && (!mob.level().getBlockState(source).is(Blocks.WATER)
+                    || animaniax$isOceanOrBeach(source))) return null;
+            BlockPos nearest = null;
+            double nearestDistance = Double.MAX_VALUE;
+            for (Direction direction : Direction.Plane.HORIZONTAL) {
+                BlockPos approach = trough || petBowl ? source.relative(direction) : source.relative(direction).above();
+                if (!mob.level().hasChunkAt(approach) || !mob.level().getBlockState(approach).isAir()
+                        || !mob.level().getBlockState(approach.below()).isFaceSturdy(mob.level(), approach.below(), Direction.UP)
+                        || !animaniax$isPet() && !canReach.test(approach)
+                        || animaniax$isPet() && mob.distanceToSqr(approach.getX() + 0.5, approach.getY(), approach.getZ() + 0.5) > 2.25
+                                && !canReach.test(approach)) continue;
+                double distance = mob.distanceToSqr(approach.getX() + 0.5, approach.getY(), approach.getZ() + 0.5);
+                if (distance < nearestDistance) { nearest = approach; nearestDistance = distance; }
             }
-        waterSource = bestSource;
-        return bestApproach;
+            return nearest == null ? null : new ProviderSearch.Candidate(source, nearest);
+        }, approach -> mob.distanceToSqr(approach.getX() + 0.5, approach.getY(), approach.getZ() + 0.5));
+        waterSource = result == null ? null : result.provider();
+        return result == null ? null : result.approach();
     }
 
     private BlockPos animaniax$findPetBowlFood() {
-            BlockPos origin = mob.blockPosition();
-            int range = AnimalCareConfig.aiBlockSearchRange;
-            BlockPos bestSource = null;
-            BlockPos bestApproach = null;
-            double bestDist = Double.MAX_VALUE;
-            for (int dy = -2; dy <= 2; dy++) {
-                for (int dx = -range; dx <= range; dx++) {
-                    for (int dz = -range; dz <= range; dz++) {
-                        if (dx * dx + dz * dz > range * range) continue;
-                        BlockPos candidatePos = origin.offset(dx, dy, dz);
-                        if (!mob.level().hasChunkAt(candidatePos)) continue;
-                        if (!mob.level().getBlockState(candidatePos).is(PetBowlContent.BLOCK)
-                                || !(mob.level().getBlockEntity(candidatePos) instanceof PetBowlBlockEntity bowl)
-                                || !bowl.canFeed(mob.getType())) continue;
-                        for (Direction direction : Direction.Plane.HORIZONTAL) {
-                            BlockPos approach = candidatePos.relative(direction);
-                            if (!mob.level().hasChunkAt(approach) || !mob.level().getBlockState(approach).isAir()
-                                    || !mob.level().getBlockState(approach.below()).isFaceSturdy(mob.level(), approach.below(), Direction.UP)) continue;
-                            if (mob.distanceToSqr(approach.getX() + 0.5, approach.getY(), approach.getZ() + 0.5) > 2.25) {
-                                var path = mob.getNavigation().createPath(approach, 0);
-                                if (path == null || !path.canReach()) continue;
-                            }
-                            double distance = mob.distanceToSqr(approach.getX() + 0.5, approach.getY(), approach.getZ() + 0.5);
-                            if (distance < bestDist) { bestDist = distance; bestApproach = approach; bestSource = candidatePos; }
-                        }
-                    }
-                }
+        ProviderSearch.Candidate result = ProviderSearch.findNearest(mob, mob.blockPosition(), AnimalCareConfig.aiBlockSearchRange, (bowlPos, canReach) -> {
+            if (!mob.level().getBlockState(bowlPos).is(PetBowlContent.BLOCK)
+                    || !(mob.level().getBlockEntity(bowlPos) instanceof PetBowlBlockEntity bowl)
+                    || !bowl.canFeed(mob.getType())) return null;
+            BlockPos nearest = null;
+            double nearestDistance = Double.MAX_VALUE;
+            for (Direction direction : Direction.Plane.HORIZONTAL) {
+                BlockPos approach = bowlPos.relative(direction);
+                if (!mob.level().hasChunkAt(approach) || !mob.level().getBlockState(approach).isAir()
+                        || !mob.level().getBlockState(approach.below()).isFaceSturdy(mob.level(), approach.below(), Direction.UP)
+                        || mob.distanceToSqr(approach.getX() + 0.5, approach.getY(), approach.getZ() + 0.5) > 2.25
+                                && !canReach.test(approach)) continue;
+                double distance = mob.distanceToSqr(approach.getX() + 0.5, approach.getY(), approach.getZ() + 0.5);
+                if (distance < nearestDistance) { nearest = approach; nearestDistance = distance; }
             }
-        foodBlock = bestSource;
-        return bestApproach;
+            return nearest == null ? null : new ProviderSearch.Candidate(bowlPos, nearest);
+        }, approach -> mob.distanceToSqr(approach.getX() + 0.5, approach.getY(), approach.getZ() + 0.5));
+        foodBlock = result == null ? null : result.provider();
+        return result == null ? null : result.approach();
     }
 
     private boolean animaniax$eatPetBowlFood() {
@@ -347,36 +328,25 @@ public final class AnimalCareGoal extends Goal {
     }
 
     private BlockPos animaniax$findTroughFood() {
-            BlockPos origin = mob.blockPosition();
-            int range = AnimalCareConfig.aiBlockSearchRange;
-            BlockPos bestSource = null;
-            BlockPos bestApproach = null;
-            double bestDist = Double.MAX_VALUE;
-            for (int dy = -2; dy <= 2; dy++) {
-                for (int dx = -range; dx <= range; dx++) {
-                    for (int dz = -range; dz <= range; dz++) {
-                        if (dx * dx + dz * dz > range * range) continue;
-                        BlockPos candidatePos = origin.offset(dx, dy, dz);
-                        if (!mob.level().hasChunkAt(candidatePos)) continue;
-                        if (!mob.level().getBlockState(candidatePos).is(TroughContent.TROUGH)
-                                || !(mob.level().getBlockEntity(candidatePos) instanceof net.syrupstudios.animaniax.block.TroughBlockEntity entity)
-                                || !entity.canFeed(mob.getType())) continue;
-                        for (Direction direction : Direction.Plane.HORIZONTAL) {
-                            BlockPos approach = candidatePos.relative(direction);
-                            if (!mob.level().hasChunkAt(approach) || !mob.level().getBlockState(approach).isAir()
-                                    || !mob.level().getBlockState(approach.below()).isFaceSturdy(mob.level(), approach.below(), Direction.UP)) continue;
-                            if (mob.distanceToSqr(approach.getX() + 0.5, approach.getY(), approach.getZ() + 0.5) > 2.25) {
-                                var path = mob.getNavigation().createPath(approach, 0);
-                                if (path == null || !path.canReach()) continue;
-                            }
-                            double distance = mob.distanceToSqr(approach.getX() + 0.5, approach.getY(), approach.getZ() + 0.5);
-                            if (distance < bestDist) { bestDist = distance; bestApproach = approach; bestSource = candidatePos; }
-                        }
-                    }
-                }
+        ProviderSearch.Candidate result = ProviderSearch.findNearest(mob, mob.blockPosition(), AnimalCareConfig.aiBlockSearchRange, (trough, canReach) -> {
+            if (!mob.level().getBlockState(trough).is(TroughContent.TROUGH)
+                    || !(mob.level().getBlockEntity(trough) instanceof net.syrupstudios.animaniax.block.TroughBlockEntity entity)
+                    || !entity.canFeed(mob.getType())) return null;
+            BlockPos nearest = null;
+            double nearestDistance = Double.MAX_VALUE;
+            for (Direction direction : Direction.Plane.HORIZONTAL) {
+                BlockPos approach = trough.relative(direction);
+                if (!mob.level().hasChunkAt(approach) || !mob.level().getBlockState(approach).isAir()
+                        || !mob.level().getBlockState(approach.below()).isFaceSturdy(mob.level(), approach.below(), Direction.UP)
+                        || mob.distanceToSqr(approach.getX() + 0.5, approach.getY(), approach.getZ() + 0.5) > 2.25
+                                && !canReach.test(approach)) continue;
+                double distance = mob.distanceToSqr(approach.getX() + 0.5, approach.getY(), approach.getZ() + 0.5);
+                if (distance < nearestDistance) { nearest = approach; nearestDistance = distance; }
             }
-        foodBlock = bestSource;
-        return bestApproach;
+            return nearest == null ? null : new ProviderSearch.Candidate(trough, nearest);
+        }, approach -> mob.distanceToSqr(approach.getX() + 0.5, approach.getY(), approach.getZ() + 0.5));
+        foodBlock = result == null ? null : result.provider();
+        return result == null ? null : result.approach();
     }
 
     private BlockPos animaniax$findSeeds() {
