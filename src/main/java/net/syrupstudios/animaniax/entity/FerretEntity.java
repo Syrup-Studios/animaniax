@@ -114,11 +114,11 @@ public final class FerretEntity extends TamableAnimal {
         ItemStack stack = player.getItemInHand(hand);
         boolean sleeping = ((AnimalSleepState) (Object) this).animaniax$isSleeping() || isSleeping();
         if (sleeping && (isFood(stack)
-                || stack.is(net.minecraft.world.item.Items.WATER_BUCKET)))
+                || net.syrupstudios.animaniax.item.WaterContainerTransfer.isWaterContainer(player, hand)))
             return InteractionResult.sidedSuccess(level().isClientSide);
         boolean waterContainer = !sleeping && (level().isClientSide
-                ? stack.is(net.minecraft.world.item.Items.WATER_BUCKET)
-                : giveWaterBucket(player, hand));
+                ? net.syrupstudios.animaniax.item.WaterContainerTransfer.isWaterContainer(player, hand)
+                : net.syrupstudios.animaniax.item.WaterContainerTransfer.water(player, hand));
         if (waterContainer) {
             if (!level().isClientSide) {
                 careInteracted = true;
@@ -147,18 +147,6 @@ public final class FerretEntity extends TamableAnimal {
             return InteractionResult.sidedSuccess(level().isClientSide);
         }
         return super.mobInteract(player, hand);
-    }
-
-    private boolean giveWaterBucket(Player player, InteractionHand hand) {
-        ItemStack stack = player.getItemInHand(hand);
-        if (!stack.is(net.minecraft.world.item.Items.WATER_BUCKET)) return false;
-        if (!player.getAbilities().instabuild) {
-            stack.shrink(1);
-            ItemStack bucket = new ItemStack(net.minecraft.world.item.Items.BUCKET);
-            if (stack.isEmpty()) player.setItemInHand(hand, bucket);
-            else if (!player.getInventory().add(bucket)) player.drop(bucket, false);
-        }
-        return true;
     }
 
     @Override public boolean isFood(ItemStack stack) {

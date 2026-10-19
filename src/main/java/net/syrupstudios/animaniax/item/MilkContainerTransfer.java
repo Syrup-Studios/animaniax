@@ -59,8 +59,8 @@ public final class MilkContainerTransfer {
         if (!canFill(player, hand, kind)) return false;
         ItemStack held = player.getItemInHand(hand);
         if (held.is(Items.GLASS_BOTTLE) && !kind.equals("lava")) {
-            ContainerUtils.fillGlassBottle(player, hand, held,
-                    new ItemStack(AnimalMilkContent.MILK_BOTTLE));
+            player.setItemInHand(hand, ItemUtils.createFilledResult(held, player,
+                    new ItemStack(AnimalMilkContent.MILK_BOTTLE)));
             return true;
         }
         //? if fabric {

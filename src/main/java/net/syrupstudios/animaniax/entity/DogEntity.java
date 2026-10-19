@@ -107,7 +107,7 @@ public class DogEntity extends Wolf {
         boolean sleeping = ((AnimalSleepState) (Object) this).animaniax$isSleeping() || isSleeping();
         if (isFood(held) && sleeping)
             return InteractionResult.SUCCESS;
-        if (sleeping && held.is(net.minecraft.world.item.Items.WATER_BUCKET))
+        if (sleeping && net.syrupstudios.animaniax.item.WaterContainerTransfer.isWaterContainer(player, hand))
             return InteractionResult.SUCCESS;
         if (isTame() && !isFood(held) && held.is(ItemTags.WOLF_FOOD) && getHealth() < 20.0F) {
             FoodProperties food = held.get(DataComponents.FOOD);
@@ -134,8 +134,8 @@ public class DogEntity extends Wolf {
             return InteractionResult.sidedSuccess(false);
         }
         boolean waterContainer = !sleeping && (level().isClientSide
-                ? held.is(net.minecraft.world.item.Items.WATER_BUCKET)
-                : giveWaterBucket(player, hand));
+                ? net.syrupstudios.animaniax.item.WaterContainerTransfer.isWaterContainer(player, hand)
+                : net.syrupstudios.animaniax.item.WaterContainerTransfer.water(player, hand));
         if (waterContainer) {
             if (!level().isClientSide) {
                 ((net.syrupstudios.animaniax.entity.AnimalCareState) this).animaniax$waterForCare();
@@ -147,18 +147,6 @@ public class DogEntity extends Wolf {
             return InteractionResult.sidedSuccess(level().isClientSide);
         }
         return super.mobInteract(player, hand);
-    }
-
-    private boolean giveWaterBucket(Player player, InteractionHand hand) {
-        ItemStack held = player.getItemInHand(hand);
-        if (!held.is(net.minecraft.world.item.Items.WATER_BUCKET)) return false;
-        if (!player.getAbilities().instabuild) {
-            held.shrink(1);
-            ItemStack bucket = new ItemStack(net.minecraft.world.item.Items.BUCKET);
-            if (held.isEmpty()) player.setItemInHand(hand, bucket);
-            else if (!player.getInventory().add(bucket)) player.drop(bucket, false);
-        }
-        return true;
     }
 
     @Override public boolean isFood(ItemStack stack) { return stack.is(AnimalProfile.DOG_FOODS); }

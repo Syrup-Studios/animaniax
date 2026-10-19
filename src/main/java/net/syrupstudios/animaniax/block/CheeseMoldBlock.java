@@ -18,7 +18,6 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.syrupstudios.animaniax.config.AnimalCareConfig;
-import net.syrupstudios.animaniax.item.ContainerUtils;
 
 public final class CheeseMoldBlock extends Block implements EntityBlock {
     public static final BooleanProperty FILLED = BooleanProperty.create("filled");
@@ -46,7 +45,11 @@ public final class CheeseMoldBlock extends Block implements EntityBlock {
             if (state.getValue(FILLED)) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
             if (!level.isClientSide && level.getBlockEntity(pos) instanceof CheeseMoldBlockEntity mold
                     && mold.fill(stack)) {
-                ContainerUtils.returnEmptyBucket(player, stack);
+                if (!player.getAbilities().instabuild) {
+                    stack.shrink(1);
+                    ItemStack bucket = new ItemStack(Items.BUCKET);
+                    if (!player.getInventory().add(bucket)) player.drop(bucket, false);
+                }
             }
             return ItemInteractionResult.sidedSuccess(level.isClientSide);
         }

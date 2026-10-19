@@ -137,7 +137,7 @@ public final class HamsterEntity extends TamableAnimal {
         int ballColor = HamsterBallContent.colorOf(held.getItem());
         boolean sleeping = ((AnimalSleepState) (Object) this).animaniax$isSleeping();
         if (sleeping && (isFood(held)
-                || held.is(net.minecraft.world.item.Items.WATER_BUCKET)))
+                || net.syrupstudios.animaniax.item.WaterContainerTransfer.isWaterContainer(player, hand)))
             return InteractionResult.sidedSuccess(level().isClientSide);
         if (!sleeping && !isInBall() && ballColor != -2) {
             if (!level().isClientSide) {
@@ -161,8 +161,8 @@ public final class HamsterEntity extends TamableAnimal {
             return InteractionResult.sidedSuccess(level().isClientSide);
         }
         boolean waterContainer = !sleeping && (level().isClientSide
-                ? held.is(net.minecraft.world.item.Items.WATER_BUCKET)
-                : giveWaterBucket(player, hand));
+                ? net.syrupstudios.animaniax.item.WaterContainerTransfer.isWaterContainer(player, hand)
+                : net.syrupstudios.animaniax.item.WaterContainerTransfer.water(player, hand));
         if (waterContainer) {
             if (!level().isClientSide) {
                 careInteracted = true;
@@ -251,18 +251,6 @@ public final class HamsterEntity extends TamableAnimal {
 
     public static AttributeSupplier.Builder createAttributes() {
         return TamableAnimal.createMobAttributes().add(Attributes.MAX_HEALTH, 10.0).add(Attributes.MOVEMENT_SPEED, 0.3);
-    }
-
-    private boolean giveWaterBucket(Player player, InteractionHand hand) {
-        ItemStack held = player.getItemInHand(hand);
-        if (!held.is(net.minecraft.world.item.Items.WATER_BUCKET)) return false;
-        if (!player.getAbilities().instabuild) {
-            held.shrink(1);
-            ItemStack bucket = new ItemStack(net.minecraft.world.item.Items.BUCKET);
-            if (held.isEmpty()) player.setItemInHand(hand, bucket);
-            else if (!player.getInventory().add(bucket)) player.drop(bucket, false);
-        }
-        return true;
     }
 
     private int waterTicks(int multiplier, int randomBound) {

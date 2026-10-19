@@ -242,7 +242,7 @@ abstract class MobCareMixin implements AnimalCareState, AnimalSleepState, PigBre
         if (!animaniax$isFarmAnimal(mob)) return;
 
         ItemStack held = player.getItemInHand(hand);
-        if (animaniax$isSleeping() && (held.is(Items.WATER_BUCKET)
+        if (animaniax$isSleeping() && (net.syrupstudios.animaniax.item.WaterContainerTransfer.isWaterContainer(player, hand)
                 || mob instanceof Animal animal && animal.isFood(held))) {
             cir.setReturnValue(InteractionResult.SUCCESS);
             return;
@@ -329,19 +329,13 @@ abstract class MobCareMixin implements AnimalCareState, AnimalSleepState, PigBre
             return;
         }
         if (mob.level().isClientSide) {
-            if (held.is(Items.WATER_BUCKET)
+            if (net.syrupstudios.animaniax.item.WaterContainerTransfer.isWaterContainer(player, hand)
                     || ((Animal) mob).isFood(held)) {
                 cir.setReturnValue(InteractionResult.SUCCESS);
             }
             return;
         }
-        if (held.is(Items.WATER_BUCKET)) {
-            if (!player.getAbilities().instabuild) {
-                held.shrink(1);
-                ItemStack bucket = new ItemStack(Items.BUCKET);
-                if (held.isEmpty()) player.setItemInHand(hand, bucket);
-                else if (!player.getInventory().add(bucket)) player.drop(bucket, false);
-            }
+        if (net.syrupstudios.animaniax.item.WaterContainerTransfer.water(player, hand)) {
             animaniax$careActivated = true;
             animaniax$resetThirst(mob);
             Animal animal = (Animal) mob;

@@ -17,7 +17,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.syrupstudios.animaniax.item.ContainerUtils;
 
 public final class PetBowlBlock extends Block implements EntityBlock {
     private static final VoxelShape SHAPE = Shapes.or(Block.box(4, 0, 4, 12, 2, 12),
@@ -65,14 +64,24 @@ public final class PetBowlBlock extends Block implements EntityBlock {
             Player player, InteractionHand hand, BlockHitResult hit) {
         if (!(level.getBlockEntity(pos) instanceof PetBowlBlockEntity bowl)) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         if (stack.is(Items.WATER_BUCKET) && bowl.getWaterAmount() == 0 && bowl.isEmpty()) {
-            if (!level.isClientSide) ContainerUtils.swapInHand(player, hand, stack, new ItemStack(Items.BUCKET));
+            if (!level.isClientSide && !player.getAbilities().instabuild) {
+                stack.shrink(1);
+                ItemStack bucket = new ItemStack(Items.BUCKET);
+                if (stack.isEmpty()) player.setItemInHand(hand, bucket);
+                else if (!player.getInventory().add(bucket)) player.drop(bucket, false);
+            }
             if (!level.isClientSide) bowl.addWater(PetBowlBlockEntity.WATER_CAPACITY);
             return ItemInteractionResult.SUCCESS;
         }
         if (stack.is(Items.BUCKET) && bowl.getWaterAmount() == PetBowlBlockEntity.WATER_CAPACITY) {
             if (!level.isClientSide) {
                 bowl.consumeWater(PetBowlBlockEntity.WATER_CAPACITY);
-                ContainerUtils.swapInHand(player, hand, stack, new ItemStack(Items.WATER_BUCKET));
+                if (!player.getAbilities().instabuild) {
+                    stack.shrink(1);
+                    ItemStack bucket = new ItemStack(Items.WATER_BUCKET);
+                    if (stack.isEmpty()) player.setItemInHand(hand, bucket);
+                    else if (!player.getInventory().add(bucket)) player.drop(bucket, false);
+                }
             }
             return ItemInteractionResult.SUCCESS;
         }
