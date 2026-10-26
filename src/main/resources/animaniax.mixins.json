@@ -35,6 +35,9 @@
     "CowSpawnPlacementMixin",
     "NaturalSpawnCapMixin",
     "SeedPilePlacementMixin",
+    "PepeFrogBrainMixin",
+    "AmphibianTemptationSensorMixin",
+    "AmphibianPreyHuntingMixin",
     "PoiTypesAccessor"
   ],
   "client": [
