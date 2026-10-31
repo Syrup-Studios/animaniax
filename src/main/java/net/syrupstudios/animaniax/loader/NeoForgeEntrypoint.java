@@ -46,6 +46,7 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.syrupstudios.animaniax.block.HamsterWheelBlockEntity;
 import net.syrupstudios.animaniax.block.HamsterWheelContent;
 import net.syrupstudios.animaniax.block.BeeHiveContent;
+import net.syrupstudios.animaniax.block.BeeHiveNeoForgeFluidHandler;
 import net.syrupstudios.animaniax.worldgen.BeeHiveFeature;
 import net.syrupstudios.animaniax.block.NestContent;
 import net.syrupstudios.animaniax.block.TroughContent;
@@ -359,6 +360,11 @@ public final class NeoForgeEntrypoint {
     }
 
     private void registerCapabilities(RegisterCapabilitiesEvent event) {
+        event.registerItem(Capabilities.FluidHandler.ITEM,
+                (stack, context) -> new net.syrupstudios.animaniax.block.HoneyBottleNeoForgeFluidHandler(stack),
+                BeeHiveContent.HONEY_BOTTLE);
+        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, BeeHiveContent.ENTITY,
+                (hive, side) -> new BeeHiveNeoForgeFluidHandler(hive));
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, HamsterWheelContent.ENTITY, (wheel, side) ->
                 new IEnergyStorage() {
                     @Override public int getEnergyStored() { return wheel.getEnergy(); }

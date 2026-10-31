@@ -40,7 +40,15 @@ public final class BeeHiveBlock extends Block implements EntityBlock {
             BlockPos pos, Player player, net.minecraft.world.InteractionHand hand, BlockHitResult hit) {
         boolean bottle = stack.is(Items.GLASS_BOTTLE);
         boolean bucket = stack.is(Items.BUCKET);
-        if (!bottle && !bucket) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        if (!bottle && !bucket) {
+            if (level.getBlockEntity(pos) instanceof BeeHiveBlockEntity hive) {
+                if (level.isClientSide && HoneyContainerTransfer.canCollect(hive, player, hand))
+                    return ItemInteractionResult.SUCCESS;
+                if (!level.isClientSide && HoneyContainerTransfer.collect(hive, player, hand))
+                    return ItemInteractionResult.SUCCESS;
+            }
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        }
         if (level.isClientSide) return ItemInteractionResult.SUCCESS;
         if (!(level.getBlockEntity(pos) instanceof BeeHiveBlockEntity hive)
                 || hive.getHoney() < BeeHiveBlockEntity.BOTTLE_AMOUNT) return ItemInteractionResult.FAIL;

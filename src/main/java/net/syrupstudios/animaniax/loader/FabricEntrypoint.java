@@ -106,7 +106,10 @@ public final class FabricEntrypoint implements ModInitializer {
                         ? new FullItemFluidStorage(context, variant -> ItemVariant.of(net.minecraft.world.item.Items.BUCKET),
                                 FluidVariant.of(net.syrupstudios.animaniax.item.MilkContainerTransfer.genericMilkFluid()),
                                 FluidConstants.BUCKET)
+                        : context.getItemVariant().getItem() == net.syrupstudios.animaniax.block.BeeHiveContent.HONEY_BOTTLE
+                        ? new net.syrupstudios.animaniax.block.HoneyBottleFabricFluidStorage(context)
                         : null);
+        net.syrupstudios.animaniax.block.BeeHiveFluidStorage.register();
         TruffleContent.registerFabric();
         net.syrupstudios.animaniax.item.OmeletteContent.registerFabric();
         HamsterFoodContent.registerFabric();

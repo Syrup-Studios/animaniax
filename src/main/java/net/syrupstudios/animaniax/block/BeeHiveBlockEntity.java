@@ -27,6 +27,10 @@ public final class BeeHiveBlockEntity extends BlockEntity {
             net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("animaniax", "hive_spawns"));
     private int honey;
     private int nextHoney = 400;
+    //? if fabric {
+    private final BeeHiveFluidStorage fluidStorage = new BeeHiveFluidStorage(this);
+    public BeeHiveFluidStorage getFluidStorage() { return fluidStorage; }
+    //?}
 
     public BeeHiveBlockEntity(BlockPos pos, BlockState state) { super(BeeHiveContent.ENTITY, pos, state); }
 
