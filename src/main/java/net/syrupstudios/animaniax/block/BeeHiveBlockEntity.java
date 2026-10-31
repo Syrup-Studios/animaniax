@@ -64,9 +64,10 @@ public final class BeeHiveBlockEntity extends BlockEntity {
         if (level.isClientSide) return;
         if (hive.nextHoney > 0) hive.nextHoney--;
         if (hive.nextHoney <= 0) {
-            if (isValidBiome(level, pos)) {
+            if (isValidBiome(level, pos) || BeeHivePollenTracker.hasNearbyFlowers(level, pos)) {
                 int previous = hive.honey;
-                hive.honey = Math.min(CAPACITY, hive.honey + 25);
+                int delta = BeeHivePollenTracker.honeyYield(level, pos);
+                hive.honey = Math.min(CAPACITY, hive.honey + delta);
                 if (hive.honey != previous) hive.setChanged();
                 int interval = state.getBlock() == BeeHiveContent.WILD
                         ? AnimalCareConfig.hiveWildHoneyRate
