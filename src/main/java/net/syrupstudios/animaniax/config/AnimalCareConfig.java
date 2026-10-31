@@ -47,6 +47,10 @@ public final class AnimalCareConfig {
     public static int naturalSpawnLimitHedgehogs = 40;
     public static int naturalSpawnLimitCats = 20;
     public static int naturalSpawnLimitDogs = 20;
+    public static boolean hiveSpawning = true;
+    public static int hiveSpawningFrequency = 3;
+    public static int hiveWildHoneyRate = 700;
+    public static int hivePlayermadeHoneyRate = 450;
     public static boolean allowSeedDispenserPlacement = true;
     public static boolean shiftSeedPlacement = false;
     public static boolean allowTroughAutomation = true;
@@ -125,6 +129,14 @@ public final class AnimalCareConfig {
                         + "naturalSpawnLimitHedgehogs=40\n"
                         + "naturalSpawnLimitCats=20\n"
                         + "naturalSpawnLimitDogs=20\n"
+                        + "# Allow wild hives to spawn.\n"
+                        + "hiveSpawning=true\n"
+                        + "# Wild hive spawn chance per eligible chunk, from 0 to 10 out of 200.\n"
+                        + "hiveSpawningFrequency=3\n"
+                        + "# Honey production interval for wild hives, in ticks.\n"
+                        + "hiveWildHoneyRate=700\n"
+                        + "# Honey production interval for player-made hives, in ticks.\n"
+                        + "hivePlayermadeHoneyRate=450\n"
                         + "# Allow dispensers to place seed piles.\n"
                         + "allowSeedDispenserPlacement=true\n"
                         + "# Require sneaking to place seed piles with seeds.\n"
@@ -203,6 +215,10 @@ public final class AnimalCareConfig {
             naturalSpawnLimitHedgehogs = readTicks(properties, "naturalSpawnLimitHedgehogs", 40);
             naturalSpawnLimitCats = readTicks(properties, "naturalSpawnLimitCats", 20);
             naturalSpawnLimitDogs = readTicks(properties, "naturalSpawnLimitDogs", 20);
+            hiveSpawning = readBoolean(properties, "hiveSpawning", true);
+            hiveSpawningFrequency = readClampedInt(properties, "hiveSpawningFrequency", 3, 0, 10);
+            hiveWildHoneyRate = readTicks(properties, "hiveWildHoneyRate", 700);
+            hivePlayermadeHoneyRate = readTicks(properties, "hivePlayermadeHoneyRate", 450);
             allowSeedDispenserPlacement = readBoolean(properties, "allowSeedDispenserPlacement", true);
             shiftSeedPlacement = readBoolean(properties, "shiftSeedPlacement", false);
             allowTroughAutomation = readBoolean(properties, "allowTroughAutomation", true);
@@ -261,6 +277,10 @@ public final class AnimalCareConfig {
             naturalSpawnLimitHedgehogs = 40;
             naturalSpawnLimitCats = 20;
             naturalSpawnLimitDogs = 20;
+            hiveSpawning = true;
+            hiveSpawningFrequency = 3;
+            hiveWildHoneyRate = 700;
+            hivePlayermadeHoneyRate = 450;
             allowSeedDispenserPlacement = true;
             shiftSeedPlacement = false;
             allowTroughAutomation = true;

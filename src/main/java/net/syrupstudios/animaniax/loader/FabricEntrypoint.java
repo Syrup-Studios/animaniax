@@ -27,6 +27,8 @@ import net.minecraft.world.level.storage.LevelResource;
 import net.syrupstudios.animaniax.config.AnimalCareConfig;
 import net.syrupstudios.animaniax.block.HamsterWheelContent;
 import net.syrupstudios.animaniax.block.FabricWheelEnergy;
+import net.syrupstudios.animaniax.block.BeeHiveContent;
+import net.syrupstudios.animaniax.worldgen.BeeHiveFeature;
 import net.syrupstudios.animaniax.block.NestContent;
 import net.syrupstudios.animaniax.block.TroughContent;
 import net.syrupstudios.animaniax.block.PetBowlContent;
@@ -76,6 +78,7 @@ public final class FabricEntrypoint implements ModInitializer {
     @Override
     public void onInitialize() {
         net.syrupstudios.animaniax.advancement.FeedAnimalTrigger.register();
+        net.minecraft.core.Registry.register(BuiltInRegistries.FEATURE, BeeHiveFeature.ID, BeeHiveFeature.INSTANCE);
         ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.INGREDIENTS).register(entries ->
                 BuiltInRegistries.ITEM.stream().filter(item -> BuiltInRegistries.ITEM.getKey(item).getNamespace().equals("animaniax")
                         && !(item instanceof SpawnEggItem) && item != AnimalSpawnEggContent.ITEM).forEach(entries::accept));
@@ -96,6 +99,7 @@ public final class FabricEntrypoint implements ModInitializer {
         NestContent.registerFabric();
         HamsterWheelContent.registerFabric();
         FabricWheelEnergy.register();
+        BeeHiveContent.registerFabric();
         net.syrupstudios.animaniax.block.AnimalMilkFluids.registerFabric();
         FluidStorage.GENERAL_COMBINED_PROVIDER.register(context ->
                 context.getItemVariant().getItem() == net.minecraft.world.item.Items.MILK_BUCKET
@@ -163,6 +167,11 @@ public final class FabricEntrypoint implements ModInitializer {
         BiomeModifications.addSpawn(BiomeSelectors.tag(TagKey.create(Registries.BIOME,
                 ResourceLocation.fromNamespaceAndPath("animaniax", "goat_spawns"))),
                 MobCategory.CREATURE, EntityType.GOAT, 8, 2, 4);
+        BiomeModifications.addFeature(BiomeSelectors.tag(TagKey.create(Registries.BIOME,
+                ResourceLocation.fromNamespaceAndPath("animaniax", "hive_spawns"))),
+                net.minecraft.world.level.levelgen.GenerationStep.Decoration.VEGETAL_DECORATION,
+                net.minecraft.resources.ResourceKey.create(Registries.PLACED_FEATURE,
+                        ResourceLocation.fromNamespaceAndPath("animaniax", "wild_hives")));
         BiomeModifications.addSpawn(BiomeSelectors.tag(TagKey.create(Registries.BIOME,
                 DraftHorseContent.id("draft_horse_spawns"))), MobCategory.CREATURE,
                 DraftHorseContent.DRAFT_HORSE, 8, 1, 2);

@@ -29,6 +29,10 @@ public final class FabricClientEntrypoint implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         ColorProviderRegistry.ITEM.register(AnimalSpawnEggItem::color, AnimalSpawnEggContent.ITEM);
+        FluidRenderHandlerRegistry.INSTANCE.register(net.syrupstudios.animaniax.block.BeeHiveContent.HONEY_SOURCE,
+                net.syrupstudios.animaniax.block.BeeHiveContent.HONEY_FLOWING,
+                new SimpleFluidRenderHandler(net.minecraft.resources.ResourceLocation.withDefaultNamespace("block/water_still"),
+                        net.minecraft.resources.ResourceLocation.withDefaultNamespace("block/water_flow"), 0xFFFFC943));
         registerMilk("friesian", net.syrupstudios.animaniax.block.AnimalMilkFluids.FRIESIAN_SOURCE,
                 net.syrupstudios.animaniax.block.AnimalMilkFluids.FRIESIAN_FLOWING);
         registerMilk("holstein", net.syrupstudios.animaniax.block.AnimalMilkFluids.HOLSTEIN_SOURCE,

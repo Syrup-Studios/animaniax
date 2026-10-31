@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {"item": "animaniax:honey_bucket"},
+    {"item": "minecraft:glass_bottle"}
+  ],
+  "result": {"id": "animaniax:honey_bottle", "count": 1}
+}

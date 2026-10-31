@@ -41,9 +41,12 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.syrupstudios.animaniax.block.HamsterWheelBlockEntity;
 import net.syrupstudios.animaniax.block.HamsterWheelContent;
+import net.syrupstudios.animaniax.block.BeeHiveContent;
+import net.syrupstudios.animaniax.worldgen.BeeHiveFeature;
 import net.syrupstudios.animaniax.block.NestContent;
 import net.syrupstudios.animaniax.block.TroughContent;
 import net.syrupstudios.animaniax.block.PetBowlContent;
@@ -87,6 +90,16 @@ public final class NeoForgeEntrypoint {
     private static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, "animaniax");
     public static final DeferredRegister<FluidType> FLUID_TYPES = DeferredRegister.create(NeoForgeRegistries.Keys.FLUID_TYPES, "animaniax");
     public static final DeferredRegister<net.minecraft.world.level.material.Fluid> FLUIDS = DeferredRegister.create(Registries.FLUID, "animaniax");
+    public static final net.neoforged.neoforge.registries.DeferredHolder<FluidType, FluidType> HONEY_TYPE = FLUID_TYPES.register("honey",
+            () -> new FluidType(FluidType.Properties.create().density(3000).viscosity(7000)) {
+                @Override public void initializeClient(java.util.function.Consumer<net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions> consumer) {
+                    consumer.accept(new net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions() {
+                        @Override public net.minecraft.resources.ResourceLocation getStillTexture() { return net.minecraft.resources.ResourceLocation.withDefaultNamespace("block/water_still"); }
+                        @Override public net.minecraft.resources.ResourceLocation getFlowingTexture() { return net.minecraft.resources.ResourceLocation.withDefaultNamespace("block/water_flow"); }
+                        @Override public int getTintColor() { return 0xFFFFC943; }
+                    });
+                }
+            });
     public static net.neoforged.neoforge.registries.DeferredHolder<FluidType, FluidType> milkType(String kind) {
         return switch (kind) {
             case "friesian" -> FRIESIAN_MILK_TYPE;
@@ -113,6 +126,7 @@ public final class NeoForgeEntrypoint {
     private static final net.neoforged.neoforge.registries.DeferredHolder<FluidType, FluidType> JERSEY_MILK_TYPE = registerMilkType("jersey");
     private static final net.neoforged.neoforge.registries.DeferredHolder<FluidType, FluidType> GOAT_MILK_TYPE = registerMilkType("goat");
     private static final net.neoforged.neoforge.registries.DeferredHolder<FluidType, FluidType> SHEEP_MILK_TYPE = registerMilkType("sheep");
+    private static final DeferredRegister<Feature<?>> FEATURES = DeferredRegister.create(Registries.FEATURE, "animaniax");
     private static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(Registries.RECIPE_SERIALIZER, "animaniax");
     private static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(Registries.ENTITY_TYPE, "animaniax");
     private static final DeferredRegister<net.minecraft.advancements.CriterionTrigger<?>> TRIGGERS = DeferredRegister.create(Registries.TRIGGER_TYPE, "animaniax");
@@ -122,12 +136,15 @@ public final class NeoForgeEntrypoint {
         TRIGGERS.register(modBus);
         net.neoforged.neoforge.common.NeoForgeMod.enableMilkFluid();
         FLUID_TYPES.register(modBus);
+        FLUIDS.register("honey", () -> BeeHiveContent.HONEY_SOURCE);
+        FLUIDS.register("flowing_honey", () -> BeeHiveContent.HONEY_FLOWING);
         registerMilkFluid("friesian");
         registerMilkFluid("holstein");
         registerMilkFluid("jersey");
         registerMilkFluid("goat");
         registerMilkFluid("sheep");
         FLUIDS.register(modBus);
+        FEATURES.register("wild_hive", () -> BeeHiveFeature.INSTANCE);
         ENTITY_TYPES.register("draft_horse", () -> DraftHorseContent.DRAFT_HORSE);
         ITEMS.register("draft_horse_spawn_egg", () -> DraftHorseContent.DRAFT_HORSE_SPAWN_EGG);
         ENTITY_TYPES.register("peafowl", () -> PeafowlEntity.TYPE);
@@ -174,6 +191,14 @@ public final class NeoForgeEntrypoint {
         BLOCKS.register("suffolk_brown_wool", () -> SheepWoolContent.SUFFOLK_BROWN_BLOCK);
         ITEMS.register("salt_lick", () -> SaltLickContent.ITEM);
         BLOCK_ENTITIES.register("salt_lick", () -> SaltLickContent.ENTITY);
+        BLOCKS.register("bee_hive", () -> BeeHiveContent.PLAYER_HIVE);
+        BLOCKS.register("wild_hive", () -> BeeHiveContent.WILD);
+        BLOCKS.register("honey", () -> BeeHiveContent.HONEY_BLOCK);
+        ITEMS.register("bee_hive", () -> BeeHiveContent.PLAYER_HIVE_ITEM);
+        ITEMS.register("wild_hive", () -> BeeHiveContent.WILD_ITEM);
+        ITEMS.register("honey_bottle", () -> BeeHiveContent.HONEY_BOTTLE);
+        ITEMS.register("honey_bucket", () -> BeeHiveContent.HONEY_BUCKET);
+        BLOCK_ENTITIES.register("bee_hive", () -> BeeHiveContent.ENTITY);
         BLOCKS.register("cheese_mold", () -> CheeseMoldContent.MOLD);
         BLOCKS.register("friesian_cheese", () -> CheeseMoldContent.FRIESIAN_CHEESE_BLOCK);
         BLOCKS.register("holstein_cheese", () -> CheeseMoldContent.HOLSTEIN_CHEESE_BLOCK);
@@ -300,6 +325,7 @@ public final class NeoForgeEntrypoint {
         BLOCKS.register(modBus);
         ITEMS.register(modBus);
         BLOCK_ENTITIES.register(modBus);
+        FEATURES.register(modBus);
         RECIPE_SERIALIZERS.register(modBus);
         ENTITY_TYPES.register(modBus);
         modBus.addListener((net.neoforged.neoforge.registries.RegisterEvent event) -> {

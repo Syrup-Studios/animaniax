@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["www", "whw", "www"],
+  "key": {
+    "w": {"tag": "animaniax:planks"},
+    "h": {"item": "animaniax:wild_hive"}
+  },
+  "result": {"id": "animaniax:bee_hive", "count": 1}
+}
