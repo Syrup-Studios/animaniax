@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " s ",
+    "sis",
+    " s "
+  ],
+  "key": {
+    "s": { "item": "minecraft:stick" },
+    "i": { "item": "minecraft:iron_nugget" }
+  },
+  "result": {
+    "id": "animaniax:wheel",
+    "count": 1
+  }
+}

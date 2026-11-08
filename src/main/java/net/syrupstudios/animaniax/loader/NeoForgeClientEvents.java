@@ -17,6 +17,8 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.syrupstudios.animaniax.entity.DraftHorseContent;
+import net.syrupstudios.animaniax.entity.CartContent;
+import net.syrupstudios.animaniax.client.PullCartRenderer;
 import net.syrupstudios.animaniax.entity.PeafowlEntity;
 import net.syrupstudios.animaniax.entity.HamsterEntity;
 import net.syrupstudios.animaniax.entity.FerretContent;
@@ -35,6 +37,7 @@ public final class NeoForgeClientEvents {
         event.registerEntityRenderer(DogContent.TYPE, WolfRenderer::new);
         event.registerEntityRenderer(CatContent.TYPE, CatRenderer::new);
         event.registerEntityRenderer(DraftHorseContent.DRAFT_HORSE, HorseRenderer::new);
+        event.registerEntityRenderer(CartContent.CART, PullCartRenderer::new);
         event.registerEntityRenderer(PeafowlEntity.TYPE, PeafowlRenderer::new);
         event.registerEntityRenderer(HamsterEntity.TYPE, HamsterRenderer::new);
         event.registerEntityRenderer(FerretContent.GREY, FerretRenderer::new);

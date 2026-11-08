@@ -16,6 +16,8 @@ import net.syrupstudios.animaniax.client.PeafowlRenderer;
 import net.syrupstudios.animaniax.client.HamsterRenderer;
 import net.syrupstudios.animaniax.client.FerretRenderer;
 import net.syrupstudios.animaniax.entity.DraftHorseContent;
+import net.syrupstudios.animaniax.entity.CartContent;
+import net.syrupstudios.animaniax.client.PullCartRenderer;
 import net.syrupstudios.animaniax.entity.PeafowlEntity;
 import net.syrupstudios.animaniax.entity.HamsterEntity;
 import net.syrupstudios.animaniax.entity.FerretContent;
@@ -48,6 +50,7 @@ public final class FabricClientEntrypoint implements ClientModInitializer {
         EntityRendererRegistry.register(DogContent.TYPE, WolfRenderer::new);
         EntityRendererRegistry.register(CatContent.TYPE, CatRenderer::new);
         EntityRendererRegistry.register(DraftHorseContent.DRAFT_HORSE, HorseRenderer::new);
+        EntityRendererRegistry.register(CartContent.CART, PullCartRenderer::new);
         EntityRendererRegistry.register(PeafowlEntity.TYPE, PeafowlRenderer::new);
         EntityRendererRegistry.register(HamsterEntity.TYPE, HamsterRenderer::new);
         EntityRendererRegistry.register(FerretContent.GREY, FerretRenderer::new);

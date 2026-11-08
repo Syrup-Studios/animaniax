@@ -20,6 +20,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.storage.LevelResource;
 import net.syrupstudios.animaniax.config.AnimalCareConfig;
 import net.syrupstudios.animaniax.entity.DraftHorseContent;
+import net.syrupstudios.animaniax.entity.CartContent;
 import net.syrupstudios.animaniax.entity.DogContent;
 import net.syrupstudios.animaniax.entity.DogEntity;
 import net.syrupstudios.animaniax.entity.CatContent;
@@ -146,6 +147,9 @@ public final class NeoForgeEntrypoint {
         registerMilkFluid("sheep");
         FLUIDS.register(modBus);
         FEATURES.register("wild_hive", () -> BeeHiveFeature.INSTANCE);
+        ENTITY_TYPES.register("cart", () -> CartContent.CART);
+        ITEMS.register("cart", () -> CartContent.CART_ITEM);
+        ITEMS.register("wheel", () -> CartContent.WHEEL);
         ENTITY_TYPES.register("draft_horse", () -> DraftHorseContent.DRAFT_HORSE);
         ITEMS.register("draft_horse_spawn_egg", () -> DraftHorseContent.DRAFT_HORSE_SPAWN_EGG);
         ENTITY_TYPES.register("peafowl", () -> PeafowlEntity.TYPE);
