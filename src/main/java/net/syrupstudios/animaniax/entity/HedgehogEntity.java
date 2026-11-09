@@ -101,6 +101,13 @@ public final class HedgehogEntity extends TamableAnimal {
         if (sleeping && (isFood(stack)
                 || net.syrupstudios.animaniax.item.WaterContainerTransfer.isWaterContainer(player, hand)))
             return InteractionResult.sidedSuccess(level().isClientSide);
+        if (isTame() && isOwnedBy(player) && player.isShiftKeyDown() && stack.isEmpty()) {
+            if (!level().isClientSide) {
+                if (!ShoulderCarryState.set(player, this)) return InteractionResult.PASS;
+                discard();
+            }
+            return InteractionResult.sidedSuccess(level().isClientSide);
+        }
         boolean waterContainer = !sleeping && (level().isClientSide
                 ? net.syrupstudios.animaniax.item.WaterContainerTransfer.isWaterContainer(player, hand)
                 : net.syrupstudios.animaniax.item.WaterContainerTransfer.water(player, hand));

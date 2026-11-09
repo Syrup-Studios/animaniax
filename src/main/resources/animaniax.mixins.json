@@ -4,7 +4,9 @@
   "package": "net.syrupstudios.animaniax.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "ShoulderPlayerMixin",
     "AnimalFeedAdvancementMixin",
+    "ShoulderEntityMixin",
     "MobCareMixin",
     "SheepSparringMixin",
     "GoatSparringMixin",
@@ -44,6 +46,8 @@
   ],
   "client": [
     "FaintingGoatPoseMixin",
+    "ShoulderRenderMixin",
+    "FirstPersonShoulderRenderMixin",
     "GoatRendererMixin"
   ],
   "injectors": {

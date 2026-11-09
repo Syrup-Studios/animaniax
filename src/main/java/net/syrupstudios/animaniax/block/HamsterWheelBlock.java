@@ -27,6 +27,11 @@ public final class HamsterWheelBlock extends Block implements EntityBlock {
     @Override public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) { return level.getBlockEntity(pos) instanceof HamsterWheelBlockEntity wheel && wheel.occupied() ? 15 : 0; }
     @Override protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
         if (!(level.getBlockEntity(pos) instanceof HamsterWheelBlockEntity wheel)) return InteractionResult.PASS;
+        if (!wheel.occupied() && net.syrupstudios.animaniax.entity.ShoulderCarryState.visualType(player)
+                .equals(HamsterEntity.id("hamster").toString())) {
+            if (!level.isClientSide) net.syrupstudios.animaniax.entity.ShoulderCarryState.insertHamster(player, wheel);
+            return InteractionResult.sidedSuccess(level.isClientSide);
+        }
         if (!wheel.occupied()) return InteractionResult.PASS;
         if (!level.isClientSide) giveOrDrop(player, wheel.ejectHamster());
         return InteractionResult.sidedSuccess(level.isClientSide);
@@ -36,6 +41,11 @@ public final class HamsterWheelBlock extends Block implements EntityBlock {
         if (stack.is(HamsterFoodContent.HAMSTER_FOOD) && wheel.getItem(0).getCount() < 16) {
             if (!level.isClientSide) { int add = Math.min(stack.getCount(), 16 - wheel.getItem(0).getCount()); wheel.setItem(0, wheel.getItem(0).isEmpty() ? stack.copyWithCount(add) : wheel.getItem(0).copyWithCount(wheel.getItem(0).getCount() + add)); if (!player.getAbilities().instabuild) stack.shrink(add); }
             return ItemInteractionResult.SUCCESS;
+        }
+        if (!wheel.occupied() && net.syrupstudios.animaniax.entity.ShoulderCarryState.visualType(player)
+                .equals(HamsterEntity.id("hamster").toString())) {
+            if (!level.isClientSide) net.syrupstudios.animaniax.entity.ShoulderCarryState.insertHamster(player, wheel);
+            return ItemInteractionResult.sidedSuccess(level.isClientSide);
         }
         var data = HamsterCarryItem.getData(stack);
         if (data == null || wheel.occupied()) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;

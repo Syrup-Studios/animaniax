@@ -217,6 +217,9 @@ public final class FabricEntrypoint implements ModInitializer {
             TroughContent.registerWaterBucketBehavior();
             SeedPileContent.registerDispenserBehaviors();
         });
+        net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents.COPY_FROM.register((oldPlayer, newPlayer, alive) ->
+                net.syrupstudios.animaniax.entity.ShoulderCarryState.copy(oldPlayer, newPlayer));
+        FabricShoulderEvents.register();
         LOGGER.info("Animaniax initialized on Fabric");
     }
 }

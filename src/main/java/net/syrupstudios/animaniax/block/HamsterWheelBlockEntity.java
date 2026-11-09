@@ -17,6 +17,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.syrupstudios.animaniax.config.AnimalCareConfig;
 import net.syrupstudios.animaniax.entity.HamsterEntity;
+import net.syrupstudios.animaniax.entity.ShoulderCarryState;
 import net.syrupstudios.animaniax.item.HamsterCarryContent;
 import net.syrupstudios.animaniax.item.HamsterCarryItem;
 import net.syrupstudios.animaniax.item.HamsterFoodContent;
@@ -127,9 +128,11 @@ public final class HamsterWheelBlockEntity extends BlockEntity implements Worldl
         if (hamster == null) return false;
         CompoundTag spawnData = hamster.copy();
         spawnData.putInt("StoredFood", 0);
-        HamsterEntity pet = HamsterEntity.TYPE.create(level);
-        if (pet == null) return false;
-        pet.load(spawnData);
+        Entity entity = ShoulderCarryState.create(level, spawnData);
+        if (!(entity instanceof HamsterEntity pet)) {
+            if (entity != null) entity.discard();
+            return false;
+        }
         for (Direction direction : Direction.values()) {
             BlockPos spawnPos = pos.relative(direction);
             BlockPos floorPos = spawnPos.below();
