@@ -35,6 +35,7 @@
     "CowSpawnPlacementMixin",
     "NaturalSpawnCapMixin",
     "SeedPilePlacementMixin",
+    "WagonSleepMixin",
     "HoneyBottlePickupMixin",
     "PepeFrogBrainMixin",
     "AmphibianTemptationSensorMixin",

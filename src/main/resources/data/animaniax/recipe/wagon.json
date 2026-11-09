@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "oop",
+    "bpc",
+    "xax"
+  ],
+  "key": {
+    "o": { "tag": "minecraft:wool" },
+    "p": { "tag": "minecraft:planks" },
+    "b": { "item": "minecraft:white_bed" },
+    "c": { "item": "minecraft:chest" },
+    "a": { "item": "animaniax:cart" },
+    "x": { "item": "animaniax:wheel" }
+  },
+  "result": {
+    "id": "animaniax:wagon",
+    "count": 1
+  }
+}

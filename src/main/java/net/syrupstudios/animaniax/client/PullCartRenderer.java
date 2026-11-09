@@ -6,8 +6,10 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Brightness;
 import net.minecraft.world.level.block.Blocks;
 import net.syrupstudios.animaniax.entity.PullCartEntity;
+import net.syrupstudios.animaniax.entity.WagonEntity;
 
 public final class PullCartRenderer extends EntityRenderer<PullCartEntity> {
     private final BlockRenderDispatcher blocks;
@@ -17,6 +19,7 @@ public final class PullCartRenderer extends EntityRenderer<PullCartEntity> {
     @Override
     public void render(PullCartEntity cart, float yaw, float partialTick, PoseStack poseStack,
                        MultiBufferSource buffers, int light) {
+        light = wagonLight(cart, light);
         poseStack.pushPose();
         poseStack.translate(-0.5, 0.15, -0.5);
         renderBlock(Blocks.OAK_PLANKS.defaultBlockState(), poseStack, buffers, light, 1.0F, 0.18F, 0.9F);
@@ -27,6 +30,15 @@ public final class PullCartRenderer extends EntityRenderer<PullCartEntity> {
         if (cart.hasChest()) renderBlock(Blocks.CHEST.defaultBlockState(), poseStack, buffers, light, 0.62F, 0.55F, 0.62F, 0.19F, 0.16F, 0.16F);
         poseStack.popPose();
         super.render(cart, yaw, partialTick, poseStack, buffers, light);
+    }
+
+    private int wagonLight(PullCartEntity cart, int packedLight) {
+        if (!(cart instanceof WagonEntity wagon)) return packedLight;
+        Brightness brightness = Brightness.unpack(packedLight);
+        if (wagon.getSleepLightTicks() > 0) return new Brightness(1, 0).pack();
+        if (cart.level().getDayTime() % 24000 < 13000) return packedLight;
+        int flicker = (int) ((cart.level().getDayTime() + cart.getId()) % 3);
+        return new Brightness(Math.min(15, brightness.block() + flicker), brightness.sky()).pack();
     }
 
     private void renderBlock(net.minecraft.world.level.block.state.BlockState state, PoseStack poseStack,

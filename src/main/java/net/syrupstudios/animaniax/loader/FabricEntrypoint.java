@@ -58,6 +58,8 @@ import net.syrupstudios.animaniax.item.HedgehogCarryContent;
 import net.syrupstudios.animaniax.item.HamsterBallContent;
 import net.syrupstudios.animaniax.entity.DraftHorseContent;
 import net.syrupstudios.animaniax.entity.CartContent;
+import net.syrupstudios.animaniax.entity.WagonContent;
+import net.syrupstudios.animaniax.entity.TillerContent;
 import net.syrupstudios.animaniax.entity.DogContent;
 import net.syrupstudios.animaniax.entity.CatContent;
 import net.syrupstudios.animaniax.entity.PeafowlEntity;
@@ -133,6 +135,8 @@ public final class FabricEntrypoint implements ModInitializer {
         HamsterBallContent.registerFabric();
         DraftHorseContent.registerFabric();
         CartContent.registerFabric();
+        WagonContent.registerFabric();
+        TillerContent.registerFabric();
         PeafowlEntity.registerFabric();
         HamsterEntity.registerFabric();
         FerretContent.registerFabric();
