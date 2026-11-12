@@ -1,0 +1,39 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_slop_food": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          { "items": "#animaniax:pig_slop_foods" }
+        ]
+      }
+    },
+    "has_milk_bucket": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          { "items": "#animaniax:milk_buckets" }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "animaniax:slop_bucket"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_slop_food",
+      "has_milk_bucket"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "animaniax:slop_bucket"
+    ]
+  }
+}

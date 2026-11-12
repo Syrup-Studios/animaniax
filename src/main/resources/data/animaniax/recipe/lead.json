@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "tag": "c:leathers" },
+    { "tag": "c:leathers" },
+    { "tag": "c:strings" },
+    { "tag": "c:strings" }
+  ],
+  "result": {
+    "id": "minecraft:lead",
+    "count": 1
+  }
+}

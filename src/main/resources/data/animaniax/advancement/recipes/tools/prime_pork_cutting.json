@@ -1,0 +1,39 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_carving_knife": {
+      "conditions": {
+        "items": [
+          { "items": "animaniax:carving_knife" }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_raw_prime_pork": {
+      "conditions": {
+        "items": [
+          { "items": "animaniax:raw_prime_pork" }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "animaniax:prime_pork_cutting"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_carving_knife",
+      "has_raw_prime_pork"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "animaniax:prime_pork_cutting"
+    ]
+  }
+}
