@@ -224,6 +224,7 @@ public final class NeoForgeEntrypoint {
         ITEMS.register("sheep_cheese", () -> CheeseMoldContent.SHEEP_CHEESE);
         ITEMS.register("salt", () -> CheeseMoldContent.SALT);
         ITEMS.register("slop_bucket", () -> SlopContent.SLOP_BUCKET);
+        ITEMS.register("manual", () -> net.syrupstudios.animaniax.item.ManualContent.MANUAL);
         ITEMS.register("sheep_milk_bucket", () -> AnimalMilkContent.SHEEP_MILK_BUCKET);
         ITEMS.register("goat_milk_bucket", () -> AnimalMilkContent.GOAT_MILK_BUCKET);
         ITEMS.register("friesian_milk_bucket", () -> AnimalMilkContent.FRIESIAN_MILK_BUCKET);

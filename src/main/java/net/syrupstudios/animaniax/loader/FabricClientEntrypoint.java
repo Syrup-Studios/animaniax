@@ -27,13 +27,26 @@ import net.syrupstudios.animaniax.entity.FerretContent;
 import net.syrupstudios.animaniax.entity.HedgehogContent;
 import net.syrupstudios.animaniax.client.HedgehogRenderer;
 import net.syrupstudios.animaniax.entity.FrogContent;
+import net.fabricmc.fabric.api.event.player.UseItemCallback;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.client.Minecraft;
+import net.syrupstudios.animaniax.item.ManualContent;
 import net.syrupstudios.animaniax.item.AnimalSpawnEggContent;
 import net.syrupstudios.animaniax.item.AnimalSpawnEggItem;
+import net.syrupstudios.animaniax.client.ManualScreen;
 
 public final class FabricClientEntrypoint implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         ColorProviderRegistry.ITEM.register(AnimalSpawnEggItem::color, AnimalSpawnEggContent.ITEM);
+        UseItemCallback.EVENT.register((player, world, hand) -> {
+            var stack = player.getItemInHand(hand);
+            if (stack.is(ManualContent.MANUAL)) {
+                if (world.isClientSide) Minecraft.getInstance().setScreen(new ManualScreen());
+                return InteractionResultHolder.sidedSuccess(stack, world.isClientSide);
+            }
+            return InteractionResultHolder.pass(stack);
+        });
         FluidRenderHandlerRegistry.INSTANCE.register(net.syrupstudios.animaniax.block.BeeHiveContent.HONEY_SOURCE,
                 net.syrupstudios.animaniax.block.BeeHiveContent.HONEY_FLOWING,
                 new SimpleFluidRenderHandler(net.minecraft.resources.ResourceLocation.withDefaultNamespace("block/water_still"),

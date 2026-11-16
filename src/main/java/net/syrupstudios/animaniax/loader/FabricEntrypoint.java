@@ -120,6 +120,7 @@ public final class FabricEntrypoint implements ModInitializer {
         AnimalSpawnEggContent.registerFabric();
         SheepWoolContent.registerFabric();
         SlopContent.registerFabric();
+        net.syrupstudios.animaniax.item.ManualContent.registerFabric();
         CheeseWedgeContent.registerFabric();
         RidingCropContent.registerFabric();
         PeafowlContent.registerFabric();
