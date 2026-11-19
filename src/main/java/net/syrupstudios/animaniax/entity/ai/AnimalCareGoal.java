@@ -16,6 +16,10 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.tags.BiomeTags;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.level.block.Block;
 import net.syrupstudios.animaniax.block.MudBlock;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.syrupstudios.animaniax.entity.AnimalCareState;
@@ -32,6 +36,8 @@ import net.syrupstudios.animaniax.block.SeedPileContent;
 import net.syrupstudios.animaniax.item.TruffleContent;
 
 public final class AnimalCareGoal extends Goal {
+    private static final TagKey<Block> FORAGE_PLANTS = TagKey.create(Registries.BLOCK,
+            ResourceLocation.fromNamespaceAndPath("animaniax", "forage_plants"));
     public enum Need { WATER, GRASS, SEEDS, MUD, TRUFFLE, PET_BOWL_FOOD }
 
     private final Mob mob;
@@ -311,9 +317,22 @@ public final class AnimalCareGoal extends Goal {
             for (int dx = -6; dx <= 6; dx++) {
                 for (int dz = -6; dz <= 6; dz++) {
                     BlockPos plant = origin.offset(dx, dy, dz);
-                    if (!mob.level().hasChunkAt(plant) || !animaniax$isGrazeableGrass(plant)) continue;
-                    BlockPos approach = mob.level().getBlockState(plant).is(Blocks.GRASS_BLOCK) ? plant.above() : plant;
-                    if (!mob.level().getBlockState(approach).getCollisionShape(mob.level(), approach).isEmpty()
+                    if (!mob.level().hasChunkAt(plant)) continue;
+                    boolean grass = animaniax$isGrazeableGrass(plant);
+                    if (!grass && !mob.level().getBlockState(plant).is(FORAGE_PLANTS)) continue;
+                    BlockPos approach = grass && mob.level().getBlockState(plant).is(Blocks.GRASS_BLOCK) ? plant.above() : plant;
+                    if (!grass) {
+                        approach = null;
+                        for (Direction direction : Direction.Plane.HORIZONTAL) {
+                            BlockPos candidate = plant.relative(direction);
+                            if (mob.level().hasChunkAt(candidate) && mob.level().hasChunkAt(candidate.below())
+                                    && mob.level().getBlockState(candidate).isAir()
+                                    && mob.level().getBlockState(candidate.below()).isFaceSturdy(mob.level(), candidate.below(), Direction.UP)
+                                    && (approach == null || mob.distanceToSqr(candidate.getX() + 0.5, candidate.getY(), candidate.getZ() + 0.5)
+                                            < mob.distanceToSqr(approach.getX() + 0.5, approach.getY(), approach.getZ() + 0.5))) approach = candidate;
+                        }
+                        if (approach == null) continue;
+                    } else if (!mob.level().getBlockState(approach).getCollisionShape(mob.level(), approach).isEmpty()
                             || !mob.level().getBlockState(approach.below()).isFaceSturdy(mob.level(), approach.below(), Direction.UP)) continue;
                     double distance = mob.distanceToSqr(approach.getX() + 0.5, approach.getY(), approach.getZ() + 0.5);
                     if (distance < nearestDistance) {
@@ -418,7 +437,7 @@ public final class AnimalCareGoal extends Goal {
         if (mob.level().getBlockState(plant).is(TroughContent.TROUGH)) {
             return TroughBlock.consumeFeed(mob.level(), plant, mob.getType());
         }
-        if (!animaniax$isGrazeableGrass(plant)) return false;
+        if (!animaniax$isGrazeableGrass(plant) && !mob.level().getBlockState(plant).is(FORAGE_PLANTS)) return false;
         if (AnimalCareConfig.plantsRemovedAfterEating) {
             if (mob.level().getBlockState(plant).is(Blocks.GRASS_BLOCK)) {
                 mob.level().setBlockAndUpdate(plant, Blocks.DIRT.defaultBlockState());

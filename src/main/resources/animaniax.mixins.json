@@ -18,6 +18,8 @@
     "MobGoalSelectorAccessor",
     "KillerRabbitMixin",
     "CowBreedMixin",
+    "CowFlowerBreedingMixin",
+    "SheepFlowerBreedingMixin",
     "CowNaturalBreedMixin",
     "GoatBreedMixin",
     "GoatBreedDataMixin",

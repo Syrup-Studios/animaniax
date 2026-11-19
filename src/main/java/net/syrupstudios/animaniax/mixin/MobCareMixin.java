@@ -9,6 +9,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.GoalSelector;
+import net.minecraft.world.entity.ai.goal.TemptGoal;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -21,6 +22,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.syrupstudios.animaniax.entity.ai.AnimalCareGoal;
 import net.syrupstudios.animaniax.block.MudBlock;
 import net.syrupstudios.animaniax.entity.ai.AnimalCourtshipGoal;
@@ -158,6 +160,9 @@ abstract class MobCareMixin implements AnimalCareState, AnimalSleepState, PigBre
         if (mob instanceof Animal animal && animaniax$isReproductiveAnimal(mob)
                 && !AnimalProfile.has(mob.getType(), Capability.POULTRY_REPRODUCTION))
             goalSelector.addGoal(5, new AnimalCourtshipGoal(animal));
+        if (mob instanceof Animal animal && AnimalProfile.has(mob.getType(), Capability.FLOWER_BREEDING))
+            goalSelector.addGoal(3, new TemptGoal(animal, 1.25D,
+                    Ingredient.of(AnimalProfile.FLOWER_BREEDING_FOODS), false));
         animaniax$hungerLimit = AnimalCareConfig.feedTimer + mob.getRandom().nextInt(100);
         animaniax$thirstLimit = AnimalCareConfig.waterTimer + mob.getRandom().nextInt(100);
         goalSelector.addGoal(6, new SaltLickGoal(mob));

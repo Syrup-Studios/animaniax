@@ -106,9 +106,9 @@ public final class AnimalProfile {
                 (entity, breed) -> ((SheepBreedState) entity).animaniax$setSheepBreed(breed));
 
         private static final Map<EntityType<?>, Profile> BY_TYPE = Map.ofEntries(
-                Map.entry(EntityType.COW, sleepProfile(caps(Capability.CARE, Capability.SLEEP, Capability.GROWTH, Capability.REPRODUCTIVE_INTERACTIONS, Capability.GESTATION, Capability.MILKABLE_AT_SPAWN, Capability.SALT_LICK_GOAL, Capability.GRASS_GOAL, Capability.NATURAL_GRAZING_GOAL, Capability.REMOVE_NATURAL_WATER), () -> troughDiet(Items.WHEAT), Profiles.stringBreed(EntityType.COW, Profiles.COW_BREED), Profiles::farmSleepBeds)),
-                Map.entry(EntityType.MOOSHROOM, sleepProfile(caps(Capability.CARE, Capability.SLEEP, Capability.GROWTH, Capability.REPRODUCTIVE_INTERACTIONS, Capability.GESTATION, Capability.MILKABLE_AT_SPAWN, Capability.SALT_LICK_GOAL, Capability.GRASS_GOAL, Capability.NATURAL_GRAZING_GOAL, Capability.REMOVE_NATURAL_WATER), () -> troughDiet(Items.WHEAT), null, Profiles::farmSleepBeds)),
-                Map.entry(EntityType.SHEEP, sleepProfile(caps(Capability.CARE, Capability.SLEEP, Capability.GROWTH, Capability.REPRODUCTIVE_INTERACTIONS, Capability.GESTATION, Capability.SALT_LICK_GOAL, Capability.GRASS_GOAL, Capability.HERDING_GOAL, Capability.NATURAL_GRAZING_GOAL, Capability.REMOVE_NATURAL_WATER), () -> troughDiet(Items.WHEAT), Profiles.stringBreed(EntityType.SHEEP, Profiles.SHEEP_BREED), Profiles::farmSleepBeds)),
+                Map.entry(EntityType.COW, sleepProfile(caps(Capability.CARE, Capability.SLEEP, Capability.GROWTH, Capability.REPRODUCTIVE_INTERACTIONS, Capability.GESTATION, Capability.MILKABLE_AT_SPAWN, Capability.SALT_LICK_GOAL, Capability.GRASS_GOAL, Capability.NATURAL_GRAZING_GOAL, Capability.FLOWER_BREEDING, Capability.REMOVE_NATURAL_WATER), () -> troughDiet(Items.WHEAT), Profiles.stringBreed(EntityType.COW, Profiles.COW_BREED), Profiles::farmSleepBeds)),
+                Map.entry(EntityType.MOOSHROOM, sleepProfile(caps(Capability.CARE, Capability.SLEEP, Capability.GROWTH, Capability.REPRODUCTIVE_INTERACTIONS, Capability.GESTATION, Capability.MILKABLE_AT_SPAWN, Capability.SALT_LICK_GOAL, Capability.GRASS_GOAL, Capability.NATURAL_GRAZING_GOAL, Capability.FLOWER_BREEDING, Capability.REMOVE_NATURAL_WATER), () -> troughDiet(Items.WHEAT), null, Profiles::farmSleepBeds)),
+                Map.entry(EntityType.SHEEP, sleepProfile(caps(Capability.CARE, Capability.SLEEP, Capability.GROWTH, Capability.REPRODUCTIVE_INTERACTIONS, Capability.GESTATION, Capability.FLOWER_BREEDING, Capability.SALT_LICK_GOAL, Capability.GRASS_GOAL, Capability.HERDING_GOAL, Capability.NATURAL_GRAZING_GOAL, Capability.REMOVE_NATURAL_WATER), () -> troughDiet(Items.WHEAT), Profiles.stringBreed(EntityType.SHEEP, Profiles.SHEEP_BREED), Profiles::farmSleepBeds)),
                 Map.entry(EntityType.PIG, sleepProfile(caps(Capability.CARE, Capability.SLEEP, Capability.GROWTH, Capability.REPRODUCTIVE_INTERACTIONS, Capability.GESTATION, Capability.SALT_LICK_GOAL, Capability.GRASS_GOAL, Capability.PIG_ENRICHMENT_GOALS, Capability.NATURAL_GRAZING_GOAL, Capability.TROUGH_SLOP, Capability.REMOVE_NATURAL_WATER), () -> troughDiet(Items.CARROT, Items.POTATO, Items.POISONOUS_POTATO, Items.BEETROOT, Items.BREAD), Profiles.stringBreed(EntityType.PIG, Profiles.PIG_BREED), Profiles::farmSleepBeds)),
                 Map.entry(EntityType.CHICKEN, sleepProfile(caps(Capability.CARE, Capability.SLEEP, Capability.GROWTH, Capability.REPRODUCTIVE_INTERACTIONS, Capability.POULTRY_REPRODUCTION, Capability.SEED_GOAL, Capability.NESTING_GOAL), () -> troughDiet(50), Profiles::inheritChickenBreed, Profiles::farmSleepBeds)),
                 Map.entry(PeafowlEntity.TYPE, profile(caps(Capability.CARE, Capability.GROWTH, Capability.REPRODUCTIVE_INTERACTIONS, Capability.POULTRY_REPRODUCTION, Capability.SEED_GOAL, Capability.NESTING_GOAL), () -> troughDiet(50), Profiles::inheritPeafowlMorph)),
@@ -219,7 +219,7 @@ public final class AnimalProfile {
     }
 
     public static boolean acceptsFlowerBreedingFood(EntityType<?> type, ItemStack stack) {
-        return false;
+        return has(type, Capability.FLOWER_BREEDING) && !stack.isEmpty() && stack.is(FLOWER_BREEDING_FOODS);
     }
 
     public static boolean acceptsCowOrGoatFood(EntityType<?> type, ItemStack stack) {
