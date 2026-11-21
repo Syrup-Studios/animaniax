@@ -41,6 +41,7 @@
     "SeedPilePlacementMixin",
     "WagonSleepMixin",
     "HoneyBottlePickupMixin",
+    "EggThrowConfigMixin",
     "PepeFrogBrainMixin",
     "AmphibianTemptationSensorMixin",
     "AmphibianPreyHuntingMixin",

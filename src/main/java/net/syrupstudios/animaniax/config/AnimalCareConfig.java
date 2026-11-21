@@ -64,6 +64,7 @@ public final class AnimalCareConfig {
     public static int hamsterWheelCapacity = 200_000;
     public static int hamsterWheelRFGeneration = 20;
     public static int hamsterWheelUseTime = 2_000;
+    public static boolean allowEggThrowing = false;
     public static boolean chickensDropEggs = false;
     public static boolean birdsDropFeathers = true;
     public static int featherTimer = 12_000;
@@ -162,6 +163,7 @@ public final class AnimalCareConfig {
                         + "hamsterWheelRFGeneration=20\n"
                         + "# Ticks that a hamster stays in the wheel before it needs more food.\n"
                         + "hamsterWheelUseTime=2000\n"
+                        + "allowEggThrowing=false\n"
                         + "# Chickens can drop eggs without using a nest.\n"
                         + "chickensDropEggs=false\n"
                         + "# Birds shed feathers over time.\n"
@@ -232,6 +234,7 @@ public final class AnimalCareConfig {
             hamsterWheelCapacity = readTicks(properties, "hamsterWheelCapacity", 200_000);
             hamsterWheelRFGeneration = readNonNegativeInt(properties, "hamsterWheelRFGeneration", 20);
             hamsterWheelUseTime = readTicks(properties, "hamsterWheelUseTime", 2_000);
+            allowEggThrowing = readBoolean(properties, "allowEggThrowing", false);
             chickensDropEggs = readBoolean(properties, "chickensDropEggs", false);
             birdsDropFeathers = readBoolean(properties, "birdsDropFeathers", true);
             featherTimer = readFeatherTimer(properties, "featherTimer", 12_000);
@@ -294,6 +297,7 @@ public final class AnimalCareConfig {
             hamsterWheelCapacity = 200_000;
             hamsterWheelRFGeneration = 20;
             hamsterWheelUseTime = 2_000;
+            allowEggThrowing = false;
             chickensDropEggs = false;
             birdsDropFeathers = true;
             featherTimer = 12_000;
