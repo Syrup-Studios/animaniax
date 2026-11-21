@@ -6,7 +6,9 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.animal.Chicken;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -25,25 +27,65 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.syrupstudios.animaniax.config.AnimalCareConfig;
 import org.jetbrains.annotations.Nullable;
 
 public final class PeafowlEntity extends Chicken implements PeafowlMorphState {
+    private static final EntityDataAccessor<Boolean> DATA_HEN = SynchedEntityData.defineId(
+            PeafowlEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<String> DATA_MORPH = SynchedEntityData.defineId(
+            PeafowlEntity.class, EntityDataSerializers.STRING);
     public static final List<String> MORPHS = List.of("Blue", "White", "Taupe", "Purple", "Peach", "Opal", "Charcoal");
     public static final EntityType<PeafowlEntity> TYPE = EntityType.Builder.of(PeafowlEntity::new, MobCategory.CREATURE)
             .sized(0.4F, 0.7F).clientTrackingRange(8).build("animaniax:peafowl");
     public static final Item SPAWN_EGG = new SpawnEggItem(TYPE, 0x315B9A, 0xD5C6A5, new Item.Properties());
-    private String morph = MORPHS.get(0);
+    private boolean animaniax$lastBabyState;
 
     public PeafowlEntity(EntityType<? extends Chicken> type, Level level) {
         super(type, level);
-        morph = MORPHS.get(getRandom().nextInt(MORPHS.size()));
+        animaniax$lastBabyState = isBaby();
+        if (!level.isClientSide) animaniax$setMorph(MORPHS.get(getRandom().nextInt(MORPHS.size())));
     }
+
+    @Override protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(DATA_HEN, false);
+        builder.define(DATA_MORPH, MORPHS.get(0));
+    }
+
+    @Override public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
+        super.onSyncedDataUpdated(key);
+        boolean baby = isBaby();
+        if (key == DATA_HEN || baby != animaniax$lastBabyState) refreshDimensions();
+        animaniax$lastBabyState = baby;
+    }
+
+    @Override public void setAge(int age) {
+        boolean wasBaby = isBaby();
+        super.setAge(age);
+        animaniax$lastBabyState = isBaby();
+        if (wasBaby != animaniax$lastBabyState) refreshDimensions();
+    }
+
+    @Override public EntityDimensions getDefaultDimensions(Pose pose) {
+        if (isBaby()) return super.getDefaultDimensions(pose);
+        return EntityDimensions.scalable(animaniax$isSyncedHen() ? 0.6F : 0.8F,
+                animaniax$isSyncedHen() ? 1.2F : 1.6F);
+    }
+
+    public boolean animaniax$isSyncedHen() { return entityData.get(DATA_HEN); }
+    public void animaniax$setSyncedHen(boolean hen) { entityData.set(DATA_HEN, hen); }
 
     @Override public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty,
             MobSpawnType reason, @Nullable SpawnGroupData groupData) {
         SpawnGroupData result = super.finalizeSpawn(level, difficulty, reason, groupData);
-        if (reason != MobSpawnType.NATURAL && reason != MobSpawnType.CHUNK_GENERATION) return result;
+        if (reason != MobSpawnType.NATURAL && reason != MobSpawnType.CHUNK_GENERATION) {
+            ((ChickenSexState) (Object) this).animaniax$isHen();
+            return result;
+        }
 
         PeafowlSpawnGroupData data;
         if (result instanceof PeafowlSpawnGroupData peafowlData) {
@@ -56,6 +98,7 @@ public final class PeafowlEntity extends Chicken implements PeafowlMorphState {
         animaniax$setMorph(data.morph);
         setBaby(data.chick);
         if (!data.chick) ((ChickenSexState) (Object) this).animaniax$setHen(data.hen);
+        ((ChickenSexState) (Object) this).animaniax$isHen();
         return result;
     }
 
@@ -94,12 +137,14 @@ public final class PeafowlEntity extends Chicken implements PeafowlMorphState {
         return hit;
     }
 
-    @Override public String animaniax$getMorph() { return morph; }
-    @Override public void animaniax$setMorph(String value) { if (MORPHS.contains(value)) morph = value; }
+    @Override public String animaniax$getMorph() { return entityData.get(DATA_MORPH); }
+    @Override public void animaniax$setMorph(String value) {
+        if (MORPHS.contains(value)) entityData.set(DATA_MORPH, value);
+    }
 
     @Override public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        tag.putString("AnimaniaxPeafowlMorph", morph);
+        tag.putString("AnimaniaxPeafowlMorph", animaniax$getMorph());
     }
 
     @Override public void readAdditionalSaveData(CompoundTag tag) {

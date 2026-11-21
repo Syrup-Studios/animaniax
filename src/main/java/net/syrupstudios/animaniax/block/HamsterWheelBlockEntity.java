@@ -52,7 +52,7 @@ public final class HamsterWheelBlockEntity extends BlockEntity implements Worldl
     private static boolean validHamster(CompoundTag data) {
         return HamsterEntity.id("hamster").toString().equals(data.getString("id"))
                 && data.hasUUID("UUID") && data.hasUUID("Owner")
-                && !data.getBoolean("InBall") && data.getInt("StoredFood") > 0;
+                && !data.getBoolean("InBall") && data.getInt("FedTicks") > 0;
     }
     public ItemStack ejectHamster() {
         if (hamster == null) return ItemStack.EMPTY;

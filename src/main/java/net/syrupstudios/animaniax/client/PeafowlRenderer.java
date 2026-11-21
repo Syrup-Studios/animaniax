@@ -68,7 +68,7 @@ public final class PeafowlRenderer extends MobRenderer<PeafowlEntity, ChickenMod
         public void render(PoseStack pose, net.minecraft.client.renderer.MultiBufferSource buffers, int light,
                 PeafowlEntity peafowl, float limbSwing, float limbSwingAmount, float partialTick,
                 float ageInTicks, float netHeadYaw, float headPitch) {
-            if (peafowl.isInvisible() || peafowl.isBaby() || ((net.syrupstudios.animaniax.entity.ChickenSexState) (Object) peafowl).animaniax$isHen()) return;
+            if (peafowl.isInvisible() || peafowl.isBaby() || peafowl.animaniax$isSyncedHen()) return;
             boolean sleeping = ((AnimalSleepState) (Object) peafowl).animaniax$isSleeping();
             pose.pushPose();
             VertexConsumer consumer = buffers.getBuffer(net.minecraft.client.renderer.RenderType.entityCutoutNoCull(FAN_TEXTURE));

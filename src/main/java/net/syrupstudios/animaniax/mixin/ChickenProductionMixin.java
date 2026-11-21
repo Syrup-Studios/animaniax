@@ -16,6 +16,7 @@ import net.syrupstudios.animaniax.entity.ChickenFlockSpawner;
 import net.syrupstudios.animaniax.entity.ChickenFlockState;
 import net.syrupstudios.animaniax.config.AnimalCareConfig;
 import net.syrupstudios.animaniax.entity.PeafowlMorphState;
+import net.syrupstudios.animaniax.entity.PeafowlEntity;
 import net.syrupstudios.animaniax.item.PeafowlContent;
 import net.syrupstudios.animaniax.item.BrownEggContent;
 import org.spongepowered.asm.mixin.Mixin;
@@ -43,6 +44,9 @@ abstract class ChickenProductionMixin implements ChickenSexState, ChickenBreedSt
     @Inject(method = "<init>", at = @At("TAIL"))
     private void animaniax$setInitialEggTimer(EntityType<? extends Chicken> type, Level level, CallbackInfo ci) {
         if (type == EntityType.CHICKEN) eggTime = 6000;
+        Chicken chicken = (Chicken) (Object) this;
+        if (chicken instanceof PeafowlEntity && !level.isClientSide)
+            animaniax$isHen();
     }
 
     @Inject(method = "addAdditionalSaveData", at = @At("TAIL"))
@@ -71,6 +75,12 @@ abstract class ChickenProductionMixin implements ChickenSexState, ChickenBreedSt
 
     @Override public boolean animaniax$isHen() {
         Chicken chicken = (Chicken) (Object) this;
+        if (chicken instanceof PeafowlEntity peafowl) {
+            if (chicken.level().isClientSide) return peafowl.animaniax$isSyncedHen();
+            if (!animaniax$sexSet)
+                animaniax$setHen((chicken.getUUID().getLeastSignificantBits() & 1L) != 0);
+            return animaniax$hen;
+        }
         if (chicken.level().isClientSide) return false;
         if (!animaniax$sexSet) {
             animaniax$hen = (chicken.getUUID().getLeastSignificantBits() & 1L) != 0;
@@ -82,6 +92,8 @@ abstract class ChickenProductionMixin implements ChickenSexState, ChickenBreedSt
     @Override public void animaniax$setHen(boolean hen) {
         animaniax$hen = hen;
         animaniax$sexSet = true;
+        Chicken chicken = (Chicken) (Object) this;
+        if (chicken instanceof PeafowlEntity peafowl) peafowl.animaniax$setSyncedHen(hen);
     }
 
     @Override public void animaniax$setPendingFlockSpawn(boolean pending) { animaniax$pendingFlockSpawn = pending; }

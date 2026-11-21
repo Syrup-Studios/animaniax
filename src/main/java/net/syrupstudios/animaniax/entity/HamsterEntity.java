@@ -26,6 +26,7 @@ import net.minecraft.world.entity.ai.goal.FleeSunGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.PanicGoal;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.SitWhenOrderedToGoal;
 import net.minecraft.world.entity.ai.goal.TemptGoal;
@@ -86,6 +87,7 @@ public final class HamsterEntity extends TamableAnimal {
 
     @Override
     protected void registerGoals() {
+        goalSelector.addGoal(0, new PanicGoal(this, 1.4));
         goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
         goalSelector.addGoal(2, new FollowOwnerGoal(this, 1.2, 5.0F, 2.0F));
         goalSelector.addGoal(3, new FleeSunGoal(this, 1.0));
@@ -192,9 +194,11 @@ public final class HamsterEntity extends TamableAnimal {
             }
             return InteractionResult.sidedSuccess(level().isClientSide);
         }
-        if (isTame() && isOwnedBy(player) && held.isEmpty()) {
+        if (!sleeping && !player.isShiftKeyDown() && isTame() && held.isEmpty()) {
             if (!level().isClientSide) {
                 setOrderedToSit(!isOrderedToSit());
+                getNavigation().stop();
+                setJumping(false);
                 careInteracted = true;
                 player.displayClientMessage(net.minecraft.network.chat.Component.literal(
                         wateredTicks > 0 ? "Hamster is watered. Food: " + storedFood + "/5."
@@ -202,6 +206,8 @@ public final class HamsterEntity extends TamableAnimal {
             }
             return InteractionResult.sidedSuccess(level().isClientSide);
         }
+        if (isTame() && held.isEmpty() && (sleeping || player.isShiftKeyDown()))
+            return InteractionResult.sidedSuccess(level().isClientSide);
         return super.mobInteract(player, hand);
     }
 
@@ -301,7 +307,7 @@ public final class HamsterEntity extends TamableAnimal {
                     || tickCount < nextScan) return false;
             approach = bowlPos = null;
             BlockPos origin = blockPosition();
-            ProviderSearch.Candidate result = ProviderSearch.findNearest(HamsterEntity.this, origin, 16, (pos, canReach) -> {
+            ProviderSearch.Candidate result = ProviderSearch.findNearest(HamsterEntity.this, origin, AnimalCareConfig.aiBlockSearchRange, (pos, canReach) -> {
                 if (!level().getBlockState(pos).is(PetBowlContent.BLOCK)
                         || !(level().getBlockEntity(pos) instanceof PetBowlBlockEntity bowl)
                         || !bowl.canFeed(TYPE)) return null;
@@ -355,7 +361,7 @@ public final class HamsterEntity extends TamableAnimal {
             if (!careActive() || wateredTicks > 0 || isOrderedToSit() || isInBall() || tickCount < nextScan) return false;
             approach = source = null;
             BlockPos origin = blockPosition();
-            ProviderSearch.Candidate result = ProviderSearch.findNearest(HamsterEntity.this, origin, 16, (water, canReach) -> {
+            ProviderSearch.Candidate result = ProviderSearch.findNearest(HamsterEntity.this, origin, AnimalCareConfig.aiBlockSearchRange, (water, canReach) -> {
                 boolean bowl = level().getBlockState(water).is(PetBowlContent.BLOCK)
                         && level().getBlockEntity(water) instanceof PetBowlBlockEntity petBowl
                         && petBowl.getWaterAmount() >= 50;

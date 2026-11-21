@@ -45,11 +45,16 @@ public final class DraftHorseEntity extends Horse {
     @Override
     protected void randomizeAttributes(RandomSource random) {
         super.randomizeAttributes(random);
-        getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.285D);
+        getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.2D);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Horse.createBaseHorseAttributes().add(Attributes.MOVEMENT_SPEED, 0.285D);
+        return Horse.createBaseHorseAttributes().add(Attributes.MOVEMENT_SPEED, 0.2D).add(Attributes.STEP_HEIGHT, 1.2D);
+    }
+
+    @Override
+    public float maxUpStep() {
+        return isBaby() ? Math.max(0.0F, super.maxUpStep() - 0.1F) : super.maxUpStep();
     }
 
     public boolean animaniax$boost() {
