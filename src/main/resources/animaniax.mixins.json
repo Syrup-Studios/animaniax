@@ -29,6 +29,7 @@
     "PigNaturalBreedMixin",
     "SheepBreedMixin",
     "SheepNaturalBreedMixin",
+    "PigRidingMixin",
     "CowProductionMixin",
     "MooshroomShearingMixin",
     "SheepProductionMixin",
