@@ -1,0 +1,43 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_carving_knife": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "animaniax:carving_knife"
+          }
+        ]
+      }
+    },
+    "has_cheese_wheel": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "animaniax:friesian_cheese"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "animaniax:friesian_cheese_cutting"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_carving_knife",
+      "has_cheese_wheel"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "animaniax:friesian_cheese_cutting"
+    ]
+  }
+}

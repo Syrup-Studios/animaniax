@@ -1,0 +1,76 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_sheep_milk_bucket": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "animaniax:sheep_milk_bucket"
+          }
+        ]
+      }
+    },
+    "has_goat_milk_bucket": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "animaniax:goat_milk_bucket"
+          }
+        ]
+      }
+    },
+    "has_friesian_milk_bucket": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "animaniax:friesian_milk_bucket"
+          }
+        ]
+      }
+    },
+    "has_holstein_milk_bucket": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "animaniax:holstein_milk_bucket"
+          }
+        ]
+      }
+    },
+    "has_jersey_milk_bucket": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "animaniax:jersey_milk_bucket"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "animaniax:milk_conversion"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_sheep_milk_bucket",
+      "has_goat_milk_bucket",
+      "has_friesian_milk_bucket",
+      "has_holstein_milk_bucket",
+      "has_jersey_milk_bucket",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "animaniax:milk_conversion"
+    ]
+  }
+}
