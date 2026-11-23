@@ -110,7 +110,7 @@ public class DogEntity extends Wolf {
         if (sleeping && net.syrupstudios.animaniax.item.WaterContainerTransfer.isWaterContainer(player, hand))
             return InteractionResult.SUCCESS;
         if (isTame() && !isFood(held) && held.is(ItemTags.WOLF_FOOD) && getHealth() < 20.0F) {
-            FoodProperties food = held.get(DataComponents.FOOD);
+            FoodProperties food = AnimalCareConfig.foodProperties(held);
             if (food != null) {
                 if (level().isClientSide) return InteractionResult.sidedSuccess(true);
                 if (!player.getAbilities().instabuild) held.shrink(1);

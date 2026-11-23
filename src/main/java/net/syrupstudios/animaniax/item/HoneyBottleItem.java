@@ -69,6 +69,9 @@ public final class HoneyBottleItem extends Item {
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+        if (!level.isClientSide && !AnimalCareConfig.eatFoodAnytime && !player.canEat(false)) {
+            return InteractionResultHolder.fail(player.getItemInHand(hand));
+        }
         return ItemUtils.startUsingInstantly(level, player, hand);
     }
 }

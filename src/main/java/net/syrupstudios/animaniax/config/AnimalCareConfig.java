@@ -6,12 +6,23 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.Properties;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.food.FoodProperties;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.syrupstudios.animaniax.item.BonusEffectFoodItem;
+import net.syrupstudios.animaniax.item.MilkBottleItem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public final class AnimalCareConfig {
     private static final Logger LOGGER = LoggerFactory.getLogger("animaniax");
     private static final int MAX_TICKS = 2_147_483_000;
+    private static volatile Map<ResourceLocation, FoodValueOverride> foodValueOverrides = Map.of();
     public static int gestationTimer = 20_000;
     public static double birthMultipleChance = 0.1;
     public static double animalLossChance = 0.0;
@@ -47,6 +58,8 @@ public final class AnimalCareConfig {
     public static int naturalSpawnLimitHedgehogs = 40;
     public static int naturalSpawnLimitCats = 20;
     public static int naturalSpawnLimitDogs = 20;
+    public static boolean plantsRemovedAfterEating = true;
+    public static boolean waterRemovedAfterDrinking = true;
     public static boolean hiveSpawning = true;
     public static int hiveSpawningFrequency = 3;
     public static int hiveWildHoneyRate = 700;
@@ -69,12 +82,58 @@ public final class AnimalCareConfig {
     public static boolean birdsDropFeathers = true;
     public static int featherTimer = 12_000;
     public static boolean foodsGiveBonusEffects = true;
+    public static boolean eatFoodAnytime = true;
     public static boolean cowsMilkableAtSpawn = false;
     public static boolean disableSaltCreation = false;
-    public static boolean plantsRemovedAfterEating = true;
-    public static boolean waterRemovedAfterDrinking = true;
 
     private AnimalCareConfig() {}
+
+    private record FoodValueOverride(int nutrition, float saturation) {}
+
+    public static FoodProperties foodProperties(ItemStack stack) {
+        return foodProperties(stack, stack.get(DataComponents.FOOD));
+    }
+
+    public static FoodProperties foodProperties(ItemStack stack, FoodProperties original) {
+        if (original == null) return null;
+        FoodValueOverride override = foodValueOverrides.get(BuiltInRegistries.ITEM.getKey(stack.getItem()));
+        return override == null ? original : new FoodProperties(override.nutrition(), override.saturation(),
+                original.canAlwaysEat(), original.eatSeconds(), original.usingConvertsTo(), original.effects());
+    }
+
+    private static Map<ResourceLocation, FoodValueOverride> readFoodValueOverrides(String value) {
+        if (value == null || value.isBlank()) return Map.of();
+        Map<ResourceLocation, FoodValueOverride> parsed = new LinkedHashMap<>();
+        for (String entry : value.split(";", -1)) {
+            try {
+                String text = entry.trim();
+                int open = text.indexOf('(');
+                if (open <= 0 || !text.endsWith(")") || text.indexOf('(', open + 1) >= 0)
+                    throw new IllegalArgumentException("expected id(nutrition,saturationMultiplier)");
+                String idText = text.substring(0, open).trim();
+                if (!idText.contains(":")) throw new IllegalArgumentException("item id must be namespaced");
+                ResourceLocation id = ResourceLocation.tryParse(idText);
+                if (id == null) throw new IllegalArgumentException("invalid item id");
+                String[] values = text.substring(open + 1, text.length() - 1).split(",", -1);
+                if (values.length != 2) throw new IllegalArgumentException("expected two food values");
+                int nutrition = Integer.parseInt(values[0].trim());
+                double multiplier = Double.parseDouble(values[1].trim());
+                double saturationValue = nutrition * multiplier * 2.0;
+                if (nutrition < 0 || nutrition > Integer.MAX_VALUE - 20 || !Double.isFinite(multiplier) || multiplier < 0.0
+                        || !Double.isFinite(saturationValue) || saturationValue > Float.MAX_VALUE)
+                    throw new IllegalArgumentException("food values are out of range");
+                if (parsed.containsKey(id)) throw new IllegalArgumentException("duplicate item id");
+                Item item = BuiltInRegistries.ITEM.getOptional(id).orElse(null);
+                if (!(item instanceof BonusEffectFoodItem || item instanceof MilkBottleItem)
+                        || item.components().get(DataComponents.FOOD) == null)
+                    throw new IllegalArgumentException("item is not an Animaniax food item");
+                parsed.put(id, new FoodValueOverride(nutrition, (float) saturationValue));
+            } catch (IllegalArgumentException e) {
+                LOGGER.warn("Ignoring invalid foodValueOverrides entry '{}': {}", entry.trim(), e.getMessage());
+            }
+        }
+        return Map.copyOf(parsed);
+    }
 
     public static void load(Path path) {
         try {
@@ -163,7 +222,6 @@ public final class AnimalCareConfig {
                         + "hamsterWheelRFGeneration=20\n"
                         + "# Ticks that a hamster stays in the wheel before it needs more food.\n"
                         + "hamsterWheelUseTime=2000\n"
-                        + "allowEggThrowing=false\n"
                         + "# Chickens can drop eggs without using a nest.\n"
                         + "chickensDropEggs=false\n"
                         + "# Birds shed feathers over time.\n"
@@ -171,9 +229,14 @@ public final class AnimalCareConfig {
                         + "featherTimer=12000\n"
                         + "# Apply Animania bonus effects when food is consumed.\n"
                         + "foodsGiveBonusEffects=true\n"
-                        + "cowsMilkableAtSpawn=false\n"
+                        + "# Food value overrides: item_id(nutrition,saturationMultiplier), separated by semicolons.\n"
+                        + "foodValueOverrides=\n"
+                        + "# Allow Animania foods to be eaten when hunger is full.\n"
+                        + "eatFoodAnytime=true\n"
                         + "# Prevent players from making salt in cheese molds with water.\n"
                         + "disableSaltCreation=false\n"
+                        + "cowsMilkableAtSpawn=false\n"
+                        + "allowEggThrowing=false\n"
                         + "plantsRemovedAfterEating=true\n"
                         + "waterRemovedAfterDrinking=true\n",
                         StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE);
@@ -234,13 +297,15 @@ public final class AnimalCareConfig {
             hamsterWheelCapacity = readTicks(properties, "hamsterWheelCapacity", 200_000);
             hamsterWheelRFGeneration = readNonNegativeInt(properties, "hamsterWheelRFGeneration", 20);
             hamsterWheelUseTime = readTicks(properties, "hamsterWheelUseTime", 2_000);
-            allowEggThrowing = readBoolean(properties, "allowEggThrowing", false);
             chickensDropEggs = readBoolean(properties, "chickensDropEggs", false);
             birdsDropFeathers = readBoolean(properties, "birdsDropFeathers", true);
             featherTimer = readFeatherTimer(properties, "featherTimer", 12_000);
             foodsGiveBonusEffects = readBoolean(properties, "foodsGiveBonusEffects", true);
-            cowsMilkableAtSpawn = readBoolean(properties, "cowsMilkableAtSpawn", false);
+            foodValueOverrides = readFoodValueOverrides(properties.getProperty("foodValueOverrides"));
+            eatFoodAnytime = readBoolean(properties, "eatFoodAnytime", true);
             disableSaltCreation = readBoolean(properties, "disableSaltCreation", false);
+            cowsMilkableAtSpawn = readBoolean(properties, "cowsMilkableAtSpawn", false);
+            allowEggThrowing = readBoolean(properties, "allowEggThrowing", false);
             plantsRemovedAfterEating = readBoolean(properties, "plantsRemovedAfterEating", true);
             waterRemovedAfterDrinking = readBoolean(properties, "waterRemovedAfterDrinking", true);
         } catch (IOException | IllegalArgumentException e) {
@@ -297,13 +362,15 @@ public final class AnimalCareConfig {
             hamsterWheelCapacity = 200_000;
             hamsterWheelRFGeneration = 20;
             hamsterWheelUseTime = 2_000;
-            allowEggThrowing = false;
             chickensDropEggs = false;
             birdsDropFeathers = true;
             featherTimer = 12_000;
             foodsGiveBonusEffects = true;
-            cowsMilkableAtSpawn = false;
+            foodValueOverrides = Map.of();
+            eatFoodAnytime = true;
             disableSaltCreation = false;
+            cowsMilkableAtSpawn = false;
+            allowEggThrowing = false;
             plantsRemovedAfterEating = true;
             waterRemovedAfterDrinking = true;
         }

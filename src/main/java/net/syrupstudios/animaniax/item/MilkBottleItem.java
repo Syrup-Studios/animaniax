@@ -2,6 +2,9 @@ package net.syrupstudios.animaniax.item;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.food.FoodProperties;
+import net.syrupstudios.animaniax.config.AnimalCareConfig;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -23,6 +26,15 @@ public final class MilkBottleItem extends Item {
     @Override
     public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entity) {
         if (!level.isClientSide && entity instanceof Player player) player.removeAllEffects();
-        return super.finishUsingItem(stack, level, entity);
+        FoodProperties original = stack.get(DataComponents.FOOD);
+        FoodProperties adjusted = AnimalCareConfig.foodProperties(stack);
+        if (level.isClientSide || original == null || adjusted == original)
+            return super.finishUsingItem(stack, level, entity);
+        stack.set(DataComponents.FOOD, adjusted);
+        try {
+            return super.finishUsingItem(stack, level, entity);
+        } finally {
+            if (!stack.isEmpty()) stack.set(DataComponents.FOOD, original);
+        }
     }
 }
