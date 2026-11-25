@@ -10,6 +10,11 @@ mod:
   issues: "https://github.com/Syrup-Studios/animaniax/issues"
   sources: "https://github.com/Syrup-Studios/animaniax"
 
+publish:
+  modrinth: "ayFk4wlY"
+  curseforge: ""
+  release_type: "alpha"
+
 "1.21.1":
   java:
     version: 21
