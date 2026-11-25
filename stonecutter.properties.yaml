@@ -12,7 +12,7 @@ mod:
 
 publish:
   modrinth: "ayFk4wlY"
-  curseforge: ""
+  curseforge: "1831304"
   release_type: "alpha"
 
 "1.21.1":
