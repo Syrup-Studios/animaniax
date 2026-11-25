@@ -5,7 +5,7 @@ mod:
   version: "0.0.2"
   description: "An animal overhaul mod"
   authors: "Syrup Studios"
-  license: "RSL-1.0 (code, data, and original assets); LGPL-3.0-only (placeholder Animania textures and models)"
+  license: "RSL-1.0 (code, data, and original assets); LGPL-3.0-only (placeholder Animania textures and models and sounds)"
   homepage: "https://github.com/Syrup-Studios/animaniax"
   issues: "https://github.com/Syrup-Studios/animaniax/issues"
   sources: "https://github.com/Syrup-Studios/animaniax"
