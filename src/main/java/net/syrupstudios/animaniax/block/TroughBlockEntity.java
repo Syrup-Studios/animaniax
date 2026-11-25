@@ -3,6 +3,9 @@ package net.syrupstudios.animaniax.block;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.Container;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.EntityType;
@@ -10,6 +13,7 @@ import net.syrupstudios.animaniax.entity.AnimalProfile;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.syrupstudios.animaniax.config.AnimalCareConfig;
@@ -31,6 +35,12 @@ public final class TroughBlockEntity extends BlockEntity implements WorldlyConta
     }
     public int getWaterAmount() { TroughBlockEntity main = controller(); if (main != this) return main.getWaterAmount(); syncWaterFromState(); return Math.max(0, waterAmount); }
     public int getSlopAmount() { return controller() == this ? slopAmount : controller().getSlopAmount(); }
+    public ItemStack getFeedStack() {
+        TroughBlockEntity main = controller();
+        if (main != this) return main.getFeedStack();
+        syncStackFromState();
+        return feed;
+    }
     public boolean addWater(int amount) {
         if (controller() != this) return controller().addWater(amount);
         int oldAmount = getWaterAmount();
@@ -190,10 +200,25 @@ public final class TroughBlockEntity extends BlockEntity implements WorldlyConta
         super.setChanged();
         if (level != null && !level.isClientSide) {
             level.updateNeighbourForOutputSignal(worldPosition, getBlockState().getBlock());
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
             BlockPos endPos = TroughBlock.endPos(worldPosition, getBlockState().getValue(TroughBlock.FACING));
-            if (level.hasChunkAt(endPos) && level.getBlockState(endPos).is(TroughContent.TROUGH))
+            if (level.hasChunkAt(endPos) && level.getBlockState(endPos).is(TroughContent.TROUGH)) {
                 level.updateNeighbourForOutputSignal(endPos, TroughContent.TROUGH);
+                level.sendBlockUpdated(endPos, level.getBlockState(endPos), level.getBlockState(endPos), Block.UPDATE_ALL);
+            }
         }
+    }
+
+    @Override
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        CompoundTag tag = new CompoundTag();
+        saveAdditional(tag, registries);
+        return tag;
+    }
+
+    @Override
+    public Packet<ClientGamePacketListener> getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
     }
     @Override public boolean stillValid(Player player) { return Container.stillValidBlockEntity(this, player); }
     @Override public void clearContent() {}

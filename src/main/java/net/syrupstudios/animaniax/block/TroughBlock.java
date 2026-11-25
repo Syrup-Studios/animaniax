@@ -165,6 +165,11 @@ public final class TroughBlock extends Block implements EntityBlock {
         return new TroughBlockEntity(pos, state);
     }
 
+    @Override
+    protected net.minecraft.world.level.block.RenderShape getRenderShape(BlockState state) {
+        return net.minecraft.world.level.block.RenderShape.ENTITYBLOCK_ANIMATED;
+    }
+
     @Override public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         if (state.getValue(PART) == Part.MAIN && state.getValue(CONTENT) != 3 && level.getBiome(pos).value().getBaseTemperature() >= 0.15F && level.canSeeSky(pos.above())
                 && level.isRainingAt(pos.above()) && level.getBlockEntity(pos) instanceof TroughBlockEntity trough)

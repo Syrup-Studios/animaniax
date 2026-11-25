@@ -1,1 +1,7 @@
-{"variants":{"":{"model":"animaniax:block/salt_lick"}}}
+{
+  "variants": {
+    "": {
+      "model": "animaniax:block/salt_lick"
+    }
+  }
+}

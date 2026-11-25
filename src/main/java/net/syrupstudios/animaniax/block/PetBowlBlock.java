@@ -48,6 +48,10 @@ public final class PetBowlBlock extends Block implements EntityBlock {
         return new PetBowlBlockEntity(pos, state);
     }
 
+    @Override protected net.minecraft.world.level.block.RenderShape getRenderShape(BlockState state) {
+        return net.minecraft.world.level.block.RenderShape.ENTITYBLOCK_ANIMATED;
+    }
+
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
         if (!player.getItemInHand(InteractionHand.OFF_HAND).isEmpty()

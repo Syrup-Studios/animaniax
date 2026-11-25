@@ -3,6 +3,7 @@ package net.syrupstudios.animaniax.mixin;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
+import net.syrupstudios.animaniax.entity.AnimalVisualSyncState;
 import net.syrupstudios.animaniax.entity.CowBreedState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -31,6 +32,11 @@ abstract class CowBreedMixin implements CowBreedState {
     @Override
     @Unique
     public String animaniax$getBreed() {
+        Mob mob = (Mob) (Object) this;
+        if (mob.level().isClientSide) {
+            String synced = ((AnimalVisualSyncState) mob).animaniax$getSyncedBreed();
+            if (!synced.isEmpty()) return synced;
+        }
         return animaniax$breed;
     }
 
@@ -40,6 +46,10 @@ abstract class CowBreedMixin implements CowBreedState {
         for (int i = 0; i < ANIMANIAX$BREEDS.length; i++) {
             if (ANIMANIAX$BREEDS[i].equals(breed)) {
                 animaniax$breed = ANIMANIAX$BREEDS[i];
+                Mob mob = (Mob) (Object) this;
+                if (!mob.level().isClientSide && mob.getType() == EntityType.COW) {
+                    ((AnimalVisualSyncState) mob).animaniax$setSyncedBreed(animaniax$breed);
+                }
                 return;
             }
         }

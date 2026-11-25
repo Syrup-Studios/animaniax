@@ -1,1 +1,6 @@
-{"parent":"animaniax:block/cheese_mold"}
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "animaniax:item/cheese_mold"
+  }
+}

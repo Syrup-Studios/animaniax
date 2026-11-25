@@ -4,36 +4,71 @@ package net.syrupstudios.animaniax.loader;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;
 import net.fabricmc.fabric.api.client.render.fluid.v1.SimpleFluidRenderHandler;
-import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
-import net.minecraft.client.renderer.entity.HorseRenderer;
-import net.syrupstudios.animaniax.entity.DogContent;
-import net.syrupstudios.animaniax.entity.CatContent;
-import net.minecraft.client.renderer.entity.CatRenderer;
-import net.minecraft.client.renderer.entity.WolfRenderer;
-import net.minecraft.client.renderer.entity.FrogRenderer;
-import net.syrupstudios.animaniax.client.PeafowlRenderer;
-import net.syrupstudios.animaniax.client.HamsterRenderer;
+import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
+import net.fabricmc.fabric.api.event.player.UseItemCallback;
+import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
+import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.PackType;
+import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.util.profiling.ProfilerFiller;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.EntityType;
+import net.syrupstudios.animaniax.block.AnimalMilkFluids;
+import net.syrupstudios.animaniax.block.BeeHiveContent;
+import net.syrupstudios.animaniax.block.CheeseMoldContent;
+import net.syrupstudios.animaniax.block.HamsterWheelContent;
+import net.syrupstudios.animaniax.block.NestContent;
+import net.syrupstudios.animaniax.block.PetBowlContent;
+import net.syrupstudios.animaniax.block.PropBlockEntityContent;
+import net.syrupstudios.animaniax.block.SaltLickContent;
+import net.syrupstudios.animaniax.block.TroughContent;
+import net.syrupstudios.animaniax.client.AnimaniaAmphibianRenderer;
+import net.syrupstudios.animaniax.client.AnimaniaCatRenderer;
+import net.syrupstudios.animaniax.client.AnimaniaChickenRenderer;
+import net.syrupstudios.animaniax.client.AnimaniaCowRenderer;
+import net.syrupstudios.animaniax.client.AnimaniaDogRenderer;
+import net.syrupstudios.animaniax.client.AnimaniaGoatRenderer;
+import net.syrupstudios.animaniax.client.AnimaniaPigRenderer;
+import net.syrupstudios.animaniax.client.AnimaniaRabbitRenderer;
+import net.syrupstudios.animaniax.client.AnimaniaSheepRenderer;
+import net.syrupstudios.animaniax.client.DraftHorseRenderer;
 import net.syrupstudios.animaniax.client.FerretRenderer;
-import net.syrupstudios.animaniax.entity.DraftHorseContent;
-import net.syrupstudios.animaniax.entity.CartContent;
-import net.syrupstudios.animaniax.entity.WagonContent;
-import net.syrupstudios.animaniax.entity.TillerContent;
+import net.syrupstudios.animaniax.client.HamsterRenderer;
+import net.syrupstudios.animaniax.client.HedgehogRenderer;
+import net.syrupstudios.animaniax.client.ManualScreen;
+import net.syrupstudios.animaniax.client.PeafowlRenderer;
 import net.syrupstudios.animaniax.client.PullCartRenderer;
 import net.syrupstudios.animaniax.client.TillerRenderer;
-import net.syrupstudios.animaniax.entity.PeafowlEntity;
-import net.syrupstudios.animaniax.entity.HamsterEntity;
+import net.syrupstudios.animaniax.client.blockentity.BeeHiveBlockEntityRenderer;
+import net.syrupstudios.animaniax.client.blockentity.CheeseMoldBlockEntityRenderer;
+import net.syrupstudios.animaniax.client.blockentity.HamsterWheelBlockEntityRenderer;
+import net.syrupstudios.animaniax.client.blockentity.NestBlockEntityRenderer;
+import net.syrupstudios.animaniax.client.blockentity.PetBowlBlockEntityRenderer;
+import net.syrupstudios.animaniax.client.blockentity.PropBlockEntityRenderer;
+import net.syrupstudios.animaniax.client.blockentity.SaltLickBlockEntityRenderer;
+import net.syrupstudios.animaniax.client.blockentity.TroughBlockEntityRenderer;
+import net.syrupstudios.animaniax.client.model.PlaceholderModelRegistry;
+import net.syrupstudios.animaniax.entity.CartContent;
+import net.syrupstudios.animaniax.entity.CatContent;
+import net.syrupstudios.animaniax.entity.DogContent;
+import net.syrupstudios.animaniax.entity.DraftHorseContent;
 import net.syrupstudios.animaniax.entity.FerretContent;
-import net.syrupstudios.animaniax.entity.HedgehogContent;
-import net.syrupstudios.animaniax.client.HedgehogRenderer;
 import net.syrupstudios.animaniax.entity.FrogContent;
-import net.fabricmc.fabric.api.event.player.UseItemCallback;
-import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.client.Minecraft;
-import net.syrupstudios.animaniax.item.ManualContent;
+import net.syrupstudios.animaniax.entity.HamsterEntity;
+import net.syrupstudios.animaniax.entity.HedgehogContent;
+import net.syrupstudios.animaniax.entity.PeafowlEntity;
+import net.syrupstudios.animaniax.entity.TillerContent;
+import net.syrupstudios.animaniax.entity.WagonContent;
 import net.syrupstudios.animaniax.item.AnimalSpawnEggContent;
 import net.syrupstudios.animaniax.item.AnimalSpawnEggItem;
-import net.syrupstudios.animaniax.client.ManualScreen;
+import net.syrupstudios.animaniax.item.ManualContent;
+
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 
 public final class FabricClientEntrypoint implements ClientModInitializer {
     @Override
@@ -47,25 +82,46 @@ public final class FabricClientEntrypoint implements ClientModInitializer {
             }
             return InteractionResultHolder.pass(stack);
         });
-        FluidRenderHandlerRegistry.INSTANCE.register(net.syrupstudios.animaniax.block.BeeHiveContent.HONEY_SOURCE,
-                net.syrupstudios.animaniax.block.BeeHiveContent.HONEY_FLOWING,
-                new SimpleFluidRenderHandler(net.minecraft.resources.ResourceLocation.withDefaultNamespace("block/water_still"),
-                        net.minecraft.resources.ResourceLocation.withDefaultNamespace("block/water_flow"), 0xFFFFC943));
-        registerMilk("friesian", net.syrupstudios.animaniax.block.AnimalMilkFluids.FRIESIAN_SOURCE,
-                net.syrupstudios.animaniax.block.AnimalMilkFluids.FRIESIAN_FLOWING);
-        registerMilk("holstein", net.syrupstudios.animaniax.block.AnimalMilkFluids.HOLSTEIN_SOURCE,
-                net.syrupstudios.animaniax.block.AnimalMilkFluids.HOLSTEIN_FLOWING);
-        registerMilk("jersey", net.syrupstudios.animaniax.block.AnimalMilkFluids.JERSEY_SOURCE,
-                net.syrupstudios.animaniax.block.AnimalMilkFluids.JERSEY_FLOWING);
-        registerMilk("goat", net.syrupstudios.animaniax.block.AnimalMilkFluids.GOAT_SOURCE,
-                net.syrupstudios.animaniax.block.AnimalMilkFluids.GOAT_FLOWING);
-        registerMilk("sheep", net.syrupstudios.animaniax.block.AnimalMilkFluids.SHEEP_SOURCE,
-                net.syrupstudios.animaniax.block.AnimalMilkFluids.SHEEP_FLOWING);
-        registerMilk("generic", net.syrupstudios.animaniax.block.AnimalMilkFluids.GENERIC_SOURCE,
-                net.syrupstudios.animaniax.block.AnimalMilkFluids.GENERIC_FLOWING);
-        EntityRendererRegistry.register(DogContent.TYPE, WolfRenderer::new);
-        EntityRendererRegistry.register(CatContent.TYPE, CatRenderer::new);
-        EntityRendererRegistry.register(DraftHorseContent.DRAFT_HORSE, HorseRenderer::new);
+
+        ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(
+                new IdentifiableResourceReloadListener() {
+                    @Override
+                    public ResourceLocation getFabricId() {
+                        return PlaceholderModelRegistry.LISTENER_ID;
+                    }
+
+                    @Override
+                    public CompletableFuture<Void> reload(PreparationBarrier barrier, ResourceManager manager,
+                            ProfilerFiller prepareProfiler, ProfilerFiller applyProfiler,
+                            Executor backgroundExecutor, Executor gameExecutor) {
+                        return PlaceholderModelRegistry.INSTANCE.reload(barrier, manager,
+                                prepareProfiler, applyProfiler, backgroundExecutor, gameExecutor);
+                    }
+                });
+
+        FluidRenderHandlerRegistry.INSTANCE.register(BeeHiveContent.HONEY_SOURCE,
+                BeeHiveContent.HONEY_FLOWING,
+                new SimpleFluidRenderHandler(
+                        ResourceLocation.fromNamespaceAndPath("animaniax", "block/fluid/animania_honey_still"),
+                        ResourceLocation.fromNamespaceAndPath("animaniax", "block/fluid/animania_honey_flow"),
+                        0xFFFFFFFF));
+        registerMilk("friesian", AnimalMilkFluids.FRIESIAN_SOURCE, AnimalMilkFluids.FRIESIAN_FLOWING);
+        registerMilk("holstein", AnimalMilkFluids.HOLSTEIN_SOURCE, AnimalMilkFluids.HOLSTEIN_FLOWING);
+        registerMilk("jersey", AnimalMilkFluids.JERSEY_SOURCE, AnimalMilkFluids.JERSEY_FLOWING);
+        registerMilk("goat", AnimalMilkFluids.GOAT_SOURCE, AnimalMilkFluids.GOAT_FLOWING);
+        registerMilk("sheep", AnimalMilkFluids.SHEEP_SOURCE, AnimalMilkFluids.SHEEP_FLOWING);
+        registerMilk("generic", AnimalMilkFluids.GENERIC_SOURCE, AnimalMilkFluids.GENERIC_FLOWING);
+
+        EntityRendererRegistry.register(EntityType.COW, AnimaniaCowRenderer::new);
+        EntityRendererRegistry.register(EntityType.MOOSHROOM, AnimaniaCowRenderer::new);
+        EntityRendererRegistry.register(EntityType.PIG, AnimaniaPigRenderer::new);
+        EntityRendererRegistry.register(EntityType.SHEEP, AnimaniaSheepRenderer::new);
+        EntityRendererRegistry.register(EntityType.GOAT, AnimaniaGoatRenderer::new);
+        EntityRendererRegistry.register(EntityType.CHICKEN, AnimaniaChickenRenderer::new);
+        EntityRendererRegistry.register(EntityType.RABBIT, AnimaniaRabbitRenderer::new);
+        EntityRendererRegistry.register(DogContent.TYPE, AnimaniaDogRenderer::new);
+        EntityRendererRegistry.register(CatContent.TYPE, AnimaniaCatRenderer::new);
+        EntityRendererRegistry.register(DraftHorseContent.DRAFT_HORSE, DraftHorseRenderer::new);
         EntityRendererRegistry.register(CartContent.CART, PullCartRenderer::new);
         EntityRendererRegistry.register(WagonContent.WAGON, PullCartRenderer::new);
         EntityRendererRegistry.register(TillerContent.TILLER, TillerRenderer::new);
@@ -75,17 +131,28 @@ public final class FabricClientEntrypoint implements ClientModInitializer {
         EntityRendererRegistry.register(FerretContent.WHITE, FerretRenderer::new);
         EntityRendererRegistry.register(HedgehogContent.HEDGEHOG, HedgehogRenderer::new);
         EntityRendererRegistry.register(HedgehogContent.HEDGEHOG_ALBINO, HedgehogRenderer::new);
-        EntityRendererRegistry.register(FrogContent.COMMON_FROG, FrogRenderer::new);
-        EntityRendererRegistry.register(FrogContent.DART_FROG, FrogRenderer::new);
-        EntityRendererRegistry.register(FrogContent.TOAD, FrogRenderer::new);
+        EntityRendererRegistry.register(FrogContent.COMMON_FROG, AnimaniaAmphibianRenderer::new);
+        EntityRendererRegistry.register(FrogContent.DART_FROG, AnimaniaAmphibianRenderer::new);
+        EntityRendererRegistry.register(FrogContent.TOAD, AnimaniaAmphibianRenderer::new);
+
+        BlockEntityRenderers.register(TroughContent.TROUGH_ENTITY, TroughBlockEntityRenderer::new);
+        BlockEntityRenderers.register(NestContent.NEST_ENTITY, NestBlockEntityRenderer::new);
+        BlockEntityRenderers.register(SaltLickContent.ENTITY, SaltLickBlockEntityRenderer::new);
+        BlockEntityRenderers.register(PetBowlContent.BLOCK_ENTITY, PetBowlBlockEntityRenderer::new);
+        BlockEntityRenderers.register(HamsterWheelContent.ENTITY, HamsterWheelBlockEntityRenderer::new);
+        BlockEntityRenderers.register(BeeHiveContent.ENTITY, BeeHiveBlockEntityRenderer::new);
+        BlockEntityRenderers.register(PropBlockEntityContent.ENTITY, PropBlockEntityRenderer::new);
+        BlockEntityRenderers.register(CheeseMoldContent.MOLD_ENTITY, CheeseMoldBlockEntityRenderer::new);
     }
 
     private static void registerMilk(String kind, net.minecraft.world.level.material.Fluid source,
             net.minecraft.world.level.material.Fluid flowing) {
+        String slug = "generic".equals(kind) ? "holstein" : kind;
         FluidRenderHandlerRegistry.INSTANCE.register(source, flowing,
-                new SimpleFluidRenderHandler(net.minecraft.resources.ResourceLocation.withDefaultNamespace("block/water_still"),
-                        net.minecraft.resources.ResourceLocation.withDefaultNamespace("block/water_flow"),
-                        net.syrupstudios.animaniax.block.AnimalMilkFluids.tint(kind)));
+                new SimpleFluidRenderHandler(
+                        ResourceLocation.fromNamespaceAndPath("animaniax", "block/fluid/milk_" + slug + "_still"),
+                        ResourceLocation.fromNamespaceAndPath("animaniax", "block/fluid/milk_" + slug + "_flow"),
+                        0xFFFFFFFF));
     }
 }
 //?}

@@ -76,6 +76,10 @@ public final class NestBlock extends Block implements EntityBlock {
         return new NestBlockEntity(pos, state);
     }
 
+    @Override protected net.minecraft.world.level.block.RenderShape getRenderShape(BlockState state) {
+        return net.minecraft.world.level.block.RenderShape.ENTITYBLOCK_ANIMATED;
+    }
+
     @Override public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         if (state.getValue(EGGS) > 0 && level.getBlockEntity(pos) instanceof NestBlockEntity nest)
             nest.tryHatch(level, pos, state, random);

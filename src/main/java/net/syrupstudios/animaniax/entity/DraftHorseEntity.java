@@ -12,6 +12,8 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
@@ -20,6 +22,7 @@ import net.minecraft.world.entity.animal.horse.Horse;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.Level;
 import net.minecraft.util.RandomSource;
+import net.syrupstudios.animaniax.sound.AnimaniaSounds;
 import org.jetbrains.annotations.Nullable;
 
 public final class DraftHorseEntity extends Horse {
@@ -174,6 +177,26 @@ public final class DraftHorseEntity extends Horse {
                 && mate.animaniax$fertilityCooldownRemaining() == 0
                 && !sterilization.animaniax$isSterilized() && !mateSterilization.animaniax$isSterilized()
                 && !care.animaniax$careBlocksBreeding() && !mateCare.animaniax$careBlocksBreeding();
+    }
+
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return AnimaniaSounds.DRAFT_HORSE_AMBIENT;
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return AnimaniaSounds.DRAFT_HORSE_HURT;
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return AnimaniaSounds.DRAFT_HORSE_HURT;
+    }
+
+    @Override
+    protected SoundEvent getAngrySound() {
+        return AnimaniaSounds.DRAFT_HORSE_HURT;
     }
 
     @Override

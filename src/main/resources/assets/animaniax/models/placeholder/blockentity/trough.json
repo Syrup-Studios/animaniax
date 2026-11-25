@@ -1,0 +1,1138 @@
+{
+  "textureWidth": 128,
+  "textureHeight": 64,
+  "roots": [
+    "Block1",
+    "Base2",
+    "Base1",
+    "Block2",
+    "Block3",
+    "Block4",
+    "Block5"
+  ],
+  "optionalParts": [
+    "Feed",
+    "FeedA",
+    "FeedA1",
+    "FeedB",
+    "FeedB1",
+    "FeedC",
+    "FeedC1",
+    "FeedD",
+    "FeedD1",
+    "FeedE",
+    "FeedE1",
+    "FeedF",
+    "FeedF1",
+    "FeedG",
+    "FeedG1",
+    "FeedH",
+    "FeedH1",
+    "Water1"
+  ],
+  "parts": {
+    "Block1": {
+      "texOffset": [
+        2,
+        2
+      ],
+      "pivot": [
+        -7.0,
+        17.0,
+        0.0
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -1.0,
+          "y": -5.0,
+          "z": -6.0,
+          "dx": 2,
+          "dy": 10,
+          "dz": 12,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "Base2": {
+      "texOffset": [
+        4,
+        4
+      ],
+      "pivot": [
+        22.0,
+        23.0,
+        0.0
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -1.0,
+          "y": -1.0,
+          "z": -5.0,
+          "dx": 2,
+          "dy": 2,
+          "dz": 10,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "Base1": {
+      "texOffset": [
+        4,
+        4
+      ],
+      "pivot": [
+        -6.0,
+        23.0,
+        0.0
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -1.0,
+          "y": -1.0,
+          "z": -5.0,
+          "dx": 2,
+          "dy": 2,
+          "dz": 10,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "Block2": {
+      "texOffset": [
+        2,
+        2
+      ],
+      "pivot": [
+        23.0,
+        17.0,
+        0.0
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -1.0,
+          "y": -5.0,
+          "z": -6.0,
+          "dx": 2,
+          "dy": 10,
+          "dz": 12,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "Block3": {
+      "texOffset": [
+        1,
+        26
+      ],
+      "pivot": [
+        8.0,
+        18.0,
+        -5.0
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -14.0,
+          "y": -4.0,
+          "z": -1.0,
+          "dx": 28,
+          "dy": 8,
+          "dz": 2,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "Block4": {
+      "texOffset": [
+        1,
+        26
+      ],
+      "pivot": [
+        8.0,
+        18.0,
+        5.0
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -14.0,
+          "y": -4.0,
+          "z": -1.0,
+          "dx": 28,
+          "dy": 8,
+          "dz": 2,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "Block5": {
+      "texOffset": [
+        3,
+        42
+      ],
+      "pivot": [
+        8.0,
+        21.5,
+        0.0
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -14.0,
+          "y": -0.5,
+          "z": -4.0,
+          "dx": 28,
+          "dy": 1,
+          "dz": 8,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "Feed": {
+      "texOffset": [
+        56,
+        1
+      ],
+      "pivot": [
+        8.0,
+        16.0,
+        0.0
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -14.0,
+          "y": -0.5,
+          "z": -4.0,
+          "dx": 28,
+          "dy": 1,
+          "dz": 8,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "FeedA": {
+      "texOffset": [
+        0,
+        0
+      ],
+      "pivot": [
+        -1.0,
+        15.0,
+        2.5
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.5566564,
+        0.6934777,
+        0.418777
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -4.5,
+          "y": 0.0,
+          "z": -5.0,
+          "dx": 16,
+          "dy": 0,
+          "dz": 16,
+          "mirror": false
+        }
+      ],
+      "children": [],
+      "texWidth": 16,
+      "texHeight": 16
+    },
+    "FeedB": {
+      "texOffset": [
+        0,
+        0
+      ],
+      "pivot": [
+        8.0,
+        15.0,
+        1.1
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.3321232,
+        1.126472,
+        0.4568707
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -4.5,
+          "y": 0.0,
+          "z": -5.0,
+          "dx": 16,
+          "dy": 0,
+          "dz": 16,
+          "mirror": false
+        }
+      ],
+      "children": [],
+      "texWidth": 16,
+      "texHeight": 16
+    },
+    "FeedC": {
+      "texOffset": [
+        0,
+        0
+      ],
+      "pivot": [
+        17.0,
+        15.0,
+        2.500001
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.5561382,
+        0.6948478,
+        0.4195006
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -4.5,
+          "y": 0.0,
+          "z": -5.0,
+          "dx": 16,
+          "dy": 0,
+          "dz": 16,
+          "mirror": false
+        }
+      ],
+      "children": [],
+      "texWidth": 16,
+      "texHeight": 16
+    },
+    "FeedD": {
+      "texOffset": [
+        0,
+        0
+      ],
+      "pivot": [
+        14.0,
+        15.0,
+        -1.999999
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.329293,
+        -2.2634,
+        0.4998787
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -4.5,
+          "y": 0.0,
+          "z": -5.0,
+          "dx": 16,
+          "dy": 0,
+          "dz": 16,
+          "mirror": false
+        }
+      ],
+      "children": [],
+      "texWidth": 16,
+      "texHeight": 16
+    },
+    "FeedE": {
+      "texOffset": [
+        0,
+        0
+      ],
+      "pivot": [
+        2.0,
+        15.0,
+        -0.9999991
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.329293,
+        -2.2634,
+        0.3414953
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -4.5,
+          "y": 0.0,
+          "z": -5.0,
+          "dx": 16,
+          "dy": 0,
+          "dz": 16,
+          "mirror": false
+        }
+      ],
+      "children": [],
+      "texWidth": 16,
+      "texHeight": 16
+    },
+    "FeedF": {
+      "texOffset": [
+        0,
+        0
+      ],
+      "pivot": [
+        9.1,
+        14.0,
+        -1.999999
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.223693,
+        -1.865655,
+        0.9323301
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -4.5,
+          "y": 0.0,
+          "z": -5.0,
+          "dx": 16,
+          "dy": 0,
+          "dz": 16,
+          "mirror": false
+        }
+      ],
+      "children": [],
+      "texWidth": 16,
+      "texHeight": 16
+    },
+    "FeedG": {
+      "texOffset": [
+        0,
+        0
+      ],
+      "pivot": [
+        2e-07,
+        14.0,
+        -0.9999991
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.2029555,
+        -1.465355,
+        0.9517268
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -4.5,
+          "y": 0.0,
+          "z": -5.0,
+          "dx": 16,
+          "dy": 0,
+          "dz": 16,
+          "mirror": false
+        }
+      ],
+      "children": [],
+      "texWidth": 16,
+      "texHeight": 16
+    },
+    "FeedH": {
+      "texOffset": [
+        0,
+        0
+      ],
+      "pivot": [
+        17.0,
+        14.0,
+        -0.9999986
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.286131,
+        2.831252,
+        0.4113167
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -4.5,
+          "y": 0.0,
+          "z": -5.0,
+          "dx": 16,
+          "dy": 0,
+          "dz": 16,
+          "mirror": false
+        }
+      ],
+      "children": [],
+      "texWidth": 16,
+      "texHeight": 16
+    },
+    "FeedA1": {
+      "texOffset": [
+        0,
+        0
+      ],
+      "pivot": [
+        -1.0,
+        17.0,
+        2.5
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.5566564,
+        0.6934777,
+        0.418777
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -4.5,
+          "y": 0.0,
+          "z": -5.0,
+          "dx": 16,
+          "dy": 0,
+          "dz": 16,
+          "mirror": false
+        }
+      ],
+      "children": [],
+      "texWidth": 16,
+      "texHeight": 16
+    },
+    "FeedB1": {
+      "texOffset": [
+        0,
+        0
+      ],
+      "pivot": [
+        8.0,
+        17.0,
+        1.1
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.3321232,
+        1.126472,
+        0.4568707
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -4.5,
+          "y": 0.0,
+          "z": -5.0,
+          "dx": 16,
+          "dy": 0,
+          "dz": 16,
+          "mirror": false
+        }
+      ],
+      "children": [],
+      "texWidth": 16,
+      "texHeight": 16
+    },
+    "FeedC1": {
+      "texOffset": [
+        0,
+        0
+      ],
+      "pivot": [
+        17.0,
+        17.0,
+        2.500001
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.5561382,
+        0.6948478,
+        0.4195006
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -4.5,
+          "y": 0.0,
+          "z": -5.0,
+          "dx": 16,
+          "dy": 0,
+          "dz": 16,
+          "mirror": false
+        }
+      ],
+      "children": [],
+      "texWidth": 16,
+      "texHeight": 16
+    },
+    "FeedD1": {
+      "texOffset": [
+        0,
+        0
+      ],
+      "pivot": [
+        14.0,
+        17.0,
+        -1.999999
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.329293,
+        -2.2634,
+        0.4998787
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -4.5,
+          "y": 0.0,
+          "z": -5.0,
+          "dx": 16,
+          "dy": 0,
+          "dz": 16,
+          "mirror": false
+        }
+      ],
+      "children": [],
+      "texWidth": 16,
+      "texHeight": 16
+    },
+    "FeedE1": {
+      "texOffset": [
+        0,
+        0
+      ],
+      "pivot": [
+        2.0,
+        17.0,
+        -0.9999991
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.329293,
+        -2.2634,
+        0.3414953
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -4.5,
+          "y": 0.0,
+          "z": -5.0,
+          "dx": 16,
+          "dy": 0,
+          "dz": 16,
+          "mirror": false
+        }
+      ],
+      "children": [],
+      "texWidth": 16,
+      "texHeight": 16
+    },
+    "FeedF1": {
+      "texOffset": [
+        0,
+        0
+      ],
+      "pivot": [
+        9.1,
+        16.0,
+        -1.999999
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.223693,
+        -1.865655,
+        0.9323301
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -4.5,
+          "y": 0.0,
+          "z": -5.0,
+          "dx": 16,
+          "dy": 0,
+          "dz": 16,
+          "mirror": false
+        }
+      ],
+      "children": [],
+      "texWidth": 16,
+      "texHeight": 16
+    },
+    "FeedG1": {
+      "texOffset": [
+        0,
+        0
+      ],
+      "pivot": [
+        2e-07,
+        16.0,
+        -0.9999991
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.2029555,
+        -1.465355,
+        0.9517268
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -4.5,
+          "y": 0.0,
+          "z": -5.0,
+          "dx": 16,
+          "dy": 0,
+          "dz": 16,
+          "mirror": false
+        }
+      ],
+      "children": [],
+      "texWidth": 16,
+      "texHeight": 16
+    },
+    "FeedH1": {
+      "texOffset": [
+        0,
+        0
+      ],
+      "pivot": [
+        17.0,
+        16.0,
+        -0.9999986
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.286131,
+        2.831252,
+        0.4113167
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -4.5,
+          "y": 0.0,
+          "z": -5.0,
+          "dx": 16,
+          "dy": 0,
+          "dz": 16,
+          "mirror": false
+        }
+      ],
+      "children": [],
+      "texWidth": 16,
+      "texHeight": 16
+    },
+    "Slop1": {
+      "texOffset": [
+        56,
+        12
+      ],
+      "pivot": [
+        8.0,
+        16.0,
+        0.0
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -14.0,
+          "y": -0.5,
+          "z": -4.0,
+          "dx": 28,
+          "dy": 1,
+          "dz": 8,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "Slop2": {
+      "texOffset": [
+        56,
+        12
+      ],
+      "pivot": [
+        8.0,
+        18.0,
+        0.0
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -14.0,
+          "y": -0.5,
+          "z": -4.0,
+          "dx": 28,
+          "dy": 1,
+          "dz": 8,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "Slop3": {
+      "texOffset": [
+        56,
+        12
+      ],
+      "pivot": [
+        8.0,
+        20.0,
+        0.0
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -14.0,
+          "y": -0.5,
+          "z": -4.0,
+          "dx": 28,
+          "dy": 1,
+          "dz": 8,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "Water2": {
+      "texOffset": [
+        56,
+        54
+      ],
+      "pivot": [
+        8.0,
+        18.0,
+        0.0
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -14.0,
+          "y": -0.5,
+          "z": -4.0,
+          "dx": 28,
+          "dy": 1,
+          "dz": 8,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "Water3": {
+      "texOffset": [
+        56,
+        54
+      ],
+      "pivot": [
+        8.0,
+        20.0,
+        0.0
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -14.0,
+          "y": -0.5,
+          "z": -4.0,
+          "dx": 28,
+          "dy": 1,
+          "dz": 8,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "Water1": {
+      "texOffset": [
+        0,
+        0
+      ],
+      "pivot": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [],
+      "children": []
+    }
+  },
+  "rig": {}
+}

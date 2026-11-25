@@ -39,6 +39,7 @@ import net.syrupstudios.animaniax.item.FrogLegContent;
 import net.syrupstudios.animaniax.item.AnimalSpawnEggContent;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.CreativeModeTabs;
@@ -98,9 +99,9 @@ public final class NeoForgeEntrypoint {
             () -> new FluidType(FluidType.Properties.create().density(3000).viscosity(7000)) {
                 @Override public void initializeClient(java.util.function.Consumer<net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions> consumer) {
                     consumer.accept(new net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions() {
-                        @Override public net.minecraft.resources.ResourceLocation getStillTexture() { return net.minecraft.resources.ResourceLocation.withDefaultNamespace("block/water_still"); }
-                        @Override public net.minecraft.resources.ResourceLocation getFlowingTexture() { return net.minecraft.resources.ResourceLocation.withDefaultNamespace("block/water_flow"); }
-                        @Override public int getTintColor() { return 0xFFFFC943; }
+                        @Override public net.minecraft.resources.ResourceLocation getStillTexture() { return net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("animaniax", "block/fluid/animania_honey_still"); }
+                        @Override public net.minecraft.resources.ResourceLocation getFlowingTexture() { return net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("animaniax", "block/fluid/animania_honey_flow"); }
+                        @Override public int getTintColor() { return 0xFFFFFFFF; }
                     });
                 }
             });
@@ -118,9 +119,9 @@ public final class NeoForgeEntrypoint {
         return FLUID_TYPES.register("milk_" + kind, () -> new FluidType(FluidType.Properties.create().density(1030).viscosity(1800)) {
             @Override public void initializeClient(java.util.function.Consumer<net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions> consumer) {
                 consumer.accept(new net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions() {
-                    @Override public net.minecraft.resources.ResourceLocation getStillTexture() { return net.minecraft.resources.ResourceLocation.withDefaultNamespace("block/water_still"); }
-                    @Override public net.minecraft.resources.ResourceLocation getFlowingTexture() { return net.minecraft.resources.ResourceLocation.withDefaultNamespace("block/water_flow"); }
-                    @Override public int getTintColor() { return net.syrupstudios.animaniax.block.AnimalMilkFluids.tint(kind); }
+                    @Override public net.minecraft.resources.ResourceLocation getStillTexture() { return net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("animaniax", "block/fluid/milk_" + kind + "_still"); }
+                    @Override public net.minecraft.resources.ResourceLocation getFlowingTexture() { return net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("animaniax", "block/fluid/milk_" + kind + "_flow"); }
+                    @Override public int getTintColor() { return 0xFFFFFFFF; }
                 });
             }
         });
@@ -134,8 +135,11 @@ public final class NeoForgeEntrypoint {
     private static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(Registries.RECIPE_SERIALIZER, "animaniax");
     private static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(Registries.ENTITY_TYPE, "animaniax");
     private static final DeferredRegister<net.minecraft.advancements.CriterionTrigger<?>> TRIGGERS = DeferredRegister.create(Registries.TRIGGER_TYPE, "animaniax");
+    private static final DeferredRegister<SoundEvent> SOUND_EVENTS = DeferredRegister.create(Registries.SOUND_EVENT, "animaniax");
 
     public NeoForgeEntrypoint(IEventBus modBus) {
+        net.syrupstudios.animaniax.sound.AnimaniaSounds.all().forEach((path, event) -> SOUND_EVENTS.register(path, () -> event));
+        SOUND_EVENTS.register(modBus);
         TRIGGERS.register("feed_animal", () -> net.syrupstudios.animaniax.advancement.FeedAnimalTrigger.INSTANCE);
         TRIGGERS.register(modBus);
         net.neoforged.neoforge.common.NeoForgeMod.enableMilkFluid();
@@ -269,6 +273,7 @@ public final class NeoForgeEntrypoint {
         ITEMS.register("mud", () -> MudContent.ITEM);
         BLOCK_ENTITIES.register("trough", () -> TroughContent.TROUGH_ENTITY);
         BLOCK_ENTITIES.register("pet_bowl", () -> PetBowlContent.BLOCK_ENTITY);
+        BLOCK_ENTITIES.register("prop", () -> net.syrupstudios.animaniax.block.PropBlockEntityContent.ENTITY);
         BLOCK_ENTITIES.register("nest", () -> NestContent.NEST_ENTITY);
         BLOCKS.register("hamster_wheel", () -> HamsterWheelContent.WHEEL);
         ITEMS.register("hamster_wheel", () -> HamsterWheelContent.ITEM);

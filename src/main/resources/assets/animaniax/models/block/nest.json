@@ -1,11 +1,5 @@
 {
-  "parent": "minecraft:block/block",
-  "textures": { "wood": "minecraft:block/hay_block_side", "particle": "minecraft:block/hay_block_side" },
-  "elements": [
-    { "from": [1,0,1], "to": [15,3,15], "faces": { "north":{"texture":"#wood"}, "south":{"texture":"#wood"}, "east":{"texture":"#wood"}, "west":{"texture":"#wood"}, "up":{"texture":"#wood"}, "down":{"texture":"#wood"} } },
-    { "from": [1,3,1], "to": [4,5,15], "faces": { "north":{"texture":"#wood"}, "south":{"texture":"#wood"}, "east":{"texture":"#wood"}, "west":{"texture":"#wood"}, "up":{"texture":"#wood"}, "down":{"texture":"#wood"} } },
-    { "from": [12,3,1], "to": [15,5,15], "faces": { "north":{"texture":"#wood"}, "south":{"texture":"#wood"}, "east":{"texture":"#wood"}, "west":{"texture":"#wood"}, "up":{"texture":"#wood"}, "down":{"texture":"#wood"} } },
-    { "from": [4,3,1], "to": [12,5,4], "faces": { "north":{"texture":"#wood"}, "south":{"texture":"#wood"}, "east":{"texture":"#wood"}, "west":{"texture":"#wood"}, "up":{"texture":"#wood"}, "down":{"texture":"#wood"} } },
-    { "from": [4,3,12], "to": [12,5,15], "faces": { "north":{"texture":"#wood"}, "south":{"texture":"#wood"}, "east":{"texture":"#wood"}, "west":{"texture":"#wood"}, "up":{"texture":"#wood"}, "down":{"texture":"#wood"} } }
-  ]
+  "textures": {
+    "particle": "animaniax:block/nest"
+  }
 }

@@ -52,6 +52,7 @@ import net.syrupstudios.animaniax.entity.PeafowlEntity;
 import net.syrupstudios.animaniax.entity.PeafowlMorphState;
 import net.syrupstudios.animaniax.entity.AnimalProfile;
 import net.syrupstudios.animaniax.entity.AnimalProfile.Capability;
+import net.syrupstudios.animaniax.entity.AnimalVisualSyncState;
 import net.syrupstudios.animaniax.entity.RabbitBreedState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Final;
@@ -63,9 +64,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Mob.class)
-abstract class MobCareMixin implements AnimalCareState, AnimalSleepState, PigBreedState {
+abstract class MobCareMixin implements AnimalCareState, AnimalSleepState, PigBreedState, AnimalVisualSyncState {
     @Unique private static final EntityDataAccessor<Boolean> ANIMANIAX_SLEEPING =
             SynchedEntityData.defineId(Mob.class, EntityDataSerializers.BOOLEAN);
+    @Unique private static final EntityDataAccessor<String> ANIMANIAX_BREED =
+            SynchedEntityData.defineId(Mob.class, EntityDataSerializers.STRING);
+    @Unique private static final EntityDataAccessor<Boolean> ANIMANIAX_FEMALE =
+            SynchedEntityData.defineId(Mob.class, EntityDataSerializers.BOOLEAN);
+    @Unique private static final EntityDataAccessor<Integer> ANIMANIAX_VISUAL_FLAGS =
+            SynchedEntityData.defineId(Mob.class, EntityDataSerializers.INT);
     @Shadow @Final protected GoalSelector goalSelector;
 
     @Unique private int animaniax$hunger = 100;
@@ -86,6 +93,17 @@ abstract class MobCareMixin implements AnimalCareState, AnimalSleepState, PigBre
     @Inject(method = "defineSynchedData", at = @At("TAIL"))
     private void animaniax$defineSleepState(SynchedEntityData.Builder builder, CallbackInfo ci) {
         builder.define(ANIMANIAX_SLEEPING, false);
+        builder.define(ANIMANIAX_BREED, "");
+        builder.define(ANIMANIAX_FEMALE, (((Mob) (Object) this).getUUID().getLeastSignificantBits() & 1L) != 0);
+        builder.define(ANIMANIAX_VISUAL_FLAGS, 0);
+    }
+
+    @Inject(method = "playAmbientSound", at = @At("HEAD"), cancellable = true)
+    private void animaniax$silenceSleepingMob(CallbackInfo ci) {
+        Mob mob = (Mob) (Object) this;
+        if (animaniax$isSleepingAnimal(mob) && (animaniax$isSleeping() || mob.isSleeping())) {
+            ci.cancel();
+        }
     }
 
     @Inject(method = "tick", at = @At("TAIL"))
@@ -104,6 +122,7 @@ abstract class MobCareMixin implements AnimalCareState, AnimalSleepState, PigBre
                 mob.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 2, 4, false, false));
                 animaniax$mudEnrichment = 100;
             }
+            animaniax$setSyncedMuddy(animaniax$mudEnrichment >= 70);
         }
         if (++animaniax$careTicks >= 1200) {
             animaniax$careTicks = 0;
@@ -237,6 +256,7 @@ abstract class MobCareMixin implements AnimalCareState, AnimalSleepState, PigBre
         if (mob.getType() == EntityType.PIG) {
             animaniax$mudEnrichment = tag.contains("AnimaniaxMudEnrichment")
                     ? Math.max(0, Math.min(100, tag.getInt("AnimaniaxMudEnrichment"))) : 100;
+            animaniax$setSyncedMuddy(animaniax$mudEnrichment >= 70);
             if (tag.contains("AnimaniaxPigBreed")) animaniax$setPigBreed(tag.getString("AnimaniaxPigBreed"));
         }
     }
@@ -498,6 +518,7 @@ abstract class MobCareMixin implements AnimalCareState, AnimalSleepState, PigBre
     @Unique
     public void animaniax$useMud() {
         animaniax$mudEnrichment = 100;
+        animaniax$setSyncedMuddy(true);
     }
 
     @Unique
@@ -516,16 +537,67 @@ abstract class MobCareMixin implements AnimalCareState, AnimalSleepState, PigBre
 
     @Override
     @Unique
-    public String animaniax$getPigBreed() { return animaniax$pigBreed; }
+    public String animaniax$getPigBreed() {
+        Mob mob = (Mob) (Object) this;
+        if (mob.level().isClientSide) {
+            String synced = animaniax$getSyncedBreed();
+            if (!synced.isEmpty()) return synced;
+        }
+        return animaniax$pigBreed;
+    }
 
     @Override
     @Unique
     public void animaniax$setPigBreed(String breed) {
         if (breed != null && PigBreedState.BREEDS.contains(breed)) {
             animaniax$pigBreed = breed;
+            animaniax$setSyncedBreed(breed);
             return;
         }
         animaniax$pigBreed = "Yorkshire";
+        animaniax$setSyncedBreed(animaniax$pigBreed);
+    }
+
+    @Override @Unique public String animaniax$getSyncedBreed() {
+        return ((Mob) (Object) this).getEntityData().get(ANIMANIAX_BREED);
+    }
+
+    @Override @Unique public void animaniax$setSyncedBreed(String breed) {
+        Mob mob = (Mob) (Object) this;
+        if (!mob.level().isClientSide && breed != null) mob.getEntityData().set(ANIMANIAX_BREED, breed);
+    }
+
+    @Override @Unique public boolean animaniax$isSyncedFemale() {
+        return ((Mob) (Object) this).getEntityData().get(ANIMANIAX_FEMALE);
+    }
+
+    @Override @Unique public void animaniax$setSyncedFemale(boolean female) {
+        Mob mob = (Mob) (Object) this;
+        if (!mob.level().isClientSide) mob.getEntityData().set(ANIMANIAX_FEMALE, female);
+    }
+
+    @Override @Unique public boolean animaniax$isSyncedMuddy() {
+        return (((Mob) (Object) this).getEntityData().get(ANIMANIAX_VISUAL_FLAGS) & 1) != 0;
+    }
+
+    @Override @Unique public void animaniax$setSyncedMuddy(boolean muddy) {
+        Mob mob = (Mob) (Object) this;
+        if (mob.level().isClientSide) return;
+        int flags = mob.getEntityData().get(ANIMANIAX_VISUAL_FLAGS);
+        int next = muddy ? (flags | 1) : (flags & ~1);
+        if (next != flags) mob.getEntityData().set(ANIMANIAX_VISUAL_FLAGS, next);
+    }
+
+    @Override @Unique public int animaniax$getSyncedVariant() {
+        return (((Mob) (Object) this).getEntityData().get(ANIMANIAX_VISUAL_FLAGS) >>> 1) & 0xF;
+    }
+
+    @Override @Unique public void animaniax$setSyncedVariant(int variant) {
+        Mob mob = (Mob) (Object) this;
+        if (mob.level().isClientSide) return;
+        int flags = mob.getEntityData().get(ANIMANIAX_VISUAL_FLAGS);
+        int next = (flags & ~0x1E) | ((variant & 0xF) << 1);
+        if (next != flags) mob.getEntityData().set(ANIMANIAX_VISUAL_FLAGS, next);
     }
 
     @Unique

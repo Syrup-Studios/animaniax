@@ -1,0 +1,380 @@
+{
+  "entity.chicken.ambient": {
+    "subtitle": "subtitles.animaniax.entity.chicken.ambient",
+    "sounds": [
+      "animaniax:chickens/cluck1",
+      "animaniax:chickens/cluck2",
+      "animaniax:chickens/cluck3",
+      "animaniax:chickens/cluck4",
+      "animaniax:chickens/cluck5",
+      "animaniax:chickens/cluck6"
+    ]
+  },
+  "entity.rooster.crow": {
+    "subtitle": "subtitles.animaniax.entity.rooster.crow",
+    "sounds": [
+      "animaniax:chickens/crow1",
+      "animaniax:chickens/crow2",
+      "animaniax:chickens/crow3"
+    ]
+  },
+  "entity.chicken.hurt": {
+    "subtitle": "subtitles.animaniax.entity.chicken.hurt",
+    "sounds": [
+      "animaniax:chickens/hurt1",
+      "animaniax:chickens/hurt2"
+    ]
+  },
+  "entity.chicken.death": {
+    "subtitle": "subtitles.animaniax.entity.chicken.death",
+    "sounds": [
+      "animaniax:chickens/death1",
+      "animaniax:chickens/death2"
+    ]
+  },
+  "entity.cow.ambient": {
+    "subtitle": "subtitles.animaniax.entity.cow.ambient",
+    "sounds": [
+      "animaniax:cows/moo1",
+      "animaniax:cows/moo2",
+      "animaniax:cows/moo3",
+      "animaniax:cows/moo4",
+      "animaniax:cows/moo5",
+      "animaniax:cows/moo6",
+      "animaniax:cows/moo7",
+      "animaniax:cows/moo8"
+    ]
+  },
+  "entity.cow.hurt": {
+    "subtitle": "subtitles.animaniax.entity.cow.hurt",
+    "sounds": [
+      "animaniax:cows/cowhurt1",
+      "animaniax:cows/cowhurt2"
+    ]
+  },
+  "entity.cow.death": {
+    "subtitle": "subtitles.animaniax.entity.cow.death",
+    "sounds": [
+      "animaniax:cows/cowdeath1",
+      "animaniax:cows/cowdeath2"
+    ]
+  },
+  "entity.cow.eat": {
+    "subtitle": "subtitles.animaniax.entity.cow.eat",
+    "sounds": [
+      "animaniax:cows/coweat1",
+      "animaniax:cows/coweat2"
+    ]
+  },
+  "entity.bull.ambient": {
+    "subtitle": "subtitles.animaniax.entity.bull.ambient",
+    "sounds": [
+      "animaniax:cows/bullmoo1",
+      "animaniax:cows/bullmoo2",
+      "animaniax:cows/bullmoo3",
+      "animaniax:cows/bullmoo4",
+      "animaniax:cows/bullmoo5",
+      "animaniax:cows/bullmoo6",
+      "animaniax:cows/bullmoo7",
+      "animaniax:cows/bullmoo8",
+      "animaniax:cows/moo4",
+      "animaniax:cows/moo8"
+    ]
+  },
+  "entity.bull.angry": {
+    "subtitle": "subtitles.animaniax.entity.bull.angry",
+    "sounds": [
+      "animaniax:cows/angrybull1",
+      "animaniax:cows/angrybull2",
+      "animaniax:cows/angrybull3"
+    ]
+  },
+  "entity.calf.ambient": {
+    "subtitle": "subtitles.animaniax.entity.calf.ambient",
+    "sounds": [
+      "animaniax:cows/moocalf1",
+      "animaniax:cows/moocalf2",
+      "animaniax:cows/moocalf3"
+    ]
+  },
+  "entity.calf.hurt": {
+    "subtitle": "subtitles.animaniax.entity.calf.hurt",
+    "sounds": [
+      "animaniax:cows/hurtcalf1",
+      "animaniax:cows/hurtcalf2"
+    ]
+  },
+  "entity.goat.ambient": {
+    "subtitle": "subtitles.animaniax.entity.goat.ambient",
+    "sounds": [
+      "animaniax:goats/living1",
+      "animaniax:goats/living2",
+      "animaniax:goats/living3",
+      "animaniax:goats/living4",
+      "animaniax:goats/living5"
+    ]
+  },
+  "entity.goat.hurt": {
+    "subtitle": "subtitles.animaniax.entity.goat.hurt",
+    "sounds": [
+      "animaniax:goats/hurt1",
+      "animaniax:goats/hurt2",
+      "animaniax:goats/living3"
+    ]
+  },
+  "entity.kid.ambient": {
+    "subtitle": "subtitles.animaniax.entity.kid.ambient",
+    "sounds": [
+      "animaniax:goats/kidliving1",
+      "animaniax:goats/kidliving2",
+      "animaniax:goats/kidliving3"
+    ]
+  },
+  "entity.kid.hurt": {
+    "subtitle": "subtitles.animaniax.entity.kid.hurt",
+    "sounds": [
+      "animaniax:goats/kidhurt1",
+      "animaniax:goats/kidhurt2"
+    ]
+  },
+  "entity.draft_horse.ambient": {
+    "subtitle": "subtitles.animaniax.entity.draft_horse.ambient",
+    "sounds": [
+      "animaniax:horses/livinghorse1",
+      "animaniax:horses/livinghorse2",
+      "animaniax:horses/livinghorse3",
+      "animaniax:horses/livinghorse4",
+      "animaniax:horses/livinghorse5",
+      "animaniax:horses/livinghorse6"
+    ]
+  },
+  "entity.draft_horse.hurt": {
+    "subtitle": "subtitles.animaniax.entity.draft_horse.hurt",
+    "sounds": [
+      "animaniax:horses/hurthorse1",
+      "animaniax:horses/hurthorse2",
+      "animaniax:horses/hurthorse3"
+    ]
+  },
+  "entity.pig.ambient": {
+    "subtitle": "subtitles.animaniax.entity.pig.ambient",
+    "sounds": [
+      "animaniax:pigs/pig1",
+      "animaniax:pigs/pig2",
+      "animaniax:pigs/pig3",
+      "animaniax:pigs/pig4",
+      "animaniax:pigs/pig5",
+      "animaniax:pigs/pig6",
+      "animaniax:pigs/pig7"
+    ]
+  },
+  "entity.hog.ambient": {
+    "subtitle": "subtitles.animaniax.entity.hog.ambient",
+    "sounds": [
+      "animaniax:pigs/hog1",
+      "animaniax:pigs/hog2",
+      "animaniax:pigs/hog3",
+      "animaniax:pigs/hog4",
+      "animaniax:pigs/hog5",
+      "animaniax:pigs/pig1",
+      "animaniax:pigs/pig2",
+      "animaniax:pigs/pig4"
+    ]
+  },
+  "entity.pig.hurt": {
+    "subtitle": "subtitles.animaniax.entity.pig.hurt",
+    "sounds": [
+      "animaniax:pigs/pighurt1",
+      "animaniax:pigs/pighurt2",
+      "animaniax:pigs/pig3"
+    ]
+  },
+  "entity.piglet.ambient": {
+    "subtitle": "subtitles.animaniax.entity.piglet.ambient",
+    "sounds": [
+      "animaniax:pigs/piglet1",
+      "animaniax:pigs/piglet2",
+      "animaniax:pigs/piglet3",
+      "animaniax:pigs/pig1",
+      "animaniax:pigs/pig2"
+    ]
+  },
+  "entity.piglet.hurt": {
+    "subtitle": "subtitles.animaniax.entity.piglet.hurt",
+    "sounds": [
+      "animaniax:pigs/piglethurt1",
+      "animaniax:pigs/piglethurt2",
+      "animaniax:pigs/piglethurt3"
+    ]
+  },
+  "entity.sheep.ambient": {
+    "subtitle": "subtitles.animaniax.entity.sheep.ambient",
+    "sounds": [
+      "animaniax:sheep/living1",
+      "animaniax:sheep/living2",
+      "animaniax:sheep/living3",
+      "animaniax:sheep/living4",
+      "animaniax:sheep/living5",
+      "animaniax:sheep/living6",
+      "animaniax:sheep/living7"
+    ]
+  },
+  "entity.sheep.hurt": {
+    "subtitle": "subtitles.animaniax.entity.sheep.hurt",
+    "sounds": [
+      "animaniax:sheep/hurt1",
+      "animaniax:sheep/living7"
+    ]
+  },
+  "entity.lamb.ambient": {
+    "subtitle": "subtitles.animaniax.entity.lamb.ambient",
+    "sounds": [
+      "animaniax:sheep/lambliving1",
+      "animaniax:sheep/lambliving2"
+    ]
+  },
+  "entity.lamb.hurt": {
+    "subtitle": "subtitles.animaniax.entity.lamb.hurt",
+    "sounds": [
+      "animaniax:sheep/hurt1",
+      "animaniax:sheep/lambliving2"
+    ]
+  },
+  "entity.rabbit.ambient": {
+    "subtitle": "subtitles.animaniax.entity.rabbit.ambient",
+    "sounds": [
+      "animaniax:rabbits/rabbit1",
+      "animaniax:rabbits/rabbit2",
+      "animaniax:rabbits/rabbit3",
+      "animaniax:rabbits/rabbit4"
+    ]
+  },
+  "entity.rabbit.hurt": {
+    "subtitle": "subtitles.animaniax.entity.rabbit.hurt",
+    "sounds": [
+      "animaniax:rabbits/rabbithurt1",
+      "animaniax:rabbits/rabbithurt2"
+    ]
+  },
+  "entity.peafowl.ambient": {
+    "subtitle": "subtitles.animaniax.entity.peafowl.ambient",
+    "sounds": [
+      "animaniax:peacocks/peacock1",
+      "animaniax:peacocks/peacock2",
+      "animaniax:peacocks/peacock3",
+      "animaniax:peacocks/peacock4",
+      "animaniax:peacocks/peacock5",
+      "animaniax:peacocks/peacock6",
+      "animaniax:peacocks/peacock7",
+      "animaniax:peacocks/peacock8",
+      "animaniax:peacocks/peacock9",
+      "animaniax:peacocks/peacock10"
+    ]
+  },
+  "entity.peafowl.hurt": {
+    "subtitle": "subtitles.animaniax.entity.peafowl.hurt",
+    "sounds": [
+      "animaniax:peacocks/peacockhurt1",
+      "animaniax:peacocks/peacockhurt2"
+    ]
+  },
+  "entity.hamster.ambient": {
+    "subtitle": "subtitles.animaniax.entity.hamster.ambient",
+    "sounds": [
+      "animaniax:hamsters/livingsound1",
+      "animaniax:hamsters/livingsound2",
+      "animaniax:hamsters/livingsound3"
+    ]
+  },
+  "entity.hamster.eat": {
+    "subtitle": "subtitles.animaniax.entity.hamster.eat",
+    "sounds": [
+      "animaniax:hamsters/eatsound1",
+      "animaniax:hamsters/eatsound2"
+    ]
+  },
+  "entity.hamster.hurt": {
+    "subtitle": "subtitles.animaniax.entity.hamster.hurt",
+    "sounds": [
+      "animaniax:hamsters/hurtsound1"
+    ]
+  },
+  "entity.hamster.death": {
+    "subtitle": "subtitles.animaniax.entity.hamster.death",
+    "sounds": [
+      "animaniax:hamsters/deathsound"
+    ]
+  },
+  "entity.ferret.ambient": {
+    "subtitle": "subtitles.animaniax.entity.ferret.ambient",
+    "sounds": [
+      "animaniax:ferrets/living1",
+      "animaniax:ferrets/living2",
+      "animaniax:ferrets/living3",
+      "animaniax:ferrets/living4",
+      "animaniax:ferrets/living5",
+      "animaniax:ferrets/living6"
+    ]
+  },
+  "entity.ferret.hurt": {
+    "subtitle": "subtitles.animaniax.entity.ferret.hurt",
+    "sounds": [
+      "animaniax:ferrets/hurt1"
+    ]
+  },
+  "entity.hedgehog.ambient": {
+    "subtitle": "subtitles.animaniax.entity.hedgehog.ambient",
+    "sounds": [
+      "animaniax:hedgehogs/living1",
+      "animaniax:hedgehogs/living2",
+      "animaniax:hedgehogs/living3",
+      "animaniax:hedgehogs/living4",
+      "animaniax:hedgehogs/living5"
+    ]
+  },
+  "entity.hedgehog.hurt": {
+    "subtitle": "subtitles.animaniax.entity.hedgehog.hurt",
+    "sounds": [
+      "animaniax:hedgehogs/hurt1",
+      "animaniax:hedgehogs/hurt2"
+    ]
+  },
+  "entity.common_frog.ambient": {
+    "subtitle": "subtitles.animaniax.entity.common_frog.ambient",
+    "sounds": [
+      "animaniax:amphibians/frogliving1",
+      "animaniax:amphibians/frogliving2",
+      "animaniax:amphibians/frogliving3"
+    ]
+  },
+  "entity.dart_frog.ambient": {
+    "subtitle": "subtitles.animaniax.entity.dart_frog.ambient",
+    "sounds": [
+      "animaniax:amphibians/dartfrogliving1",
+      "animaniax:amphibians/dartfrogliving2",
+      "animaniax:amphibians/dartfrogliving3",
+      "animaniax:amphibians/dartfrogliving4"
+    ]
+  },
+  "entity.toad.ambient": {
+    "subtitle": "subtitles.animaniax.entity.toad.ambient",
+    "sounds": [
+      "animaniax:amphibians/toadliving1",
+      "animaniax:amphibians/toadliving2",
+      "animaniax:amphibians/toadliving3",
+      "animaniax:amphibians/toadliving4"
+    ]
+  },
+  "entity.vehicle.hitch": {
+    "subtitle": "subtitles.animaniax.entity.vehicle.hitch",
+    "sounds": [
+      "animaniax:props/hitch"
+    ]
+  },
+  "entity.vehicle.unhitch": {
+    "subtitle": "subtitles.animaniax.entity.vehicle.unhitch",
+    "sounds": [
+      "animaniax:props/unhitch"
+    ]
+  }
+}

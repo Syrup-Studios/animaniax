@@ -1,1 +1,5 @@
-{"parent":"minecraft:block/block","textures":{"wool":"minecraft:block/white_wool","particle":"minecraft:block/white_wool"},"elements":[{"from":[2,0,2],"to":[14,1,14],"faces":{"north":{"texture":"#wool"},"south":{"texture":"#wool"},"east":{"texture":"#wool"},"west":{"texture":"#wool"},"up":{"texture":"#wool"},"down":{"texture":"#wool"}}}]}
+{
+  "textures": {
+    "particle": "animaniax:entity/tileentities/cat_bed_1"
+  }
+}

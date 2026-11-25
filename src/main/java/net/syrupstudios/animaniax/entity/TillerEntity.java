@@ -7,7 +7,9 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
+import net.syrupstudios.animaniax.sound.AnimaniaSounds;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.damagesource.DamageSource;
@@ -71,7 +73,13 @@ public final class TillerEntity extends Entity {
             return InteractionResult.sidedSuccess(level().isClientSide);
         }
         if (!level().isClientSide && held.isEmpty()) {
-            if (pullerId != null) { puller = null; pullerId = null; return InteractionResult.SUCCESS; }
+            if (pullerId != null) {
+                if (puller != null) {
+                    level().playSound(null, getX(), getY(), getZ(), AnimaniaSounds.VEHICLE_UNHITCH,
+                            SoundSource.PLAYERS, 0.7F, 1.5F);
+                }
+                puller = null; pullerId = null; return InteractionResult.SUCCESS;
+            }
             Mob animal = level().getEntitiesOfClass(Mob.class, getBoundingBox().inflate(3), mob ->
                     (mob instanceof AbstractHorse || mob instanceof net.minecraft.world.entity.animal.Pig)
                             && mob.isLeashed() && mob.getLeashHolder() == player).stream().findFirst().orElse(null);
@@ -85,6 +93,8 @@ public final class TillerEntity extends Entity {
                 puller = candidate;
                 pullerId = candidate.getUUID();
             }
+            level().playSound(null, getX(), getY(), getZ(), AnimaniaSounds.VEHICLE_HITCH,
+                    SoundSource.PLAYERS, 0.7F, 1.5F);
             return InteractionResult.SUCCESS;
         }
         return InteractionResult.PASS;
@@ -99,6 +109,8 @@ public final class TillerEntity extends Entity {
         if (puller == null && pullerId != null && level() instanceof ServerLevel server) puller = server.getEntity(pullerId);
         if (puller != null && (!puller.isAlive() || puller.level() != level()
                 || Math.abs(puller.getX() - getX()) > 12 || Math.abs(puller.getZ() - getZ()) > 12)) {
+            level().playSound(null, getX(), getY(), getZ(), AnimaniaSounds.VEHICLE_UNHITCH,
+                    SoundSource.PLAYERS, 0.7F, 1.5F);
             puller = null; pullerId = null;
         }
         if (puller != null) {

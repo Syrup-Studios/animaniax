@@ -1,5 +1,7 @@
 {
   "variants": {
-    "": { "model": "animaniax:block/pet_bowl" }
+    "": {
+      "model": "animaniax:block/pet_bowl"
+    }
   }
 }

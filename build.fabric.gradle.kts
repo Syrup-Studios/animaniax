@@ -41,7 +41,10 @@ loom {
     }
 }
 
-tasks.withType<Jar>().configureEach { from(rootProject.file("LICENSE.md")) { into("META-INF") } }
+tasks.withType<Jar>().configureEach {
+    from(rootProject.file("LICENSE.md")) { into("META-INF") }
+    from(rootProject.file("LICENSES")) { into("META-INF/LICENSES") }
+}
 
 tasks.processResources {
     val values = mapOf(

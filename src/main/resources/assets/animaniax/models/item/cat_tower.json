@@ -1,1 +1,6 @@
-{"parent":"animaniax:block/cat_tower"}
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "animaniax:item/cat_tower"
+  }
+}

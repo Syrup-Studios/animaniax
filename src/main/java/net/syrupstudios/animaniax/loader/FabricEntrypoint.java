@@ -80,6 +80,7 @@ public final class FabricEntrypoint implements ModInitializer {
 
     @Override
     public void onInitialize() {
+        net.syrupstudios.animaniax.sound.AnimaniaSounds.registerFabric();
         net.syrupstudios.animaniax.advancement.FeedAnimalTrigger.register();
         net.minecraft.core.Registry.register(BuiltInRegistries.FEATURE, BeeHiveFeature.ID, BeeHiveFeature.INSTANCE);
         ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.INGREDIENTS).register(entries ->
@@ -94,6 +95,7 @@ public final class FabricEntrypoint implements ModInitializer {
         PetBowlContent.registerFabric();
         PetBedContent.registerFabric();
         DecorativePropContent.registerFabric();
+        net.syrupstudios.animaniax.block.PropBlockEntityContent.registerFabric();
         SeedPileContent.registerFabric();
         StrawContent.registerFabric();
         MudContent.registerFabric();

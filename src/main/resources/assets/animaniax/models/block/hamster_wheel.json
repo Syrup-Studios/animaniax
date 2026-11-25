@@ -1,1 +1,5 @@
-{"parent":"minecraft:block/cube","textures":{"particle":"minecraft:block/iron_block","down":"minecraft:block/stone","up":"minecraft:block/stone","north":"minecraft:block/iron_block","south":"minecraft:block/iron_block","east":"minecraft:block/iron_block","west":"minecraft:block/iron_block"}}
+{
+  "textures": {
+    "particle": "animaniax:block/hamster_wheel"
+  }
+}

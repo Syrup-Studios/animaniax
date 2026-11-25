@@ -4,6 +4,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -32,6 +35,7 @@ public final class HamsterWheelBlockEntity extends BlockEntity implements Worldl
     private static final int FOOD_CAPACITY = 16;
     private ItemStack food = ItemStack.EMPTY;
     private CompoundTag hamster;
+    private int syncedHamsterColor;
     private int ticks;
     private int energy;
     private boolean ejectionPending;
@@ -41,9 +45,16 @@ public final class HamsterWheelBlockEntity extends BlockEntity implements Worldl
 
     public HamsterWheelBlockEntity(BlockPos pos, BlockState state) { super(HamsterWheelContent.ENTITY, pos, state); }
     public boolean occupied() { return hamster != null; }
+    public int getHamsterColor() {
+        return hamster != null && hamster.contains("ColorNumber") ? extractHamsterColor(hamster) : syncedHamsterColor;
+    }
+    private static int extractHamsterColor(CompoundTag data) {
+        return data != null && data.contains("ColorNumber") ? Math.floorMod(data.getInt("ColorNumber"), 9) : 0;
+    }
     public boolean insertHamster(CompoundTag data) {
         if (hamster != null || !validHamster(data)) return false;
         hamster = data.copy();
+        syncedHamsterColor = extractHamsterColor(hamster);
         ticks = 0;
         ejectionPending = false;
         syncOccupancy();
@@ -59,6 +70,7 @@ public final class HamsterWheelBlockEntity extends BlockEntity implements Worldl
         ItemStack stack = new ItemStack(HamsterCarryContent.CARRIED_HAMSTER);
         HamsterCarryItem.storeData(stack, hamster);
         hamster = null;
+        syncedHamsterColor = 0;
         ticks = 0;
         ejectionPending = false;
         syncOccupancy();
@@ -74,7 +86,11 @@ public final class HamsterWheelBlockEntity extends BlockEntity implements Worldl
     @Override public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
         CompoundTag tag = new CompoundTag();
         tag.putBoolean("Occupied", occupied());
+        tag.putInt("HamsterColor", getHamsterColor());
         return tag;
+    }
+    @Override public Packet<ClientGamePacketListener> getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
     }
     public static void serverTick(Level level, BlockPos pos, BlockState state, HamsterWheelBlockEntity wheel) {
         if (level.isClientSide) return;
@@ -165,6 +181,7 @@ public final class HamsterWheelBlockEntity extends BlockEntity implements Worldl
             return false;
         }
         hamster = null;
+        syncedHamsterColor = 0;
         ticks = 0;
         ejectionPending = false;
         syncOccupancy();
@@ -181,6 +198,7 @@ public final class HamsterWheelBlockEntity extends BlockEntity implements Worldl
         food = tag.contains("Food", 10) ? ItemStack.parse(registries, tag.getCompound("Food")).orElse(ItemStack.EMPTY) : ItemStack.EMPTY;
         if (tag.contains("Occupied", 1)) hamster = tag.getBoolean("Occupied") ? (hamster == null ? new CompoundTag() : hamster) : null;
         else hamster = tag.contains("Hamster", 10) ? tag.getCompound("Hamster").copy() : null;
+        syncedHamsterColor = tag.contains("HamsterColor") ? Math.floorMod(tag.getInt("HamsterColor"), 9) : extractHamsterColor(hamster);
         ejectionPending = hamster != null && tag.getBoolean("EjectionPending") && food.isEmpty();
         ticks = Math.max(0, Math.min(ejectionPending ? 19 : getUseTime() - 1, tag.getInt("Ticks")));
         energy = Math.max(0, Math.min(getEnergyCapacity(), tag.getInt("Energy")));

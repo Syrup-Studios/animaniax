@@ -1,6 +1,7 @@
 {
-  "parent": "minecraft:block/cross",
+  "parent": "minecraft:block/carpet",
   "textures": {
-    "cross": "minecraft:item/beetroot_seeds"
+    "wool": "animaniax:block/seeds_beetroot",
+    "particle": "animaniax:block/seeds_beetroot"
   }
 }

@@ -1,4 +1,6 @@
 {
   "parent": "minecraft:item/generated",
-  "textures": { "layer0": "minecraft:item/chicken" }
+  "textures": {
+    "layer0": "animaniax:item/raw_frog_legs"
+  }
 }

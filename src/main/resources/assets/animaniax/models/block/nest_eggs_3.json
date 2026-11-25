@@ -1,8 +1,0 @@
-{
-  "parent": "animaniax:block/nest",
-  "elements": [
-    { "from": [4,5,7], "to": [7,7,10], "faces": { "north":{"texture":"minecraft:item/egg"}, "south":{"texture":"minecraft:item/egg"}, "east":{"texture":"minecraft:item/egg"}, "west":{"texture":"minecraft:item/egg"}, "up":{"texture":"minecraft:item/egg"}, "down":{"texture":"minecraft:item/egg"} } },
-    { "from": [7,5,5], "to": [10,7,8], "faces": { "north":{"texture":"minecraft:item/egg"}, "south":{"texture":"minecraft:item/egg"}, "east":{"texture":"minecraft:item/egg"}, "west":{"texture":"minecraft:item/egg"}, "up":{"texture":"minecraft:item/egg"}, "down":{"texture":"minecraft:item/egg"} } },
-    { "from": [9,5,8], "to": [12,7,11], "faces": { "north":{"texture":"minecraft:item/egg"}, "south":{"texture":"minecraft:item/egg"}, "east":{"texture":"minecraft:item/egg"}, "west":{"texture":"minecraft:item/egg"}, "up":{"texture":"minecraft:item/egg"}, "down":{"texture":"minecraft:item/egg"} } }
-  ]
-}

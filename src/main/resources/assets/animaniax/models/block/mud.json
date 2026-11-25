@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "minecraft:block/mud",
-    "particle": "minecraft:block/mud"
+    "all": "animaniax:block/mud",
+    "particle": "animaniax:block/mud"
   }
 }

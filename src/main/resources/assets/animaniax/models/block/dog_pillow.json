@@ -1,1 +1,5 @@
-{"parent":"minecraft:block/block","textures":{"wool":"minecraft:block/white_wool","particle":"minecraft:block/white_wool"},"elements":[{"from":[1,0,1],"to":[15,1,15],"faces":{"north":{"texture":"#wool"},"south":{"texture":"#wool"},"east":{"texture":"#wool"},"west":{"texture":"#wool"},"up":{"texture":"#wool"},"down":{"texture":"#wool"}}}]}
+{
+  "textures": {
+    "particle": "animaniax:entity/tileentities/dog_pillow"
+  }
+}

@@ -1,1 +1,6 @@
-{"parent":"animaniax:block/hamster_wheel"}
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "animaniax:item/hamster_wheel"
+  }
+}

@@ -54,6 +54,7 @@ public final class HamsterWheelBlock extends Block implements EntityBlock {
     }
     private static void giveOrDrop(Player player, ItemStack stack) { if (!stack.isEmpty() && !player.getInventory().add(stack)) player.drop(stack, false); }
     @Override public BlockEntity newBlockEntity(BlockPos pos, BlockState state) { return new HamsterWheelBlockEntity(pos, state); }
+    @Override protected net.minecraft.world.level.block.RenderShape getRenderShape(BlockState state) { return net.minecraft.world.level.block.RenderShape.ENTITYBLOCK_ANIMATED; }
     @Override @SuppressWarnings("unchecked") public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) { return level.isClientSide || type != HamsterWheelContent.ENTITY ? null : (BlockEntityTicker<T>) (BlockEntityTicker<HamsterWheelBlockEntity>) HamsterWheelBlockEntity::serverTick; }
     @Override public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
         if (!state.is(newState.getBlock()) && !level.isClientSide && level.getBlockEntity(pos) instanceof HamsterWheelBlockEntity wheel) {

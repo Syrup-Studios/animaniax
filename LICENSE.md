@@ -68,3 +68,7 @@ This License shall be governed by and construed in accordance with the laws of G
 ## 12. License Versions
 
 Syrup Studios may publish revised versions of this License. Each version will be given a distinguishing version number. Unless otherwise specified, The Work is always governed by the most recent version of the Responsive Source License published by Syrup Studios.
+
+## Third-Party Placeholder Assets (GNU LGPL-3.0 Exception)
+
+Notwithstanding anything in this License to the contrary, the temporary Animania placeholder textures, models, and sounds stored under `src/main/resources/assets/animaniax/` (specifically `textures/**`, `models/block/**`, `models/item/**`, `models/placeholder/**`, `sounds/**`, and `sounds.json`), as documented in [LICENSES/ANIMANIA_ASSETS_NOTICE.md](LICENSES/ANIMANIA_ASSETS_NOTICE.md), are not part of The Work authored by Syrup Studios. Those placeholder assets, models, and sounds are governed solely by the GNU Lesser General Public License v3.0 (`LICENSES/LGPL-3.0.txt`, incorporating `LICENSES/GPL-3.0.txt`). All other files in this repository, including all Java source code, datapack files, language files, blockstates, build configuration, and documentation, remain governed exclusively by Responsive Source License (RSL) v1.0.

@@ -1,1 +1,7 @@
-{"variants":{"":{"model":"animaniax:block/bee_hive"}}}
+{
+  "variants": {
+    "": {
+      "model": "animaniax:block/wild_hive"
+    }
+  }
+}

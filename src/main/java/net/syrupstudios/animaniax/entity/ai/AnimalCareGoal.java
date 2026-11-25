@@ -34,6 +34,7 @@ import net.syrupstudios.animaniax.block.PetBowlBlockEntity;
 import net.syrupstudios.animaniax.block.PetBowlContent;
 import net.syrupstudios.animaniax.block.SeedPileContent;
 import net.syrupstudios.animaniax.item.TruffleContent;
+import net.syrupstudios.animaniax.sound.AnimaniaSounds;
 
 public final class AnimalCareGoal extends Goal {
     private static final TagKey<Block> FORAGE_PLANTS = TagKey.create(Registries.BLOCK,
@@ -157,6 +158,9 @@ public final class AnimalCareGoal extends Goal {
                 if (foodBlock != null && mob.level().getBlockState(foodBlock).is(TroughContent.TROUGH)
                         && mob.level().getBlockState(foodBlock).getValue(TroughBlock.CONTENT) == 3) care.animaniax$eatSlop();
                 else care.animaniax$graze();
+                if (mob.getType() == EntityType.COW || mob.getType() == EntityType.MOOSHROOM) {
+                    mob.playSound(AnimaniaSounds.COW_EAT, 0.6F, 1.0F);
+                }
                 careChecksUntilSearch = AnimalCareConfig.ticksBetweenAIFirings;
             } else if (need == Need.SEEDS && animaniax$eatSeed()) {
                 care.animaniax$graze();

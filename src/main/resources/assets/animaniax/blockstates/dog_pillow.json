@@ -1,1 +1,7 @@
-{"variants":{"":{"model":"animaniax:block/dog_pillow"}}}
+{
+  "variants": {
+    "": {
+      "model": "animaniax:block/dog_pillow"
+    }
+  }
+}

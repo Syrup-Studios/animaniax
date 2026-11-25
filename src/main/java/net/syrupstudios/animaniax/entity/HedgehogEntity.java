@@ -44,6 +44,9 @@ import net.syrupstudios.animaniax.block.NestBlockEntity;
 import net.syrupstudios.animaniax.block.NestContent;
 import net.syrupstudios.animaniax.advancement.FeedAnimalTrigger;
 import net.syrupstudios.animaniax.config.AnimalCareConfig;
+import net.syrupstudios.animaniax.sound.AnimaniaSounds;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.damagesource.DamageSource;
 
 public final class HedgehogEntity extends TamableAnimal {
     private static final TagKey<Item> HEDGEHOG_FOODS = TagKey.create(Registries.ITEM,
@@ -166,6 +169,11 @@ public final class HedgehogEntity extends TamableAnimal {
         nestForageCooldown = Math.max(0, Math.min(12000, tag.getInt("NestForageCooldown")));
         careInteracted = tag.contains("CareInteracted") ? tag.getBoolean("CareInteracted") : isTame();
     }
+
+    @Override protected SoundEvent getAmbientSound() { return AnimaniaSounds.HEDGEHOG_AMBIENT; }
+    @Override protected SoundEvent getHurtSound(DamageSource source) { return AnimaniaSounds.HEDGEHOG_HURT; }
+    @Override protected SoundEvent getDeathSound() { return AnimaniaSounds.HEDGEHOG_HURT; }
+    @Override protected float getSoundVolume() { return 0.45F; }
 
     @Override public boolean canFallInLove() { return false; }
     @Override public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob mate) { return null; }

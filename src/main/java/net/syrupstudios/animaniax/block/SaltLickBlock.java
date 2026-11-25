@@ -28,6 +28,10 @@ public final class SaltLickBlock extends Block implements EntityBlock {
         return new SaltLickBlockEntity(pos, state);
     }
 
+    @Override protected net.minecraft.world.level.block.RenderShape getRenderShape(BlockState state) {
+        return net.minecraft.world.level.block.RenderShape.ENTITYBLOCK_ANIMATED;
+    }
+
     @Override public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
         if (level.getBlockEntity(pos) instanceof SaltLickBlockEntity lick) {
             if (stack.getDamageValue() == 0) {

@@ -1,1 +1,9 @@
-{"variants":{"facing=north":{"model":"animaniax:block/litter_box"},"facing=east":{"model":"animaniax:block/litter_box","y":90},"facing=south":{"model":"animaniax:block/litter_box","y":180},"facing=west":{"model":"animaniax:block/litter_box","y":270}}}
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "animaniax:block/litter_box"
+      }
+    }
+  ]
+}

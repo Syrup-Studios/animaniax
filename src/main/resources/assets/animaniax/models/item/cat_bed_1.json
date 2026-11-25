@@ -1,1 +1,6 @@
-{"parent":"animaniax:block/cat_bed_1"}
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "animaniax:item/cat_bed_1"
+  }
+}

@@ -24,8 +24,10 @@ import net.minecraft.world.entity.animal.frog.Frog;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.Level;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.syrupstudios.animaniax.sound.AnimaniaSounds;
 import org.jetbrains.annotations.Nullable;
 
 public final class CommonFrogEntity extends Frog {
@@ -145,6 +147,10 @@ public final class CommonFrogEntity extends Frog {
             pepeModeApplied = false;
         }
     }
+
+    @Override protected SoundEvent getAmbientSound() { return AnimaniaSounds.COMMON_FROG_AMBIENT; }
+    @Override protected SoundEvent getHurtSound(DamageSource source) { return null; }
+    @Override protected SoundEvent getDeathSound() { return null; }
 
     @Override public boolean isFood(net.minecraft.world.item.ItemStack stack) { return false; }
     @Override public boolean canFallInLove() { return false; }

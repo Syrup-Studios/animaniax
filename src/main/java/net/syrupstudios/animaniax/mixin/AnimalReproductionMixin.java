@@ -294,6 +294,9 @@ abstract class AnimalReproductionMixin implements AnimalReproductionState, Anima
         animaniax$sexSet = tag.getBoolean("AnimaniaxSexSet");
         animaniax$sterilized = tag.getBoolean("AnimaniaxSterilized");
         animaniax$female = tag.getBoolean("AnimaniaxFemale");
+        if (!animal.level().isClientSide && animaniax$sexSet) {
+            ((net.syrupstudios.animaniax.entity.AnimalVisualSyncState) animal).animaniax$setSyncedFemale(animaniax$female);
+        }
         animaniax$hasGivenBirth = tag.contains("AnimaniaxHasGivenBirth")
                 ? tag.getBoolean("AnimaniaxHasGivenBirth") : true;
         animaniax$lactating = tag.contains("AnimaniaxLactating")
@@ -312,12 +315,20 @@ abstract class AnimalReproductionMixin implements AnimalReproductionState, Anima
     }
 
     @Override public boolean animaniax$isFemale() {
+        Animal animal = (Animal) (Object) this;
+        if (animal.level().isClientSide) {
+            return ((net.syrupstudios.animaniax.entity.AnimalVisualSyncState) animal).animaniax$isSyncedFemale();
+        }
         return animaniax$sexSet ? animaniax$female
-                : (((Animal) (Object) this).getUUID().getLeastSignificantBits() & 1L) != 0;
+                : (animal.getUUID().getLeastSignificantBits() & 1L) != 0;
     }
     @Override public void animaniax$setFemale(boolean female) {
         animaniax$sexSet = true;
         animaniax$female = female;
+        Animal animal = (Animal) (Object) this;
+        if (!animal.level().isClientSide) {
+            ((net.syrupstudios.animaniax.entity.AnimalVisualSyncState) animal).animaniax$setSyncedFemale(female);
+        }
     }
     @Override public boolean animaniax$isPregnant() { return !animaniax$babies.isEmpty() && animaniax$gestation > 0; }
     @Override public int animaniax$fertilityCooldownRemaining() { return animaniax$fertilityCooldown; }

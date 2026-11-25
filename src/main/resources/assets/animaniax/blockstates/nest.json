@@ -1,8 +1,9 @@
 {
-  "variants": {
-    "eggs=0": { "model": "animaniax:block/nest" },
-    "eggs=1": { "model": "animaniax:block/nest_eggs_1" },
-    "eggs=2": { "model": "animaniax:block/nest_eggs_2" },
-    "eggs=3": { "model": "animaniax:block/nest_eggs_3" }
-  }
+  "multipart": [
+    {
+      "apply": {
+        "model": "animaniax:block/nest"
+      }
+    }
+  ]
 }

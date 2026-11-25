@@ -5,7 +5,9 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
+import net.syrupstudios.animaniax.sound.AnimaniaSounds;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.damagesource.DamageSource;
@@ -97,6 +99,7 @@ public class PullCartEntity extends Entity {
                     puller = leashed;
                     pullerId = leashed.getUUID();
                     setOwnerIfMissing(player);
+                    playHitchSound(true);
                     if (!player.getAbilities().instabuild) {
                         ItemStack lead = new ItemStack(Items.LEAD);
                         if (!player.getInventory().add(lead)) player.drop(lead, false);
@@ -130,6 +133,7 @@ public class PullCartEntity extends Entity {
                 puller = candidate;
                 pullerId = candidate.getUUID();
                 setOwnerIfMissing(player);
+                playHitchSound(true);
             }
         }
         return InteractionResult.sidedSuccess(level().isClientSide);
@@ -152,8 +156,15 @@ public class PullCartEntity extends Entity {
     }
 
     private void clearPuller() {
+        if (puller != null && !level().isClientSide) playHitchSound(false);
         puller = null;
         pullerId = null;
+    }
+
+    private void playHitchSound(boolean hitched) {
+        level().playSound(null, getX(), getY(), getZ(),
+                hitched ? AnimaniaSounds.VEHICLE_HITCH : AnimaniaSounds.VEHICLE_UNHITCH,
+                SoundSource.PLAYERS, 0.7F, 1.5F);
     }
 
     protected boolean shouldDropChest() { return hasChest(); }

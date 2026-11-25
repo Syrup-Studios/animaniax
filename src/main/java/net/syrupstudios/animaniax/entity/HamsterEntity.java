@@ -46,6 +46,8 @@ import net.syrupstudios.animaniax.block.TroughContent;
 import net.syrupstudios.animaniax.item.HamsterBallContent;
 import net.syrupstudios.animaniax.advancement.FeedAnimalTrigger;
 import net.syrupstudios.animaniax.config.AnimalCareConfig;
+import net.syrupstudios.animaniax.sound.AnimaniaSounds;
+import net.minecraft.sounds.SoundEvent;
 
 import java.util.EnumSet;
 
@@ -56,6 +58,7 @@ public final class HamsterEntity extends TamableAnimal {
     private static final TagKey<Item> HAMSTER_FOODS = TagKey.create(Registries.ITEM, id("hamster_foods"));
     private static final EntityDataAccessor<Boolean> IN_BALL = net.minecraft.network.syncher.SynchedEntityData.defineId(HamsterEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> BALL_COLOR = net.minecraft.network.syncher.SynchedEntityData.defineId(HamsterEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> COLOR_NUMBER = net.minecraft.network.syncher.SynchedEntityData.defineId(HamsterEntity.class, EntityDataSerializers.INT);
     private static final String STORED_FOOD_TAG = "StoredFood";
     private static final String FED_TICKS_TAG = "FedTicks";
     private static final String WATERED_TICKS_TAG = "WateredTicks";
@@ -80,10 +83,12 @@ public final class HamsterEntity extends TamableAnimal {
         super.defineSynchedData(builder);
         builder.define(IN_BALL, false);
         builder.define(BALL_COLOR, -1);
+        builder.define(COLOR_NUMBER, getRandom().nextInt(9));
     }
 
     public boolean isInBall() { return entityData.get(IN_BALL); }
     public int getBallColor() { return entityData.get(BALL_COLOR); }
+    public int getColorNumber() { return Math.floorMod(entityData.get(COLOR_NUMBER), 9); }
 
     @Override
     protected void registerGoals() {
@@ -188,6 +193,7 @@ public final class HamsterEntity extends TamableAnimal {
                 ItemStack feedItem = held.copy();
                 if (storedFood < 5) storedFood++;
                 else heal(1.0F);
+                playSound(AnimaniaSounds.HAMSTER_EAT, 0.6F, 0.8F);
                 if (!player.getAbilities().instabuild) held.shrink(1);
                 if (player instanceof ServerPlayer serverPlayer) FeedAnimalTrigger.INSTANCE.trigger(serverPlayer, this, feedItem);
                 player.displayClientMessage(net.minecraft.network.chat.Component.literal("Hamster food: " + storedFood + "/5."), true);
@@ -229,6 +235,7 @@ public final class HamsterEntity extends TamableAnimal {
         tag.putInt(IDLE_FOOD_TICKS_TAG, idleFoodTicks);
         tag.putBoolean("InBall", isInBall());
         tag.putInt("BallColor", getBallColor());
+        tag.putInt("ColorNumber", getColorNumber());
         tag.putInt(FED_TICKS_TAG, fedTicks);
         tag.putInt(WATERED_TICKS_TAG, wateredTicks);
         tag.putInt("PetStarvationTimer", starvationTimer);
@@ -244,6 +251,9 @@ public final class HamsterEntity extends TamableAnimal {
         entityData.set(IN_BALL, tag.getBoolean("InBall"));
         int color = tag.getInt("BallColor");
         entityData.set(BALL_COLOR, color >= -1 && color < net.minecraft.world.item.DyeColor.values().length ? color : -1);
+        if (tag.contains("ColorNumber")) {
+            entityData.set(COLOR_NUMBER, Math.floorMod(tag.getInt("ColorNumber"), 9));
+        }
         fedTicks = tag.contains(FED_TICKS_TAG)
                 ? Math.max(0, Math.min(PetCarePenalty.maxFedTicks(), tag.getInt(FED_TICKS_TAG)))
                 : foodTicks();
@@ -253,6 +263,26 @@ public final class HamsterEntity extends TamableAnimal {
         starvationTimer = Math.max(0, Math.min(AnimalCareConfig.starvationTimer, tag.getInt("PetStarvationTimer")));
         careInteracted = tag.contains(CARE_INTERACTED_TAG)
                 ? tag.getBoolean(CARE_INTERACTED_TAG) : isTame();
+    }
+
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return AnimaniaSounds.HAMSTER_AMBIENT;
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return AnimaniaSounds.HAMSTER_HURT;
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return AnimaniaSounds.HAMSTER_DEATH;
+    }
+
+    @Override
+    protected float getSoundVolume() {
+        return 0.5F;
     }
 
     @Override
@@ -341,6 +371,7 @@ public final class HamsterEntity extends TamableAnimal {
                 if (level().getBlockEntity(bowlPos) instanceof PetBowlBlockEntity bowl && bowl.consumeFood(TYPE)) {
                     fedTicks = foodTicks();
                     careInteracted = true;
+                    playSound(AnimaniaSounds.HAMSTER_EAT, 0.6F, 0.8F);
                 }
                 getNavigation().stop();
                 approach = bowlPos = null;

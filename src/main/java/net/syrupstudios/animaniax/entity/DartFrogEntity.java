@@ -18,13 +18,16 @@ import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.animal.frog.Frog;
 import net.minecraft.world.entity.animal.FrogVariant;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.syrupstudios.animaniax.sound.AnimaniaSounds;
 
 public final class DartFrogEntity extends Frog {
     private static final EntityDataAccessor<Integer> POISON_COOLDOWN = SynchedEntityData.defineId(DartFrogEntity.class, EntityDataSerializers.INT);
@@ -91,6 +94,10 @@ public final class DartFrogEntity extends Frog {
         super.readAdditionalSaveData(tag);
         setPoisonCooldown(Math.max(0, tag.getInt("PoisonCooldown")));
     }
+
+    @Override protected SoundEvent getAmbientSound() { return AnimaniaSounds.DART_FROG_AMBIENT; }
+    @Override protected SoundEvent getHurtSound(DamageSource source) { return null; }
+    @Override protected SoundEvent getDeathSound() { return null; }
 
     @Override public boolean isFood(ItemStack stack) { return false; }
     @Override public boolean canFallInLove() { return false; }

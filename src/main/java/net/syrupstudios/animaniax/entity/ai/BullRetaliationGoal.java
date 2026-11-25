@@ -8,6 +8,7 @@ import net.minecraft.world.entity.player.Player;
 import net.syrupstudios.animaniax.config.AnimalCareConfig;
 import net.syrupstudios.animaniax.entity.AnimalReproductionState;
 import net.syrupstudios.animaniax.entity.AnimalSterilizationState;
+import net.syrupstudios.animaniax.sound.AnimaniaSounds;
 
 public final class BullRetaliationGoal extends Goal {
     private final Mob bull;
@@ -44,6 +45,9 @@ public final class BullRetaliationGoal extends Goal {
         bull.setTarget(attacker);
         attackCooldown = 0;
         retaliationTicks = 200;
+        if (!animaniax$isFemale()) {
+            bull.playSound(AnimaniaSounds.BULL_ANGRY, 0.8F, 1.0F);
+        }
     }
 
     @Override

@@ -30,7 +30,10 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.damagesource.DamageSource;
 import net.syrupstudios.animaniax.config.AnimalCareConfig;
+import net.syrupstudios.animaniax.sound.AnimaniaSounds;
 import org.jetbrains.annotations.Nullable;
 
 public final class PeafowlEntity extends Chicken implements PeafowlMorphState {
@@ -150,6 +153,22 @@ public final class PeafowlEntity extends Chicken implements PeafowlMorphState {
     @Override public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         animaniax$setMorph(tag.getString("AnimaniaxPeafowlMorph"));
+    }
+
+    @Override protected SoundEvent getAmbientSound() {
+        return AnimaniaSounds.PEAFOWL_AMBIENT;
+    }
+
+    @Override protected SoundEvent getHurtSound(DamageSource source) {
+        return AnimaniaSounds.PEAFOWL_HURT;
+    }
+
+    @Override protected SoundEvent getDeathSound() {
+        return AnimaniaSounds.PEAFOWL_HURT;
+    }
+
+    @Override protected float getSoundVolume() {
+        return isBaby() ? 0.3F : 0.45F;
     }
 
     @Override public Chicken getBreedOffspring(ServerLevel level, AgeableMob mate) {

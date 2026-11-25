@@ -28,6 +28,10 @@ public final class BeeHiveBlock extends Block implements EntityBlock {
         return new BeeHiveBlockEntity(pos, state);
     }
 
+    @Override protected net.minecraft.world.level.block.RenderShape getRenderShape(BlockState state) {
+        return net.minecraft.world.level.block.RenderShape.ENTITYBLOCK_ANIMATED;
+    }
+
     @Override @SuppressWarnings("unchecked") public <T extends BlockEntity>
             net.minecraft.world.level.block.entity.BlockEntityTicker<T> getTicker(Level level, BlockState state,
                     net.minecraft.world.level.block.entity.BlockEntityType<T> type) {

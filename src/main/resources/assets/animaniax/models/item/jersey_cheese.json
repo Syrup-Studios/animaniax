@@ -1,1 +1,6 @@
-{"parent":"animaniax:block/cheese_wheel_bites_0"}
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "animaniax:item/cheese_wheel_jersey"
+  }
+}

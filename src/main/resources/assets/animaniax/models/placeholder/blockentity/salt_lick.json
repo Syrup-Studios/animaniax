@@ -1,0 +1,46 @@
+{
+  "textureWidth": 64,
+  "textureHeight": 32,
+  "roots": [
+    "Block"
+  ],
+  "parts": {
+    "Block": {
+      "texOffset": [
+        6,
+        6
+      ],
+      "pivot": [
+        0.0,
+        19.0,
+        0.0
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -5.0,
+          "y": -5.0,
+          "z": -5.0,
+          "dx": 10,
+          "dy": 10,
+          "dz": 10,
+          "mirror": false
+        }
+      ],
+      "children": []
+    }
+  },
+  "rig": {}
+}

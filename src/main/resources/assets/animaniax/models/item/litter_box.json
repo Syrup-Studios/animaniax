@@ -1,1 +1,6 @@
-{"parent":"animaniax:block/litter_box"}
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "animaniax:item/litter_box"
+  }
+}

@@ -1,1 +1,7 @@
-{"variants":{"":{"model":"animaniax:block/cat_bed_2"}}}
+{
+  "variants": {
+    "": {
+      "model": "animaniax:block/cat_bed_2"
+    }
+  }
+}

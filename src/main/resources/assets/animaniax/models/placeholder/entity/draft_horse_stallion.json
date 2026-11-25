@@ -1,0 +1,2839 @@
+{
+  "textureWidth": 256,
+  "textureHeight": 128,
+  "roots": [
+    "HeadNode",
+    "Body",
+    "TailNode",
+    "BackLeftMuscle",
+    "BackRightMuscle",
+    "FrontLeftMuscle",
+    "FrontRightMuscle"
+  ],
+  "optionalParts": [
+    "Block1",
+    "Block2",
+    "Footstrap",
+    "Footstrap2",
+    "Saddle",
+    "Saddle2",
+    "Saddle3",
+    "Saddle4",
+    "Saddle5",
+    "Saddle6",
+    "Saddle7",
+    "SaddleBase",
+    "SaddleBase2",
+    "SaddleBase3",
+    "SaddleHump",
+    "SaddleHump2",
+    "Strap1",
+    "Strap2",
+    "Strap3",
+    "foot1",
+    "foot1a",
+    "foot2",
+    "foot2a",
+    "foot3",
+    "foot3a",
+    "foot4",
+    "foot4a"
+  ],
+  "parts": {
+    "HeadNode": {
+      "texOffset": [
+        87,
+        46
+      ],
+      "pivot": [
+        0.0,
+        -7.0,
+        -9.0
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "dx": 0,
+          "dy": 0,
+          "dz": 0,
+          "mirror": false
+        }
+      ],
+      "children": [
+        "Neck",
+        "Head",
+        "Nose",
+        "Mouth",
+        "EarL",
+        "EarR",
+        "Fleco",
+        "Fleco2",
+        "Fleco3",
+        "Fleco4",
+        "Mane"
+      ]
+    },
+    "Body": {
+      "texOffset": [
+        0,
+        0
+      ],
+      "pivot": [
+        0.0,
+        -3.0,
+        3.0
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -7.0,
+          "y": -7.0,
+          "z": -16.0,
+          "dx": 14,
+          "dy": 14,
+          "dz": 32,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "TailNode": {
+      "texOffset": [
+        108,
+        108
+      ],
+      "pivot": [
+        0.0,
+        -10.0,
+        19.0
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "dx": 0,
+          "dy": 0,
+          "dz": 0,
+          "mirror": false
+        }
+      ],
+      "children": [
+        "tailA",
+        "tailB",
+        "tailC",
+        "tailD"
+      ]
+    },
+    "tailA": {
+      "texOffset": [
+        108,
+        108
+      ],
+      "pivot": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        -1.105676,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -1.0,
+          "y": -1.0,
+          "z": 0.0,
+          "dx": 2,
+          "dy": 2,
+          "dz": 3,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "tailB": {
+      "texOffset": [
+        102,
+        115
+      ],
+      "pivot": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        -1.105676,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -1.5,
+          "y": -2.0,
+          "z": 3.0,
+          "dx": 3,
+          "dy": 4,
+          "dz": 7,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "tailC": {
+      "texOffset": [
+        88,
+        111
+      ],
+      "pivot": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        -1.367476,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -1.5,
+          "y": -4.5,
+          "z": 9.0,
+          "dx": 3,
+          "dy": 4,
+          "dz": 7,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "tailD": {
+      "texOffset": [
+        54,
+        56
+      ],
+      "pivot": [
+        0.0,
+        14.186213,
+        5.47736
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        -1.507424,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -2.0,
+          "y": -2.5,
+          "z": 0.5,
+          "dx": 4,
+          "dy": 5,
+          "dz": 11,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "BackLeftMuscle": {
+      "texOffset": [
+        60,
+        2
+      ],
+      "pivot": [
+        5.0,
+        -1.0,
+        14.0
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -4.0,
+          "y": -6.0,
+          "z": -6.0,
+          "dx": 7,
+          "dy": 12,
+          "dz": 12,
+          "mirror": false
+        }
+      ],
+      "children": [
+        "BackLeftA",
+        "BackLeftB",
+        "BackLeftHoof",
+        "BackLeftHoof2",
+        "BackLeftFluff",
+        "BackLeftFluffb"
+      ]
+    },
+    "BackLeftA": {
+      "texOffset": [
+        1,
+        67
+      ],
+      "pivot": [
+        0.5,
+        4.5,
+        1.0
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.1745329,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -3.0,
+          "y": 0.5,
+          "z": -3.0,
+          "dx": 5,
+          "dy": 9,
+          "dz": 6,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "BackLeftB": {
+      "texOffset": [
+        77,
+        72
+      ],
+      "pivot": [
+        0.5,
+        13.84808,
+        2.73648
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        -0.1745329,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -2.5,
+          "y": -1.0,
+          "z": -2.0,
+          "dx": 4,
+          "dy": 8,
+          "dz": 4,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "BackLeftHoof": {
+      "texOffset": [
+        75,
+        84
+      ],
+      "pivot": [
+        0.5,
+        14.98481,
+        1.67365
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -3.0,
+          "y": 5.1,
+          "z": -2.5,
+          "dx": 5,
+          "dy": 3,
+          "dz": 5,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "BackLeftHoof2": {
+      "texOffset": [
+        97,
+        92
+      ],
+      "pivot": [
+        0.5,
+        16.98481,
+        1.67365
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -3.5,
+          "y": 5.1,
+          "z": -3.0,
+          "dx": 6,
+          "dy": 3,
+          "dz": 6,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "BackLeftFluff": {
+      "texOffset": [
+        74,
+        49
+      ],
+      "pivot": [
+        1.0,
+        16.16499,
+        4.3588
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.8790723,
+        0.8461326,
+        -0.1519369
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -1.0,
+          "y": -1.5,
+          "z": -2.0,
+          "dx": 1,
+          "dy": 9,
+          "dz": 4,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "BackLeftFluffb": {
+      "texOffset": [
+        74,
+        49
+      ],
+      "pivot": [
+        0.259,
+        16.18772,
+        4.3578
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.8393065,
+        -0.9052216,
+        -0.302609
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -1.0,
+          "y": -1.5,
+          "z": -2.0,
+          "dx": 1,
+          "dy": 9,
+          "dz": 4,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "BackRightMuscle": {
+      "texOffset": [
+        60,
+        2
+      ],
+      "pivot": [
+        -4.0,
+        -1.0,
+        14.0
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -4.0,
+          "y": -6.0,
+          "z": -6.0,
+          "dx": 7,
+          "dy": 12,
+          "dz": 12,
+          "mirror": false
+        }
+      ],
+      "children": [
+        "BackRightA",
+        "BackRightB",
+        "BackRightHoof",
+        "BackRightHoof2",
+        "BackRightFluff",
+        "BackRightFluffb"
+      ]
+    },
+    "BackRightA": {
+      "texOffset": [
+        23,
+        67
+      ],
+      "pivot": [
+        -0.5,
+        4.5,
+        1.0
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.1745329,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -3.0,
+          "y": 0.5,
+          "z": -3.0,
+          "dx": 5,
+          "dy": 9,
+          "dz": 6,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "BackRightB": {
+      "texOffset": [
+        93,
+        72
+      ],
+      "pivot": [
+        -0.499999,
+        14.0,
+        2.56283
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        -0.1745329,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -2.5,
+          "y": -1.0,
+          "z": -2.0,
+          "dx": 4,
+          "dy": 8,
+          "dz": 4,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "BackRightHoof": {
+      "texOffset": [
+        75,
+        84
+      ],
+      "pivot": [
+        -0.499999,
+        15.13673,
+        1.5
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -3.0,
+          "y": 5.1,
+          "z": -2.5,
+          "dx": 5,
+          "dy": 3,
+          "dz": 5,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "BackRightHoof2": {
+      "texOffset": [
+        97,
+        92
+      ],
+      "pivot": [
+        -0.499999,
+        17.13673,
+        1.5
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -3.5,
+          "y": 5.1,
+          "z": -3.0,
+          "dx": 6,
+          "dy": 3,
+          "dz": 6,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "BackRightFluff": {
+      "texOffset": [
+        74,
+        49
+      ],
+      "pivot": [
+        1e-06,
+        16.16499,
+        4.3588
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.8790723,
+        0.8461326,
+        -0.1519369
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -1.0,
+          "y": -1.5,
+          "z": -2.0,
+          "dx": 1,
+          "dy": 9,
+          "dz": 4,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "BackRightFluffb": {
+      "texOffset": [
+        74,
+        49
+      ],
+      "pivot": [
+        -0.99974,
+        16.18772,
+        4.3578
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.8393065,
+        -0.9052216,
+        -0.302609
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -1.0,
+          "y": -1.5,
+          "z": -2.0,
+          "dx": 1,
+          "dy": 9,
+          "dz": 4,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "FrontLeftMuscle": {
+      "texOffset": [
+        60,
+        2
+      ],
+      "pivot": [
+        5.0,
+        -1.0,
+        -8.0
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -4.0,
+          "y": -6.0,
+          "z": -6.0,
+          "dx": 7,
+          "dy": 12,
+          "dz": 12,
+          "mirror": false
+        }
+      ],
+      "children": [
+        "FrontLeftA",
+        "FrontLeftB",
+        "FrontLeftHoof",
+        "FrontLeftHoof2",
+        "FrontLeftFluff",
+        "FrontLeftFluffb"
+      ]
+    },
+    "FrontLeftA": {
+      "texOffset": [
+        1,
+        67
+      ],
+      "pivot": [
+        0.5,
+        4.0,
+        -1.0
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -3.0,
+          "y": 0.5,
+          "z": -3.0,
+          "dx": 5,
+          "dy": 9,
+          "dz": 6,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "FrontLeftB": {
+      "texOffset": [
+        77,
+        72
+      ],
+      "pivot": [
+        0.5,
+        13.84808,
+        -1.0
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -2.5,
+          "y": -1.0,
+          "z": -2.0,
+          "dx": 4,
+          "dy": 8,
+          "dz": 4,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "FrontLeftHoof": {
+      "texOffset": [
+        75,
+        84
+      ],
+      "pivot": [
+        0.5,
+        14.98481,
+        -1.0
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -3.0,
+          "y": 5.1,
+          "z": -2.5,
+          "dx": 5,
+          "dy": 3,
+          "dz": 5,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "FrontLeftHoof2": {
+      "texOffset": [
+        73,
+        92
+      ],
+      "pivot": [
+        0.5,
+        16.98481,
+        -1.0
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -3.5,
+          "y": 5.1,
+          "z": -3.0,
+          "dx": 6,
+          "dy": 3,
+          "dz": 6,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "FrontLeftFluff": {
+      "texOffset": [
+        74,
+        49
+      ],
+      "pivot": [
+        1.0,
+        16.16499,
+        2.0
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.1745329,
+        -0.8726647,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -1.0,
+          "y": -1.5,
+          "z": -2.0,
+          "dx": 1,
+          "dy": 9,
+          "dz": 4,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "FrontLeftFluffb": {
+      "texOffset": [
+        74,
+        49
+      ],
+      "pivot": [
+        0.15076,
+        16.18012,
+        1.827673
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.1718547,
+        -0.2644362,
+        -0.3060928
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -1.0,
+          "y": -1.5,
+          "z": -2.0,
+          "dx": 1,
+          "dy": 9,
+          "dz": 4,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "FrontRightMuscle": {
+      "texOffset": [
+        60,
+        2
+      ],
+      "pivot": [
+        -4.0,
+        -1.0,
+        -8.0
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -4.0,
+          "y": -6.0,
+          "z": -6.0,
+          "dx": 7,
+          "dy": 12,
+          "dz": 12,
+          "mirror": false
+        }
+      ],
+      "children": [
+        "FrontRightA",
+        "FrontRightB",
+        "FrontRightHoof",
+        "FrontRightHoof2",
+        "FrontRightFluff",
+        "FrontRightFluffb"
+      ]
+    },
+    "FrontRightA": {
+      "texOffset": [
+        23,
+        67
+      ],
+      "pivot": [
+        -0.5,
+        4.0,
+        -1.0
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -3.0,
+          "y": 0.5,
+          "z": -3.0,
+          "dx": 5,
+          "dy": 9,
+          "dz": 6,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "FrontRightB": {
+      "texOffset": [
+        93,
+        72
+      ],
+      "pivot": [
+        -0.5,
+        13.84808,
+        -1.0
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -2.5,
+          "y": -1.0,
+          "z": -2.0,
+          "dx": 4,
+          "dy": 8,
+          "dz": 4,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "FrontRightHoof": {
+      "texOffset": [
+        75,
+        84
+      ],
+      "pivot": [
+        -0.5,
+        14.98481,
+        -1.0
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -3.0,
+          "y": 5.1,
+          "z": -2.5,
+          "dx": 5,
+          "dy": 3,
+          "dz": 5,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "FrontRightHoof2": {
+      "texOffset": [
+        73,
+        92
+      ],
+      "pivot": [
+        -0.5,
+        16.98481,
+        -1.0
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -3.5,
+          "y": 5.1,
+          "z": -3.0,
+          "dx": 6,
+          "dy": 3,
+          "dz": 6,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "FrontRightFluff": {
+      "texOffset": [
+        74,
+        49
+      ],
+      "pivot": [
+        1e-06,
+        16.16499,
+        2.0
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.1745329,
+        0.8726647,
+        -0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -1.0,
+          "y": -1.5,
+          "z": -2.0,
+          "dx": 1,
+          "dy": 9,
+          "dz": 4,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "FrontRightFluffb": {
+      "texOffset": [
+        74,
+        49
+      ],
+      "pivot": [
+        -0.999883,
+        16.18012,
+        2.001321
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.1718547,
+        -0.8990332,
+        -0.3060928
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -1.0,
+          "y": -1.5,
+          "z": -2.0,
+          "dx": 1,
+          "dy": 9,
+          "dz": 4,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "Neck": {
+      "texOffset": [
+        87,
+        46
+      ],
+      "pivot": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.5235988,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -4.5,
+          "y": -14.0,
+          "z": -5.0,
+          "dx": 8,
+          "dy": 14,
+          "dz": 10,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "Head": {
+      "texOffset": [
+        0,
+        46
+      ],
+      "pivot": [
+        0.0,
+        -11.87436,
+        -7.43301
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.5235988,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -4.0,
+          "y": -4.0,
+          "z": -6.0,
+          "dx": 8,
+          "dy": 8,
+          "dz": 12,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "Nose": {
+      "texOffset": [
+        28,
+        46
+      ],
+      "pivot": [
+        0.0,
+        -10.4234,
+        -12.94615
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.6616941,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -3.5,
+          "y": -2.5,
+          "z": -6.0,
+          "dx": 7,
+          "dy": 5,
+          "dz": 6,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "Mouth": {
+      "texOffset": [
+        40,
+        57
+      ],
+      "pivot": [
+        0.0,
+        -9.15272,
+        -11.32277
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.836227,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -3.0,
+          "y": -0.5,
+          "z": -6.0,
+          "dx": 6,
+          "dy": 3,
+          "dz": 6,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "Cheek": {
+      "texOffset": [
+        94,
+        29
+      ],
+      "pivot": [
+        4.0,
+        -8.30978,
+        -7.10705
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -1.0,
+          "y": -3.5,
+          "z": -4.5,
+          "dx": 2,
+          "dy": 7,
+          "dz": 9,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "Cheek2": {
+      "texOffset": [
+        94,
+        29
+      ],
+      "pivot": [
+        -4.0,
+        -8.30978,
+        -7.10705
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -1.0,
+          "y": -3.5,
+          "z": -4.5,
+          "dx": 2,
+          "dy": 7,
+          "dz": 9,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "EarR": {
+      "texOffset": [
+        1,
+        25
+      ],
+      "pivot": [
+        -2.5,
+        -16.40545,
+        -6.58494
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.5040353,
+        -0.3000592,
+        -0.4101312
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -1.5,
+          "y": -4.0,
+          "z": -0.5,
+          "dx": 3,
+          "dy": 4,
+          "dz": 1,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "EarL": {
+      "texOffset": [
+        10,
+        25
+      ],
+      "pivot": [
+        2.5,
+        -16.40545,
+        -6.58494
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.5040353,
+        0.3000592,
+        0.4101312
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -1.5,
+          "y": -4.0,
+          "z": -0.5,
+          "dx": 3,
+          "dy": 4,
+          "dz": 1,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "Fleco": {
+      "texOffset": [
+        88,
+        113
+      ],
+      "pivot": [
+        0.5000001,
+        -17.77147,
+        -6.21891
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.5235988,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -0.5,
+          "y": -0.5,
+          "z": -4.0,
+          "dx": 1,
+          "dy": 1,
+          "dz": 8,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "Fleco2": {
+      "texOffset": [
+        104,
+        116
+      ],
+      "pivot": [
+        -0.4999999,
+        -18.2147,
+        -5.7859
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.5235988,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -0.5,
+          "y": -0.5,
+          "z": -3.5,
+          "dx": 1,
+          "dy": 1,
+          "dz": 7,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "Fleco3": {
+      "texOffset": [
+        103,
+        118
+      ],
+      "pivot": [
+        1.5,
+        -18.2147,
+        -5.7859
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.5235988,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -0.5,
+          "y": -0.5,
+          "z": -3.5,
+          "dx": 1,
+          "dy": 1,
+          "dz": 7,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "Fleco4": {
+      "texOffset": [
+        92,
+        114
+      ],
+      "pivot": [
+        -1.5,
+        -18.27147,
+        -5.35288
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.5235988,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -0.5,
+          "y": -0.5,
+          "z": -3.0,
+          "dx": 1,
+          "dy": 1,
+          "dz": 6,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "Mane": {
+      "texOffset": [
+        65,
+        101
+      ],
+      "pivot": [
+        0.0,
+        -9.9282,
+        1.196152
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.5235988,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -1.5,
+          "y": -10.0,
+          "z": -2.5,
+          "dx": 3,
+          "dy": 20,
+          "dz": 5,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "Block1": {
+      "texOffset": [
+        46,
+        0
+      ],
+      "pivot": [
+        0.0,
+        6.0,
+        16.0
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -2.0,
+          "y": -2.0,
+          "z": -1.5,
+          "dx": 4,
+          "dy": 4,
+          "dz": 3,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "Block2": {
+      "texOffset": [
+        46,
+        13
+      ],
+      "pivot": [
+        0.0,
+        4.5,
+        12.0
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.2617994,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -1.0,
+          "y": -2.0,
+          "z": -3.0,
+          "dx": 2,
+          "dy": 4,
+          "dz": 6,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "Reins1": {
+      "texOffset": [
+        128,
+        2
+      ],
+      "pivot": [
+        0.0,
+        -11.69135,
+        -6.75
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -5.5,
+          "y": -5.0,
+          "z": -6.5,
+          "dx": 11,
+          "dy": 10,
+          "dz": 13,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "SaddleBase": {
+      "texOffset": [
+        0,
+        82
+      ],
+      "pivot": [
+        0.0,
+        -10.0,
+        8.0
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -7.5,
+          "y": -0.5,
+          "z": -10.0,
+          "dx": 15,
+          "dy": 1,
+          "dz": 20,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "SaddleBase2": {
+      "texOffset": [
+        0,
+        82
+      ],
+      "pivot": [
+        7.0,
+        -9.0,
+        8.0
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        -0.2617994
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -0.5,
+          "y": -0.5,
+          "z": -10.0,
+          "dx": 1,
+          "dy": 7,
+          "dz": 20,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "SaddleBase3": {
+      "texOffset": [
+        0,
+        82
+      ],
+      "pivot": [
+        -7.0,
+        -9.0,
+        8.0
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.2617994
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -0.5,
+          "y": -0.5,
+          "z": -10.0,
+          "dx": 1,
+          "dy": 7,
+          "dz": 20,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "Saddle": {
+      "texOffset": [
+        0,
+        114
+      ],
+      "pivot": [
+        0.0,
+        -11.0,
+        6.0
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -8.0,
+          "y": -0.5,
+          "z": -6.5,
+          "dx": 16,
+          "dy": 1,
+          "dz": 13,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "Saddle2": {
+      "texOffset": [
+        12,
+        123
+      ],
+      "pivot": [
+        0.0,
+        -11.5,
+        13.5
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -6.5,
+          "y": -1.0,
+          "z": -1.0,
+          "dx": 13,
+          "dy": 2,
+          "dz": 2,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "Saddle3": {
+      "texOffset": [
+        4,
+        113
+      ],
+      "pivot": [
+        7.5,
+        -10.5,
+        6.0
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        -0.2617994
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -0.5,
+          "y": -0.5,
+          "z": -4.5,
+          "dx": 1,
+          "dy": 5,
+          "dz": 9,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "Saddle4": {
+      "texOffset": [
+        20,
+        119
+      ],
+      "pivot": [
+        8.923505,
+        -5.187408,
+        6.0
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        -0.2617994
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -0.5,
+          "y": -1.0,
+          "z": -3.0,
+          "dx": 1,
+          "dy": 2,
+          "dz": 6,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "Saddle5": {
+      "texOffset": [
+        17,
+        113
+      ],
+      "pivot": [
+        -7.5,
+        -10.5,
+        6.0
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.2617994
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -0.5,
+          "y": -0.5,
+          "z": -4.5,
+          "dx": 1,
+          "dy": 5,
+          "dz": 9,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "Saddle6": {
+      "texOffset": [
+        23,
+        118
+      ],
+      "pivot": [
+        -8.923504,
+        -5.187408,
+        6.0
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.2617994
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -0.5,
+          "y": -1.0,
+          "z": -3.0,
+          "dx": 1,
+          "dy": 2,
+          "dz": 6,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "Footstrap": {
+      "texOffset": [
+        11,
+        120
+      ],
+      "pivot": [
+        8.0,
+        -6.5,
+        6.0
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        -0.2617994
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -0.5,
+          "y": 0.0,
+          "z": -1.0,
+          "dx": 1,
+          "dy": 6,
+          "dz": 2,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "foot1": {
+      "texOffset": [
+        2,
+        89
+      ],
+      "pivot": [
+        9.682323,
+        -0.2214813,
+        6.0
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -0.5,
+          "y": -0.5,
+          "z": -2.0,
+          "dx": 1,
+          "dy": 1,
+          "dz": 4,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "foot2": {
+      "texOffset": [
+        2,
+        89
+      ],
+      "pivot": [
+        9.682324,
+        2.778519,
+        6.0
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -0.5,
+          "y": -0.5,
+          "z": -2.0,
+          "dx": 1,
+          "dy": 1,
+          "dz": 4,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "foot3": {
+      "texOffset": [
+        5,
+        92
+      ],
+      "pivot": [
+        9.682323,
+        1.278519,
+        4.5
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -0.5,
+          "y": -1.0,
+          "z": -0.5,
+          "dx": 1,
+          "dy": 2,
+          "dz": 1,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "foot4": {
+      "texOffset": [
+        5,
+        92
+      ],
+      "pivot": [
+        9.682323,
+        1.278519,
+        7.5
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -0.5,
+          "y": -1.0,
+          "z": -0.5,
+          "dx": 1,
+          "dy": 2,
+          "dz": 1,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "Footstrap2": {
+      "texOffset": [
+        11,
+        120
+      ],
+      "pivot": [
+        -8.0,
+        -6.5,
+        6.0
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.2617994
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -0.5,
+          "y": 0.0,
+          "z": -1.0,
+          "dx": 1,
+          "dy": 6,
+          "dz": 2,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "foot1a": {
+      "texOffset": [
+        2,
+        89
+      ],
+      "pivot": [
+        -9.682323,
+        -0.2214813,
+        6.0
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -0.5,
+          "y": -0.5,
+          "z": -2.0,
+          "dx": 1,
+          "dy": 1,
+          "dz": 4,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "foot2a": {
+      "texOffset": [
+        2,
+        89
+      ],
+      "pivot": [
+        -9.682323,
+        2.778519,
+        6.0
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -0.5,
+          "y": -0.5,
+          "z": -2.0,
+          "dx": 1,
+          "dy": 1,
+          "dz": 4,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "foot3a": {
+      "texOffset": [
+        5,
+        92
+      ],
+      "pivot": [
+        -9.682323,
+        1.278519,
+        4.5
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -0.5,
+          "y": -1.0,
+          "z": -0.5,
+          "dx": 1,
+          "dy": 2,
+          "dz": 1,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "foot4a": {
+      "texOffset": [
+        5,
+        92
+      ],
+      "pivot": [
+        -9.682323,
+        1.278519,
+        7.5
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -0.5,
+          "y": -1.0,
+          "z": -0.5,
+          "dx": 1,
+          "dy": 2,
+          "dz": 1,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "Saddle7": {
+      "texOffset": [
+        11,
+        110
+      ],
+      "pivot": [
+        0.0,
+        -11.0,
+        15.5
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -5.5,
+          "y": -0.5,
+          "z": -1.0,
+          "dx": 11,
+          "dy": 1,
+          "dz": 2,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "SaddleHump": {
+      "texOffset": [
+        2,
+        111
+      ],
+      "pivot": [
+        0.0,
+        -12.0,
+        0.0
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.7325316,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -3.0,
+          "y": -1.5,
+          "z": -1.5,
+          "dx": 6,
+          "dy": 3,
+          "dz": 3,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "SaddleHump2": {
+      "texOffset": [
+        2,
+        113
+      ],
+      "pivot": [
+        0.0,
+        -14.49329,
+        -0.1829692
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.1765722,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -2.0,
+          "y": -1.0,
+          "z": -2.0,
+          "dx": 4,
+          "dy": 2,
+          "dz": 4,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "Strap1": {
+      "texOffset": [
+        10,
+        124
+      ],
+      "pivot": [
+        0.0,
+        4.5,
+        6.0
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -8.0,
+          "y": -0.5,
+          "z": -1.5,
+          "dx": 16,
+          "dy": 1,
+          "dz": 3,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "Strap2": {
+      "texOffset": [
+        40,
+        110
+      ],
+      "pivot": [
+        -7.5,
+        -0.5,
+        6.0
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -0.5,
+          "y": -4.5,
+          "z": -1.5,
+          "dx": 1,
+          "dy": 9,
+          "dz": 3,
+          "mirror": false
+        }
+      ],
+      "children": []
+    },
+    "Strap3": {
+      "texOffset": [
+        41,
+        110
+      ],
+      "pivot": [
+        7.5,
+        -0.5,
+        6.0
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mirror": false,
+      "animaniaQuat": false,
+      "colored": false,
+      "boxes": [
+        {
+          "x": -0.5,
+          "y": -4.5,
+          "z": -1.5,
+          "dx": 1,
+          "dy": 9,
+          "dz": 3,
+          "mirror": false
+        }
+      ],
+      "children": []
+    }
+  },
+  "rig": {
+    "headCandidates": [
+      "HeadNode",
+      "Neck",
+      "Head"
+    ],
+    "tails": [
+      "TailNode",
+      "tailA",
+      "tailB",
+      "tailC",
+      "tailD"
+    ]
+  }
+}

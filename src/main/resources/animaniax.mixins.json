@@ -47,13 +47,18 @@
     "PepeFrogBrainMixin",
     "AmphibianTemptationSensorMixin",
     "AmphibianPreyHuntingMixin",
-    "PoiTypesAccessor"
+    "PoiTypesAccessor",
+    "CowSoundMixin",
+    "PigSoundMixin",
+    "SheepSoundMixin",
+    "GoatSoundMixin",
+    "ChickenSoundMixin",
+    "RabbitSoundMixin"
   ],
   "client": [
     "FaintingGoatPoseMixin",
     "ShoulderRenderMixin",
-    "FirstPersonShoulderRenderMixin",
-    "GoatRendererMixin"
+    "FirstPersonShoulderRenderMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -1,8 +1,8 @@
 package net.syrupstudios.animaniax.mixin;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.animal.Chicken;
+import net.syrupstudios.animaniax.sound.AnimaniaSounds;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -68,9 +68,23 @@ abstract class ChickenProductionMixin implements ChickenSexState, ChickenBreedSt
         if (animaniax$pendingFlockSpawn) tag.putBoolean("AnimaniaxPendingFlockSpawn", true);
     }
 
-    @Override public String animaniax$getChickenBreed() { return animaniax$chickenBreed; }
+    @Override public String animaniax$getChickenBreed() {
+        Chicken chicken = (Chicken) (Object) this;
+        if (chicken.level().isClientSide && !(chicken instanceof PeafowlEntity)) {
+            String synced = ((net.syrupstudios.animaniax.entity.AnimalVisualSyncState) chicken).animaniax$getSyncedBreed();
+            if (!synced.isEmpty()) return synced;
+        }
+        return animaniax$chickenBreed;
+    }
     @Override public void animaniax$setChickenBreed(String breed) {
-        for (String valid : ANIMANIAX$CHICKEN_BREEDS) if (valid.equals(breed)) { animaniax$chickenBreed = valid; return; }
+        for (String valid : ANIMANIAX$CHICKEN_BREEDS) if (valid.equals(breed)) {
+            animaniax$chickenBreed = valid;
+            Chicken chicken = (Chicken) (Object) this;
+            if (!chicken.level().isClientSide && !(chicken instanceof PeafowlEntity)) {
+                ((net.syrupstudios.animaniax.entity.AnimalVisualSyncState) chicken).animaniax$setSyncedBreed(valid);
+            }
+            return;
+        }
     }
 
     @Override public boolean animaniax$isHen() {
@@ -81,10 +95,11 @@ abstract class ChickenProductionMixin implements ChickenSexState, ChickenBreedSt
                 animaniax$setHen((chicken.getUUID().getLeastSignificantBits() & 1L) != 0);
             return animaniax$hen;
         }
-        if (chicken.level().isClientSide) return false;
+        if (chicken.level().isClientSide) {
+            return ((net.syrupstudios.animaniax.entity.AnimalVisualSyncState) chicken).animaniax$isSyncedFemale();
+        }
         if (!animaniax$sexSet) {
-            animaniax$hen = (chicken.getUUID().getLeastSignificantBits() & 1L) != 0;
-            animaniax$sexSet = true;
+            animaniax$setHen((chicken.getUUID().getLeastSignificantBits() & 1L) != 0);
         }
         return animaniax$hen;
     }
@@ -94,6 +109,9 @@ abstract class ChickenProductionMixin implements ChickenSexState, ChickenBreedSt
         animaniax$sexSet = true;
         Chicken chicken = (Chicken) (Object) this;
         if (chicken instanceof PeafowlEntity peafowl) peafowl.animaniax$setSyncedHen(hen);
+        else if (!chicken.level().isClientSide) {
+            ((net.syrupstudios.animaniax.entity.AnimalVisualSyncState) chicken).animaniax$setSyncedFemale(hen);
+        }
     }
 
     @Override public void animaniax$setPendingFlockSpawn(boolean pending) { animaniax$pendingFlockSpawn = pending; }
@@ -133,7 +151,7 @@ abstract class ChickenProductionMixin implements ChickenSexState, ChickenBreedSt
             if (animaniax$crowTicks < 0) animaniax$crowTicks = 200 + chicken.getRandom().nextInt(200);
             else if (animaniax$crowTicks > 0) animaniax$crowTicks--;
             if (animaniax$crowTicks == 0 && (dayTime > 23_250 || dayTime < 500)) {
-                chicken.playSound(SoundEvents.CHICKEN_AMBIENT, 1.0F, 0.75F);
+                chicken.playSound(AnimaniaSounds.ROOSTER_CROW, 0.7F, 0.95F + chicken.getRandom().nextFloat() * 0.1F);
                 animaniax$crowTicks = 200 + chicken.getRandom().nextInt(200);
             }
         }
@@ -141,7 +159,7 @@ abstract class ChickenProductionMixin implements ChickenSexState, ChickenBreedSt
         if (AnimalCareConfig.birdsDropFeathers) {
             if (animaniax$featherTicks < 0) animaniax$featherTicks = AnimalCareConfig.featherTimer + chicken.getRandom().nextInt(1_000);
             if (--animaniax$featherTicks <= 0) {
-                chicken.playSound(SoundEvents.CHICKEN_AMBIENT, 1.0F, 1.0F);
+                chicken.playSound(AnimaniaSounds.CHICKEN_AMBIENT, 0.5F, 1.0F);
                 chicken.spawnAtLocation(Items.FEATHER);
                 animaniax$featherTicks = AnimalCareConfig.featherTimer + chicken.getRandom().nextInt(1_000);
             }

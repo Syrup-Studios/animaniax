@@ -39,6 +39,7 @@ import net.syrupstudios.animaniax.entity.AnimalSterilizationState;
 public class DogEntity extends Wolf {
     private JuvenilePlayGoal playGoal;
     private static final EntityDataAccessor<String> BREED = SynchedEntityData.defineId(DogEntity.class, EntityDataSerializers.STRING);
+    private static final EntityDataAccessor<Integer> COLOR_NUMBER = SynchedEntityData.defineId(DogEntity.class, EntityDataSerializers.INT);
 
     public DogEntity(EntityType<? extends Wolf> type, Level level) { super(type, level); }
 
@@ -64,14 +65,17 @@ public class DogEntity extends Wolf {
     @Override protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
         builder.define(BREED, DogBreed.WOLF.id());
+        builder.define(COLOR_NUMBER, getRandom().nextInt(8));
     }
 
     public DogBreed getBreed() { return DogBreed.byId(entityData.get(BREED)); }
     public void setBreed(DogBreed breed) { entityData.set(BREED, breed.id()); }
+    public int getColorNumber() { return Math.max(0, Math.min(7, entityData.get(COLOR_NUMBER))); }
 
     @Override public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.putString("AnimaniaxBreed", getBreed().id());
+        tag.putInt("ColorNumber", getColorNumber());
     }
 
     @Override public void readAdditionalSaveData(CompoundTag tag) {
@@ -79,6 +83,9 @@ public class DogEntity extends Wolf {
         float savedHealth = hasSavedHealth ? tag.getFloat("Health") : 0.0F;
         super.readAdditionalSaveData(tag);
         setBreed(DogBreed.byId(tag.getString("AnimaniaxBreed")));
+        if (tag.contains("ColorNumber")) {
+            entityData.set(COLOR_NUMBER, Math.floorMod(tag.getInt("ColorNumber"), 8));
+        }
         animaniax$restoreHealthLimit();
         if (hasSavedHealth) setHealth(savedHealth);
     }
@@ -157,6 +164,7 @@ public class DogEntity extends Wolf {
             boolean inheritThis = getRandom().nextBoolean();
             child.setBreed(inheritThis ? getBreed() : other.getBreed());
             child.setVariant(inheritThis ? getVariant() : other.getVariant());
+            child.entityData.set(COLOR_NUMBER, inheritThis ? getColorNumber() : other.getColorNumber());
             if (isTame()) {
                 child.setOwnerUUID(getOwnerUUID());
                 child.setTame(true, true);
