@@ -2,7 +2,7 @@ mod:
   id: "animaniax"
   name: "Animaniax"
   group: "net.syrupstudios"
-  version: "1.0.0"
+  version: "0.0.2"
   description: "An animal overhaul mod"
   authors: "Syrup Studios"
   license: "RSL-1.0 (code, data, and original assets); LGPL-3.0-only (placeholder Animania textures and models)"
