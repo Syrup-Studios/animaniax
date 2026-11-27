@@ -27,3 +27,10 @@ type="required"
 versionRange="${minecraftRange}"
 ordering="NONE"
 side="BOTH"
+
+[[dependencies.${modId}]]
+modId="syrup_library"
+type="required"
+versionRange="[${syrupLibraryVersion},)"
+ordering="AFTER"
+side="BOTH"

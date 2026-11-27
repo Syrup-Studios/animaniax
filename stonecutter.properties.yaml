@@ -30,4 +30,5 @@ publish:
     deps:
       neoforge: "21.1.265"
 
+syrup_library_version: "0.6.0"
 loomx.loom_version: "1.17.21"

@@ -22,6 +22,14 @@ tasks.withType<JavaCompile>().configureEach {
     options.release.set(21)
 }
 
+repositories {
+    maven("https://maven.syrupstudios.net/releases/")
+}
+
+dependencies {
+    implementation("net.syrupstudios:syrup_library:${property("syrup_library_version")}+$minecraftVersion-neoforge")
+}
+
 neoForge {
     version = property("deps.neoforge") as String
     runs {
@@ -39,6 +47,7 @@ tasks.withType<Jar>().configureEach {
 tasks.processResources {
     val values = mapOf(
         "modId" to modId,
+        "syrupLibraryVersion" to project.property("syrup_library_version"),
         "version" to modVersion,
         "modName" to project.property("mod.name"),
         "description" to project.property("mod.description"),

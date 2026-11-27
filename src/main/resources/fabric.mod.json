@@ -20,6 +20,7 @@
   "depends": {
     "fabricloader": ">=${loader}",
     "fabric-api": ">=${fabricApi}",
+    "syrup_library": ">=${syrupLibraryVersion}",
     "minecraft": "${minecraft}",
     "java": ">=21"
   }

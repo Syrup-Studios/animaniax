@@ -13,9 +13,11 @@ base.archivesName = modId
 
 repositories {
     maven("https://maven.fabricmc.net/")
+    maven("https://maven.syrupstudios.net/releases/")
 }
 
 dependencies {
+    modImplementation("net.syrupstudios:syrup_library:${property("syrup_library_version")}+$minecraftVersion-fabric")
     minecraft("com.mojang:minecraft:$minecraftVersion")
     loomx.applyMojangMappings()
     modImplementation("net.fabricmc:fabric-loader:${property("deps.fabric_loader")}")
@@ -50,6 +52,7 @@ tasks.withType<Jar>().configureEach {
 tasks.processResources {
     val values = mapOf(
         "modId" to modId,
+        "syrupLibraryVersion" to project.property("syrup_library_version"),
         "version" to modVersion,
         "modName" to project.property("mod.name"),
         "description" to project.property("mod.description"),

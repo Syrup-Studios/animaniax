@@ -4,10 +4,17 @@ import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
 import java.util.Properties;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import net.syrupstudios.syruplibrary.config.ConfigSpec;
+import net.syrupstudios.syruplibrary.config.RegisteredConfig;
+import net.syrupstudios.syruplibrary.config.SyrupConfigManager;
+import net.syrupstudios.syruplibrary.config.value.ConfigConstraint;
+import net.syrupstudios.syruplibrary.config.value.ConfigType;
+import net.syrupstudios.syruplibrary.config.RestartRequirement;
+import net.syrupstudios.syruplibrary.config.value.ConfigValue;
+import java.util.List;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -135,112 +142,221 @@ public final class AnimalCareConfig {
         return Map.copyOf(parsed);
     }
 
-    public static void load(Path path) {
-        try {
-            Files.createDirectories(path.getParent());
-            if (Files.notExists(path)) {
-                Files.writeString(path, "# Animal care and reproduction settings\n"
-                        + "gestationTimer=20000\n"
-                        + "# Chance for each additional offspring; one offspring is always produced, up to 64 total.\n"
-                        + "birthMultipleChance=0.1\n"
-                        + "# Chance of losing the litter at term when both hunger and thirst are low.\n"
-                        + "animalLossChance=0.0\n"
-                        + "feedTimer=12000\n"
-                        + "waterTimer=12000\n"
-                        + "# Goal checks between food, water, and mud searches.\n"
-                        + "ticksBetweenAIFirings=100\n"
-                        + "# Range for food, water, and salt lick block searches. Clamped to 1..64.\n"
-                        + "aiBlockSearchRange=16\n"
-                        + "# Growth interval in ticks. The timer advances during neglect and sleep, but growth applies only when cared for and awake.\n"
-                        + "childGrowthTick=200\n"
-                        + "# Animals take starvation damage when both hunger and thirst are low.\n"
-                        + "animalsStarve=false\n"
-                        + "# Show smoke when an animal is hungry and thirsty.\n"
-                        + "showUnhappyParticles=true\n"
-                        + "# Animals sleep at night when they can reach straw or grass.\n"
-                        + "animalsSleep=true\n"
-                        + "# Allows bull retaliation, sparring, and proactive animal hunting.\n"
-                        + "animalsCanAttackOthers=true\n"
-                        + "# Prevent natural vanilla wolf spawns.\n"
-                        + "replaceVanillaWolves=true\n"
-                        + "# Prevent natural vanilla ocelot spawns.\n"
-                        + "replaceVanillaOcelots=true\n"
-                        + "# Ticks between starvation damage.\n"
-                        + "starvationTimer=400\n"
-                        + "matingTimer=100\n"
-                        + "requireAnimalInteractionForAI=true\n"
-                        + "# Animals do not have to eat or drink.\n"
-                        + "ambianceMode=false\n"
-                        + "feedToBreed=true\n"
-                        + "malesMateMultipleFemales=false\n"
-                        + "entityBreedingLimit=15\n"
-                        + "animalCapSearchRange=80\n"
-                        + "# Threshold used to limit nearby natural spawns for each population group.\n"
-                        + "naturalSpawnLimitCows=40\n"
-                        + "naturalSpawnLimitPigs=40\n"
-                        + "naturalSpawnLimitChickens=40\n"
-                        + "naturalSpawnLimitSheep=40\n"
-                        + "naturalSpawnLimitGoats=40\n"
-                        + "naturalSpawnLimitHorses=40\n"
-                        + "naturalSpawnLimitRabbits=40\n"
-                        + "naturalSpawnLimitAmphibians=40\n"
-                        + "naturalSpawnLimitHamsters=40\n"
-                        + "naturalSpawnLimitFerrets=40\n"
-                        + "naturalSpawnLimitHedgehogs=40\n"
-                        + "naturalSpawnLimitCats=20\n"
-                        + "naturalSpawnLimitDogs=20\n"
-                        + "# Allow wild hives to spawn.\n"
-                        + "hiveSpawning=true\n"
-                        + "# Wild hive spawn chance per eligible chunk, from 0 to 10 out of 200.\n"
-                        + "hiveSpawningFrequency=3\n"
-                        + "# Honey production interval for wild hives, in ticks.\n"
-                        + "hiveWildHoneyRate=700\n"
-                        + "# Honey production interval for player-made hives, in ticks.\n"
-                        + "hivePlayermadeHoneyRate=450\n"
-                        + "# Allow dispensers to place seed piles.\n"
-                        + "allowSeedDispenserPlacement=true\n"
-                        + "# Require sneaking to place seed piles with seeds.\n"
-                        + "shiftSeedPlacement=false\n"
-                        + "# Allow hoppers and pipes to insert or remove trough feed.\n"
-                        + "allowTroughAutomation=true\n"
-                        + "saltLickTick=8000\n"
-                        + "# Maximum uses for a new salt lick. Clamped to 1..1000000.\n"
-                        + "saltLickMaxUses=200\n"
-                        + "# Ticks between eggs laid in nests.\n"
-                        + "laidTimer=2000\n"
-                        + "# Chance of hatching an egg, as 1 in N.\n"
-                        + "eggHatchChance=2\n"
-                        + "# Ticks that cheese takes to mature.\n"
-                        + "cheeseMaturityTime=24000\n"
-                        + "# Salt items made by curing water in a cheese mold.\n"
-                        + "saltCreationAmount=16\n"
-                        + "# Ticks before sheep wool regrows after shearing.\n"
-                        + "woolRegrowthTimer=8000\n"
-                        + "# RF capacity of the hamster wheel.\n"
-                        + "hamsterWheelCapacity=200000\n"
-                        + "# RF generated by a running hamster wheel each tick.\n"
-                        + "hamsterWheelRFGeneration=20\n"
-                        + "# Ticks that a hamster stays in the wheel before it needs more food.\n"
-                        + "hamsterWheelUseTime=2000\n"
-                        + "# Chickens can drop eggs without using a nest.\n"
-                        + "chickensDropEggs=false\n"
-                        + "# Birds shed feathers over time.\n"
-                        + "birdsDropFeathers=true\n"
-                        + "featherTimer=12000\n"
-                        + "# Apply Animania bonus effects when food is consumed.\n"
-                        + "foodsGiveBonusEffects=true\n"
-                        + "# Food value overrides: item_id(nutrition,saturationMultiplier), separated by semicolons.\n"
-                        + "foodValueOverrides=\n"
-                        + "# Allow Animania foods to be eaten when hunger is full.\n"
-                        + "eatFoodAnytime=true\n"
-                        + "# Prevent players from making salt in cheese molds with water.\n"
-                        + "disableSaltCreation=false\n"
-                        + "cowsMilkableAtSpawn=false\n"
-                        + "allowEggThrowing=false\n"
-                        + "plantsRemovedAfterEating=true\n"
-                        + "waterRemovedAfterDrinking=true\n",
-                        StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE);
+    public static void load(Path legacyPath) {
+        Path directory = legacyPath.getParent();
+        boolean migrate = Files.notExists(directory.resolve("animaniax.json5")) && Files.exists(legacyPath);
+        Properties legacyProperties = new Properties();
+        if (migrate) {
+            loadLegacy(legacyPath);
+            try (Reader reader = Files.newBufferedReader(legacyPath)) {
+                legacyProperties.load(reader);
+            } catch (IOException e) {
+                throw new IllegalStateException("Could not read legacy Animaniax config at " + legacyPath, e);
             }
+        }
+        ConfigSpec spec = ConfigSpec.builder("animaniax").header("Animaniax world settings.", "Restart the world after editing this file.").build();
+        ConfigValue<Integer> gestationTimerValue = spec.integer("gestation_timer", 20_000, 1, MAX_TICKS, "Animal care and reproduction settings");
+        ConfigValue<Double> birthMultipleChanceValue = spec.value("birth_multiple_chance", ConfigType.DOUBLE, 0.1, "Chance for each additional offspring; one offspring is always produced, up to 64 total.", RestartRequirement.NONE, List.of(ConfigConstraint.range(0.0, 1.0)));
+        ConfigValue<Double> animalLossChanceValue = spec.value("animal_loss_chance", ConfigType.DOUBLE, 0.0, "Chance of losing the litter at term when both hunger and thirst are low.", RestartRequirement.NONE, List.of(ConfigConstraint.range(0.0, 1.0)));
+        ConfigValue<Integer> feedTimerValue = spec.integer("feed_timer", 12_000, 1, MAX_TICKS, "Feed timer.");
+        ConfigValue<Integer> waterTimerValue = spec.integer("water_timer", 12_000, 1, MAX_TICKS, "Water timer.");
+        ConfigValue<Integer> ticksBetweenAIFiringsValue = spec.integer("ticks_between_ai_firings", 100, 1, MAX_TICKS, "Goal checks between food, water, and mud searches.");
+        ConfigValue<Integer> aiBlockSearchRangeValue = spec.integer("ai_block_search_range", 16, 1, 64, "Range for food, water, and salt lick block searches.");
+        ConfigValue<Integer> childGrowthTickValue = spec.integer("child_growth_tick", 200, 1, MAX_TICKS, "Growth interval in ticks. The timer advances during neglect and sleep, but growth applies only when cared for and awake.");
+        ConfigValue<Boolean> animalsStarveValue = spec.bool("animals_starve", false, "Animals take starvation damage when both hunger and thirst are low.");
+        ConfigValue<Boolean> showUnhappyParticlesValue = spec.bool("show_unhappy_particles", true, "Show smoke when an animal is hungry and thirsty.");
+        ConfigValue<Boolean> animalsSleepValue = spec.bool("animals_sleep", true, "Animals sleep at night when they can reach straw or grass.");
+        ConfigValue<Boolean> animalsCanAttackOthersValue = spec.bool("animals_can_attack_others", true, "Allows bull retaliation, sparring, and proactive animal hunting.");
+        ConfigValue<Boolean> replaceVanillaWolvesValue = spec.bool("replace_vanilla_wolves", true, "Prevent natural vanilla wolf spawns.");
+        ConfigValue<Boolean> replaceVanillaOcelotsValue = spec.bool("replace_vanilla_ocelots", true, "Prevent natural vanilla ocelot spawns.");
+        ConfigValue<Integer> starvationTimerValue = spec.integer("starvation_timer", 400, 1, MAX_TICKS, "Ticks between starvation damage.");
+        ConfigValue<Integer> matingTimerValue = spec.integer("mating_timer", 100, 1, MAX_TICKS, "Mating timer.");
+        ConfigValue<Boolean> requireAnimalInteractionForAIValue = spec.bool("require_animal_interaction_for_ai", true, "Require animal interaction for AI.");
+        ConfigValue<Boolean> ambianceModeValue = spec.bool("ambiance_mode", false, "Animals do not have to eat or drink.");
+        ConfigValue<Boolean> feedToBreedValue = spec.bool("feed_to_breed", true, "Feed to breed.");
+        ConfigValue<Boolean> malesMateMultipleFemalesValue = spec.bool("males_mate_multiple_females", false, "Males mate multiple females.");
+        ConfigValue<Integer> entityBreedingLimitValue = spec.integer("entity_breeding_limit", 15, 1, MAX_TICKS, "Entity breeding limit.");
+        ConfigValue<Integer> animalCapSearchRangeValue = spec.integer("animal_cap_search_range", 80, 1, MAX_TICKS, "Animal cap search range.");
+        ConfigValue<Integer> naturalSpawnLimitCowsValue = spec.integer("natural_spawn_limit_cows", 40, 1, MAX_TICKS, "Threshold used to limit nearby natural spawns for each population group.");
+        ConfigValue<Integer> naturalSpawnLimitPigsValue = spec.integer("natural_spawn_limit_pigs", 40, 1, MAX_TICKS, "Natural spawn limit pigs.");
+        ConfigValue<Integer> naturalSpawnLimitChickensValue = spec.integer("natural_spawn_limit_chickens", 40, 1, MAX_TICKS, "Natural spawn limit chickens.");
+        ConfigValue<Integer> naturalSpawnLimitSheepValue = spec.integer("natural_spawn_limit_sheep", 40, 1, MAX_TICKS, "Natural spawn limit sheep.");
+        ConfigValue<Integer> naturalSpawnLimitGoatsValue = spec.integer("natural_spawn_limit_goats", 40, 1, MAX_TICKS, "Natural spawn limit goats.");
+        ConfigValue<Integer> naturalSpawnLimitHorsesValue = spec.integer("natural_spawn_limit_horses", 40, 1, MAX_TICKS, "Natural spawn limit horses.");
+        ConfigValue<Integer> naturalSpawnLimitRabbitsValue = spec.integer("natural_spawn_limit_rabbits", 40, 1, MAX_TICKS, "Natural spawn limit rabbits.");
+        ConfigValue<Integer> naturalSpawnLimitAmphibiansValue = spec.integer("natural_spawn_limit_amphibians", 40, 1, MAX_TICKS, "Natural spawn limit amphibians.");
+        ConfigValue<Integer> naturalSpawnLimitHamstersValue = spec.integer("natural_spawn_limit_hamsters", 40, 1, MAX_TICKS, "Natural spawn limit hamsters.");
+        ConfigValue<Integer> naturalSpawnLimitFerretsValue = spec.integer("natural_spawn_limit_ferrets", 40, 1, MAX_TICKS, "Natural spawn limit ferrets.");
+        ConfigValue<Integer> naturalSpawnLimitHedgehogsValue = spec.integer("natural_spawn_limit_hedgehogs", 40, 1, MAX_TICKS, "Natural spawn limit hedgehogs.");
+        ConfigValue<Integer> naturalSpawnLimitCatsValue = spec.integer("natural_spawn_limit_cats", 20, 1, MAX_TICKS, "Natural spawn limit cats.");
+        ConfigValue<Integer> naturalSpawnLimitDogsValue = spec.integer("natural_spawn_limit_dogs", 20, 1, MAX_TICKS, "Natural spawn limit dogs.");
+        ConfigValue<Boolean> plantsRemovedAfterEatingValue = spec.bool("plants_removed_after_eating", true, "Plants removed after eating.");
+        ConfigValue<Boolean> waterRemovedAfterDrinkingValue = spec.bool("water_removed_after_drinking", true, "Water removed after drinking.");
+        ConfigValue<Boolean> hiveSpawningValue = spec.bool("hive_spawning", true, "Allow wild hives to spawn.");
+        ConfigValue<Integer> hiveSpawningFrequencyValue = spec.integer("hive_spawning_frequency", 3, 0, 10, "Wild hive spawn chance per eligible chunk, from 0 to 10 out of 200.");
+        ConfigValue<Integer> hiveWildHoneyRateValue = spec.integer("hive_wild_honey_rate", 700, 1, MAX_TICKS, "Honey production interval for wild hives, in ticks.");
+        ConfigValue<Integer> hivePlayermadeHoneyRateValue = spec.integer("hive_playermade_honey_rate", 450, 1, MAX_TICKS, "Honey production interval for player-made hives, in ticks.");
+        ConfigValue<Boolean> allowSeedDispenserPlacementValue = spec.bool("allow_seed_dispenser_placement", true, "Allow dispensers to place seed piles.");
+        ConfigValue<Boolean> shiftSeedPlacementValue = spec.bool("shift_seed_placement", false, "Require sneaking to place seed piles with seeds.");
+        ConfigValue<Boolean> allowTroughAutomationValue = spec.bool("allow_trough_automation", true, "Allow hoppers and pipes to insert or remove trough feed.");
+        ConfigValue<Integer> saltLickTickValue = spec.integer("salt_lick_tick", 8000, 1, MAX_TICKS, "Salt lick tick.");
+        ConfigValue<Integer> saltLickMaxUsesValue = spec.integer("salt_lick_max_uses", 200, 1, 1_000_000, "Maximum uses for a new salt lick.");
+        ConfigValue<Integer> laidTimerValue = spec.integer("laid_timer", 2000, 1, MAX_TICKS, "Ticks between eggs laid in nests.");
+        ConfigValue<Integer> eggHatchChanceValue = spec.integer("egg_hatch_chance", 2, 1, MAX_TICKS, "Chance of hatching an egg, as 1 in N.");
+        ConfigValue<Integer> cheeseMaturityTimeValue = spec.integer("cheese_maturity_time", 24_000, 1, MAX_TICKS, "Ticks that cheese takes to mature.");
+        ConfigValue<Integer> saltCreationAmountValue = spec.integer("salt_creation_amount", 16, 1, 64, "Salt items made by curing water in a cheese mold.");
+        ConfigValue<Integer> woolRegrowthTimerValue = spec.integer("wool_regrowth_timer", 8_000, 1, MAX_TICKS, "Ticks before sheep wool regrows after shearing.");
+        ConfigValue<Integer> hamsterWheelCapacityValue = spec.integer("hamster_wheel_capacity", 200_000, 1, MAX_TICKS, "RF capacity of the hamster wheel.");
+        ConfigValue<Integer> hamsterWheelRFGenerationValue = spec.integer("hamster_wheel_r_f_generation", 20, 0, MAX_TICKS, "RF generated by a running hamster wheel each tick.");
+        ConfigValue<Integer> hamsterWheelUseTimeValue = spec.integer("hamster_wheel_use_time", 2_000, 1, MAX_TICKS, "Ticks that a hamster stays in the wheel before it needs more food.");
+        ConfigValue<Boolean> allowEggThrowingValue = spec.bool("allow_egg_throwing", false, "Allow egg throwing.");
+        ConfigValue<Boolean> chickensDropEggsValue = spec.bool("chickens_drop_eggs", false, "Chickens can drop eggs without using a nest.");
+        ConfigValue<Boolean> birdsDropFeathersValue = spec.bool("birds_drop_feathers", true, "Birds shed feathers over time.");
+        ConfigValue<Integer> featherTimerValue = spec.integer("feather_timer", 12_000, 1, MAX_TICKS - 999, "Feather timer.");
+        ConfigValue<Boolean> foodsGiveBonusEffectsValue = spec.bool("foods_give_bonus_effects", true, "Apply Animania bonus effects when food is consumed.");
+        ConfigValue<Boolean> eatFoodAnytimeValue = spec.bool("eat_food_anytime", true, "Allow Animania foods to be eaten when hunger is full.");
+        ConfigValue<Boolean> cowsMilkableAtSpawnValue = spec.bool("cows_milkable_at_spawn", false, "Cows milkable at spawn.");
+        ConfigValue<Boolean> disableSaltCreationValue = spec.bool("disable_salt_creation", false, "Prevent players from making salt in cheese molds with water.");
+        ConfigValue<String> foodOverridesValue = spec.string("food_value_overrides", "", "Item food values as item_id(nutrition,saturationMultiplier), separated by semicolons.");
+        RegisteredConfig config = SyrupConfigManager.create(directory).register(spec);
+        if (!config.initialResult().successful()) throw new IllegalStateException("Could not load Animaniax config at " + config.path());
+        if (migrate) {
+            Map<ConfigValue<?>, Object> values = new LinkedHashMap<>();
+            values.put(gestationTimerValue, gestationTimer);
+            values.put(birthMultipleChanceValue, birthMultipleChance);
+            values.put(animalLossChanceValue, animalLossChance);
+            values.put(feedTimerValue, feedTimer);
+            values.put(waterTimerValue, waterTimer);
+            values.put(ticksBetweenAIFiringsValue, ticksBetweenAIFirings);
+            values.put(aiBlockSearchRangeValue, aiBlockSearchRange);
+            values.put(childGrowthTickValue, childGrowthTick);
+            values.put(animalsStarveValue, animalsStarve);
+            values.put(showUnhappyParticlesValue, showUnhappyParticles);
+            values.put(animalsSleepValue, animalsSleep);
+            values.put(animalsCanAttackOthersValue, animalsCanAttackOthers);
+            values.put(replaceVanillaWolvesValue, replaceVanillaWolves);
+            values.put(replaceVanillaOcelotsValue, replaceVanillaOcelots);
+            values.put(starvationTimerValue, starvationTimer);
+            values.put(matingTimerValue, matingTimer);
+            values.put(requireAnimalInteractionForAIValue, requireAnimalInteractionForAI);
+            values.put(ambianceModeValue, ambianceMode);
+            values.put(feedToBreedValue, feedToBreed);
+            values.put(malesMateMultipleFemalesValue, malesMateMultipleFemales);
+            values.put(entityBreedingLimitValue, entityBreedingLimit);
+            values.put(animalCapSearchRangeValue, animalCapSearchRange);
+            values.put(naturalSpawnLimitCowsValue, naturalSpawnLimitCows);
+            values.put(naturalSpawnLimitPigsValue, naturalSpawnLimitPigs);
+            values.put(naturalSpawnLimitChickensValue, naturalSpawnLimitChickens);
+            values.put(naturalSpawnLimitSheepValue, naturalSpawnLimitSheep);
+            values.put(naturalSpawnLimitGoatsValue, naturalSpawnLimitGoats);
+            values.put(naturalSpawnLimitHorsesValue, naturalSpawnLimitHorses);
+            values.put(naturalSpawnLimitRabbitsValue, naturalSpawnLimitRabbits);
+            values.put(naturalSpawnLimitAmphibiansValue, naturalSpawnLimitAmphibians);
+            values.put(naturalSpawnLimitHamstersValue, naturalSpawnLimitHamsters);
+            values.put(naturalSpawnLimitFerretsValue, naturalSpawnLimitFerrets);
+            values.put(naturalSpawnLimitHedgehogsValue, naturalSpawnLimitHedgehogs);
+            values.put(naturalSpawnLimitCatsValue, naturalSpawnLimitCats);
+            values.put(naturalSpawnLimitDogsValue, naturalSpawnLimitDogs);
+            values.put(plantsRemovedAfterEatingValue, plantsRemovedAfterEating);
+            values.put(waterRemovedAfterDrinkingValue, waterRemovedAfterDrinking);
+            values.put(hiveSpawningValue, hiveSpawning);
+            values.put(hiveSpawningFrequencyValue, hiveSpawningFrequency);
+            values.put(hiveWildHoneyRateValue, hiveWildHoneyRate);
+            values.put(hivePlayermadeHoneyRateValue, hivePlayermadeHoneyRate);
+            values.put(allowSeedDispenserPlacementValue, allowSeedDispenserPlacement);
+            values.put(shiftSeedPlacementValue, shiftSeedPlacement);
+            values.put(allowTroughAutomationValue, allowTroughAutomation);
+            values.put(saltLickTickValue, saltLickTick);
+            values.put(saltLickMaxUsesValue, saltLickMaxUses);
+            values.put(laidTimerValue, laidTimer);
+            values.put(eggHatchChanceValue, eggHatchChance);
+            values.put(cheeseMaturityTimeValue, cheeseMaturityTime);
+            values.put(saltCreationAmountValue, saltCreationAmount);
+            values.put(woolRegrowthTimerValue, woolRegrowthTimer);
+            values.put(hamsterWheelCapacityValue, hamsterWheelCapacity);
+            values.put(hamsterWheelRFGenerationValue, hamsterWheelRFGeneration);
+            values.put(hamsterWheelUseTimeValue, hamsterWheelUseTime);
+            values.put(allowEggThrowingValue, allowEggThrowing);
+            values.put(chickensDropEggsValue, chickensDropEggs);
+            values.put(birdsDropFeathersValue, birdsDropFeathers);
+            values.put(featherTimerValue, featherTimer);
+            values.put(foodsGiveBonusEffectsValue, foodsGiveBonusEffects);
+            values.put(eatFoodAnytimeValue, eatFoodAnytime);
+            values.put(cowsMilkableAtSpawnValue, cowsMilkableAtSpawn);
+            values.put(disableSaltCreationValue, disableSaltCreation);
+            values.put(foodOverridesValue, legacyProperties.getProperty("foodValueOverrides", ""));
+            if (!config.updateAndSaveAll(values).successful()) {
+                try { Files.deleteIfExists(config.path()); } catch (IOException e) { LOGGER.error("Could not remove incomplete config at {}", config.path(), e); }
+                throw new IllegalStateException("Could not migrate Animaniax config at " + legacyPath);
+            }
+        }
+        gestationTimer = gestationTimerValue.get();
+        birthMultipleChance = birthMultipleChanceValue.get();
+        animalLossChance = animalLossChanceValue.get();
+        feedTimer = feedTimerValue.get();
+        waterTimer = waterTimerValue.get();
+        ticksBetweenAIFirings = ticksBetweenAIFiringsValue.get();
+        aiBlockSearchRange = aiBlockSearchRangeValue.get();
+        childGrowthTick = childGrowthTickValue.get();
+        animalsStarve = animalsStarveValue.get();
+        showUnhappyParticles = showUnhappyParticlesValue.get();
+        animalsSleep = animalsSleepValue.get();
+        animalsCanAttackOthers = animalsCanAttackOthersValue.get();
+        replaceVanillaWolves = replaceVanillaWolvesValue.get();
+        replaceVanillaOcelots = replaceVanillaOcelotsValue.get();
+        starvationTimer = starvationTimerValue.get();
+        matingTimer = matingTimerValue.get();
+        requireAnimalInteractionForAI = requireAnimalInteractionForAIValue.get();
+        ambianceMode = ambianceModeValue.get();
+        feedToBreed = feedToBreedValue.get();
+        malesMateMultipleFemales = malesMateMultipleFemalesValue.get();
+        entityBreedingLimit = entityBreedingLimitValue.get();
+        animalCapSearchRange = animalCapSearchRangeValue.get();
+        naturalSpawnLimitCows = naturalSpawnLimitCowsValue.get();
+        naturalSpawnLimitPigs = naturalSpawnLimitPigsValue.get();
+        naturalSpawnLimitChickens = naturalSpawnLimitChickensValue.get();
+        naturalSpawnLimitSheep = naturalSpawnLimitSheepValue.get();
+        naturalSpawnLimitGoats = naturalSpawnLimitGoatsValue.get();
+        naturalSpawnLimitHorses = naturalSpawnLimitHorsesValue.get();
+        naturalSpawnLimitRabbits = naturalSpawnLimitRabbitsValue.get();
+        naturalSpawnLimitAmphibians = naturalSpawnLimitAmphibiansValue.get();
+        naturalSpawnLimitHamsters = naturalSpawnLimitHamstersValue.get();
+        naturalSpawnLimitFerrets = naturalSpawnLimitFerretsValue.get();
+        naturalSpawnLimitHedgehogs = naturalSpawnLimitHedgehogsValue.get();
+        naturalSpawnLimitCats = naturalSpawnLimitCatsValue.get();
+        naturalSpawnLimitDogs = naturalSpawnLimitDogsValue.get();
+        plantsRemovedAfterEating = plantsRemovedAfterEatingValue.get();
+        waterRemovedAfterDrinking = waterRemovedAfterDrinkingValue.get();
+        hiveSpawning = hiveSpawningValue.get();
+        hiveSpawningFrequency = hiveSpawningFrequencyValue.get();
+        hiveWildHoneyRate = hiveWildHoneyRateValue.get();
+        hivePlayermadeHoneyRate = hivePlayermadeHoneyRateValue.get();
+        allowSeedDispenserPlacement = allowSeedDispenserPlacementValue.get();
+        shiftSeedPlacement = shiftSeedPlacementValue.get();
+        allowTroughAutomation = allowTroughAutomationValue.get();
+        saltLickTick = saltLickTickValue.get();
+        saltLickMaxUses = saltLickMaxUsesValue.get();
+        laidTimer = laidTimerValue.get();
+        eggHatchChance = eggHatchChanceValue.get();
+        cheeseMaturityTime = cheeseMaturityTimeValue.get();
+        saltCreationAmount = saltCreationAmountValue.get();
+        woolRegrowthTimer = woolRegrowthTimerValue.get();
+        hamsterWheelCapacity = hamsterWheelCapacityValue.get();
+        hamsterWheelRFGeneration = hamsterWheelRFGenerationValue.get();
+        hamsterWheelUseTime = hamsterWheelUseTimeValue.get();
+        allowEggThrowing = allowEggThrowingValue.get();
+        chickensDropEggs = chickensDropEggsValue.get();
+        birdsDropFeathers = birdsDropFeathersValue.get();
+        featherTimer = featherTimerValue.get();
+        foodsGiveBonusEffects = foodsGiveBonusEffectsValue.get();
+        eatFoodAnytime = eatFoodAnytimeValue.get();
+        cowsMilkableAtSpawn = cowsMilkableAtSpawnValue.get();
+        disableSaltCreation = disableSaltCreationValue.get();
+        foodValueOverrides = readFoodValueOverrides(foodOverridesValue.get());
+    }
+
+    private static void loadLegacy(Path path) {
+        try {
             Properties properties = new Properties();
             try (Reader reader = Files.newBufferedReader(path)) {
                 properties.load(reader);
@@ -309,70 +425,7 @@ public final class AnimalCareConfig {
             plantsRemovedAfterEating = readBoolean(properties, "plantsRemovedAfterEating", true);
             waterRemovedAfterDrinking = readBoolean(properties, "waterRemovedAfterDrinking", true);
         } catch (IOException | IllegalArgumentException e) {
-            LOGGER.error("Could not read Animaniax config at {}; defaults will be used", path, e);
-            gestationTimer = 20_000;
-            birthMultipleChance = 0.1;
-            animalLossChance = 0.0;
-            feedTimer = 12_000;
-            waterTimer = 12_000;
-            ticksBetweenAIFirings = 100;
-            aiBlockSearchRange = 16;
-            childGrowthTick = 200;
-            animalsStarve = false;
-            showUnhappyParticles = true;
-            animalsSleep = true;
-            animalsCanAttackOthers = true;
-            replaceVanillaWolves = true;
-            replaceVanillaOcelots = true;
-            starvationTimer = 400;
-            matingTimer = 100;
-            requireAnimalInteractionForAI = true;
-            ambianceMode = false;
-            feedToBreed = true;
-            malesMateMultipleFemales = false;
-            entityBreedingLimit = 15;
-            animalCapSearchRange = 80;
-            naturalSpawnLimitCows = 40;
-            naturalSpawnLimitPigs = 40;
-            naturalSpawnLimitChickens = 40;
-            naturalSpawnLimitSheep = 40;
-            naturalSpawnLimitGoats = 40;
-            naturalSpawnLimitHorses = 40;
-            naturalSpawnLimitRabbits = 40;
-            naturalSpawnLimitAmphibians = 40;
-            naturalSpawnLimitHamsters = 40;
-            naturalSpawnLimitFerrets = 40;
-            naturalSpawnLimitHedgehogs = 40;
-            naturalSpawnLimitCats = 20;
-            naturalSpawnLimitDogs = 20;
-            hiveSpawning = true;
-            hiveSpawningFrequency = 3;
-            hiveWildHoneyRate = 700;
-            hivePlayermadeHoneyRate = 450;
-            allowSeedDispenserPlacement = true;
-            shiftSeedPlacement = false;
-            allowTroughAutomation = true;
-            saltLickTick = 8000;
-            saltLickMaxUses = 200;
-            laidTimer = 2000;
-            eggHatchChance = 2;
-            cheeseMaturityTime = 24_000;
-            saltCreationAmount = 16;
-            woolRegrowthTimer = 8_000;
-            hamsterWheelCapacity = 200_000;
-            hamsterWheelRFGeneration = 20;
-            hamsterWheelUseTime = 2_000;
-            chickensDropEggs = false;
-            birdsDropFeathers = true;
-            featherTimer = 12_000;
-            foodsGiveBonusEffects = true;
-            foodValueOverrides = Map.of();
-            eatFoodAnytime = true;
-            disableSaltCreation = false;
-            cowsMilkableAtSpawn = false;
-            allowEggThrowing = false;
-            plantsRemovedAfterEating = true;
-            waterRemovedAfterDrinking = true;
+            throw new IllegalStateException("Could not read legacy Animaniax config at " + path, e);
         }
     }
 
