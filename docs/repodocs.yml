@@ -1,0 +1,38 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Syrup-Studios/RepoDocs/main/public/schemas/repodocs.schema.json
+schema: 1
+name: Animaniax
+summary: Animal overhaul mod for Minecraft 1.21.1 with breeds, care, breeding, products, pets, and farm transport.
+type: minecraft
+category: mod
+modId: animaniax
+owners:
+  - Syrup-Studios
+gameVersions:
+  - "1.21.1"
+loaders:
+  - fabric
+  - neoforge
+tags:
+  - animals
+  - farming
+  - livestock
+  - pets
+  - overhaul
+platforms:
+  primary: modrinth
+  modrinth:
+    id: ayFk4wlY
+  curseforge:
+    id: "1831304"
+licenses:
+  project:
+    name: Responsive Source License (RSL) v1.0
+    url: https://github.com/Syrup-Studios/animaniax/blob/main/LICENSE.md
+  documentation:
+    name: Responsive Source License (RSL) v1.0
+    url: https://github.com/Syrup-Studios/animaniax/blob/main/LICENSE.md
+rootREADME: false
+defaultLocale: en
+footer:
+  - label: Issue Tracker
+    url: https://github.com/Syrup-Studios/animaniax/issues

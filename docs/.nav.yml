@@ -1,0 +1,17 @@
+nav:
+  - Overview: index.md
+  - Getting Started: getting-started.md
+  - Animal Care and Breeding: care-and-breeding.md
+  - Animals:
+      - Overview: animals/index.md
+      - Farm Livestock: animals/farm-livestock.md
+      - Poultry and Draft Horses: animals/poultry-and-horses.md
+      - Cats and Dogs: animals/cats-and-dogs.md
+      - Small Pets and Amphibians: animals/small-pets-and-amphibians.md
+  - Housing and Production: housing-and-production.md
+  - Food and Recipes: food-and-recipes.md
+  - Tools and Transport: tools-and-transport.md
+  - Villages and World Generation: villages-and-worldgen.md
+  - Advanced:
+      - Configuration: configuration.md
+      - Datapacks and Tags: datapacks-and-tags.md
